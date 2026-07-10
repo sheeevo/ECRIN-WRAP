@@ -196,7 +196,7 @@ html,body{background:#050505;overflow:hidden}
 
   </div>
 
-  <!-- â•â•â• MARQUES â•â•â• -->
+  <!-- ═══ MARQUES ═══ -->
   <div style="position:relative;padding:56px 0;background:#050505;border-top:1px solid rgba(228,35,43,.12);border-bottom:1px solid rgba(228,35,43,.12);overflow:hidden;">
     <div style="text-align:center;font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:30px;">{{ t.brandsTitle }}</div>
     <div style="position:relative;-webkit-mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);">
@@ -208,7 +208,7 @@ html,body{background:#050505;overflow:hidden}
     </div>
   </div>
 
-  <!-- â•â•â• SERVICES â•â•â• -->
+  <!-- ═══ SERVICES ═══ -->
   <div id="services" data-screen-label="Services" style="position:relative;padding:150px 7vw 130px;background:#050505;">
     <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#7c8085;font-weight:300;">01 &mdash; {{ t.servicesOver }}</div>
     <div style="font-family:'Montserrat',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.03em;font-size:clamp(30px,4.2vw,64px);line-height:1.08;margin-top:16px;background:linear-gradient(180deg,#FF6067 0%,#EE3038 38%,#E4232B 60%,#A80D14 100%);-webkit-background-clip:text;background-clip:text;color:transparent;">{{ t.servicesTitle }}</div>
@@ -225,7 +225,7 @@ html,body{background:#050505;overflow:hidden}
     </div>
   </div>
 
-  <!-- â•â•â• COVERING vs PPF â•â•â• -->
+  <!-- ═══ COVERING vs PPF ═══ -->
   <div id="comparatif" data-screen-label="Covering vs PPF" style="position:relative;padding:150px 7vw 130px;background:radial-gradient(120% 100% at 50% 20%,#101112 0%,#060707 60%,#050505 100%);">
     <div style="max-width:1000px;margin:0 auto;">
       <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#7c8085;font-weight:300;">02 &mdash; {{ t.cmpOver }}</div>
@@ -250,7 +250,7 @@ html,body{background:#050505;overflow:hidden}
     </div>
   </div>
 
-  <!-- â•â•â• DETAILING & FORMULES â•â•â• -->
+  <!-- ═══ DETAILING & FORMULES ═══ -->
   <div id="detailing" data-screen-label="Detailing" style="position:relative;padding:150px 7vw 130px;background:#050505;">
     <div style="text-align:center;">
       <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#7c8085;font-weight:300;">03 &mdash; {{ t.dtOver }}</div>
@@ -289,7 +289,7 @@ html,body{background:#050505;overflow:hidden}
     <div style="text-align:center;margin-top:40px;font-size:12px;color:#7c8085;font-weight:300;letter-spacing:.05em;">{{ t.dtNote }}</div>
   </div>
 
-  <!-- â•â•â• CONFIGURATEUR â•â•â• -->
+  <!-- ═══ CONFIGURATEUR ═══ -->
   <div id="configurateur" data-screen-label="Configurateur" style="position:relative;padding:130px 7vw 110px;background:radial-gradient(120% 100% at 50% 30%,#131415 0%,#070808 60%,#050505 100%);overflow:hidden;">
     <div style="text-align:center;">
       <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#7c8085;font-weight:300;">04 &mdash; {{ t.configOver }}</div>
@@ -332,7 +332,7 @@ html,body{background:#050505;overflow:hidden}
     </div>
   </div>
 
-  <!-- â•â•â• PROCESSUS â•â•â• -->
+  <!-- ═══ PROCESSUS ═══ -->
   <div id="processus" data-screen-label="Processus" style="position:relative;padding:150px 7vw 130px;background:#050505;">
     <div style="max-width:1100px;margin:0 auto;">
       <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#7c8085;font-weight:300;">05 &mdash; {{ t.processOver }}</div>
@@ -352,7 +352,7 @@ html,body{background:#050505;overflow:hidden}
     </div>
   </div>
 
-  <!-- â•â•â• PORTFOLIO â•â•â• -->
+  <!-- ═══ PORTFOLIO ═══ -->
   <div id="portfolio" data-screen-label="Portfolio" style="position:relative;padding:150px 7vw 130px;background:linear-gradient(180deg,#050505,#0b0c0d 50%,#050505);">
     <div style="display:flex;align-items:baseline;justify-content:space-between;gap:30px;flex-wrap:wrap;">
       <div>
@@ -363,13 +363,13 @@ html,body{background:#050505;overflow:hidden}
     </div>
     <div class="ec-pf-grid" style="display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:220px;gap:22px;margin-top:60px;">
       <div style="grid-column:span 4;grid-row:span 2;">
-        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="pf-hero" placeholder="Vue principale â€” v&eacute;hicule termin&eacute;" shape="rounded" radius="4" hint-size="100%,462px"></x-import>
+        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="pf-hero" placeholder="Vue principale — v&eacute;hicule termin&eacute;" shape="rounded" radius="4" hint-size="100%,462px"></x-import>
       </div>
       <div style="grid-column:span 2;">
-        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="pf-detail1" placeholder="D&eacute;tail â€” texture du film" shape="rounded" radius="4" hint-size="100%,220px"></x-import>
+        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="pf-detail1" placeholder="D&eacute;tail — texture du film" shape="rounded" radius="4" hint-size="100%,220px"></x-import>
       </div>
       <div style="grid-column:span 2;">
-        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="pf-detail2" placeholder="D&eacute;tail â€” jante / &eacute;trier" shape="rounded" radius="4" hint-size="100%,220px"></x-import>
+        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="pf-detail2" placeholder="D&eacute;tail — jante / &eacute;trier" shape="rounded" radius="4" hint-size="100%,220px"></x-import>
       </div>
       <div style="grid-column:span 3;">
         <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="pf-atelier" placeholder="L&rsquo;atelier en action" shape="rounded" radius="4" hint-size="100%,220px"></x-import>
@@ -380,8 +380,8 @@ html,body{background:#050505;overflow:hidden}
     </div>
   </div>
 
-  <!-- â•â•â• TÃ‰MOIGNAGES â•â•â• -->
-  <div id="temoignages" data-screen-label="TÃ©moignages" style="position:relative;padding:150px 7vw 130px;background:radial-gradient(120% 100% at 50% 20%,#101112 0%,#060707 60%,#050505 100%);">
+  <!-- ═══ TÉMOIGNAGES ═══ -->
+  <div id="temoignages" data-screen-label="Témoignages" style="position:relative;padding:150px 7vw 130px;background:radial-gradient(120% 100% at 50% 20%,#101112 0%,#060707 60%,#050505 100%);">
     <div style="text-align:center;">
       <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#7c8085;font-weight:300;">07 &mdash; {{ t.temOver }}</div>
       <div style="font-family:'Montserrat',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.03em;font-size:clamp(30px,4.2vw,64px);line-height:1.08;margin-top:16px;background:linear-gradient(180deg,#FF6067 0%,#EE3038 38%,#E4232B 60%,#A80D14 100%);-webkit-background-clip:text;background-clip:text;color:transparent;">{{ t.temTitle }}</div>
@@ -401,7 +401,7 @@ html,body{background:#050505;overflow:hidden}
         </div>
       </sc-for>
     </div>
-    <!-- chiffres clÃ©s -->
+    <!-- chiffres clés -->
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:20px;margin-top:80px;max-width:900px;margin-left:auto;margin-right:auto;padding-top:50px;border-top:1px solid rgba(228,35,43,.14);">
       <sc-for list="{{ stats }}" as="st" hint-placeholder-count="4">
         <div style="text-align:center;">
@@ -412,7 +412,7 @@ html,body{background:#050505;overflow:hidden}
     </div>
   </div>
 
-  <!-- â•â•â• FAQ â•â•â• -->
+  <!-- ═══ FAQ ═══ -->
   <div id="faq" data-screen-label="FAQ" style="position:relative;padding:150px 7vw 130px;background:#050505;">
     <div style="max-width:900px;margin:0 auto;">
       <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#7c8085;font-weight:300;">08 &mdash; {{ t.faqOver }}</div>
@@ -436,7 +436,7 @@ html,body{background:#050505;overflow:hidden}
     </div>
   </div>
 
-  <!-- â•â•â• CONTACT â•â•â• -->
+  <!-- ═══ CONTACT ═══ -->
   <div id="contact" data-screen-label="Contact" style="position:relative;padding:150px 7vw 60px;background:#050505;text-align:center;">
     <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#7c8085;font-weight:300;">09 &mdash; {{ t.contactOver }}</div>
     <div style="font-family:'Montserrat',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.03em;font-size:clamp(34px,4.8vw,74px);line-height:1.08;margin-top:16px;background:linear-gradient(180deg,#FF6067 0%,#EE3038 38%,#E4232B 60%,#A80D14 100%);-webkit-background-clip:text;background-clip:text;color:transparent;">{{ t.contactTitle }}</div>
@@ -455,7 +455,7 @@ html,body{background:#050505;overflow:hidden}
 
   </sc-if>
 
-  <!-- â•â•â• DEVIS MODAL â•â•â• -->
+  <!-- ═══ DEVIS MODAL ═══ -->
   <sc-if value="{{ devisOpen }}" hint-placeholder-val="{{ false }}">
   <div onClick="{{ closeDevis }}" style="position:fixed;inset:0;z-index:120;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(3,3,3,.72);backdrop-filter:blur(10px);animation:ecUp .4s ease both;">
     <div onClick="{{ stop }}" style="position:relative;width:min(640px,94vw);max-height:92vh;overflow-y:auto;border:1px solid rgba(228,35,43,.28);border-radius:6px;background:linear-gradient(165deg,rgba(24,25,27,.98),rgba(10,11,12,.99));box-shadow:0 40px 100px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.06);padding:44px 42px 40px;">
@@ -510,7 +510,7 @@ html,body{background:#050505;overflow:hidden}
 
       <sc-if value="{{ devisSent }}" hint-placeholder-val="{{ false }}">
       <div style="text-align:center;padding:30px 0 14px;">
-        <div style="width:64px;height:64px;margin:0 auto;border-radius:50%;border:1px solid rgba(228,35,43,.5);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:28px;">âœ“</div>
+        <div style="width:64px;height:64px;margin:0 auto;border-radius:50%;border:1px solid rgba(228,35,43,.5);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:28px;">✓</div>
         <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:26px;margin-top:22px;color:#F7F7F7;">{{ t.dvThanks }}</div>
         <div style="margin-top:12px;font-size:14px;color:#9aa0a4;font-weight:300;line-height:1.7;max-width:400px;margin-left:auto;margin-right:auto;">{{ t.dvThanksSub }}</div>
         <button onClick="{{ closeDevis }}" style="margin-top:28px;font-family:inherit;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#ffffff;font-weight:600;padding:14px 34px;border:none;border-radius:3px;cursor:pointer;background:linear-gradient(180deg,#ff6a70,#ee3038 46%,#e4232b 54%,#ff5a60);">{{ t.dvClose }}</button>
@@ -570,7 +570,7 @@ html,body{background:#050505;overflow:hidden}
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;companyName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Ecrin Wrap&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Marque&quot;},&quot;tagline&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;La perfection, sublimÃ©e&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Marque&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;companyName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Ecrin Wrap&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Marque&quot;},&quot;tagline&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;La perfection, sublimée&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Marque&quot;}}">
 class Component extends DCLogic {
   state = { phase: 'loading', progress: 0, ready: false, revealOut: false, mood: 'or', muted: false, navMax: 10, carReady: false, finish: 'gloss', faqOpen: 0, devisOpen: false, devisService: 'Covering', devisSent: false, soundPreset: 'lounge', soundMenu: false, lang: 'fr', mobileMenu: false, isMobile: false, cmpTab: 'covering', dtMode: 'once', averyFam: 'gloss', averySel: null, averyReady: false, averyBrand: 'avery' };
 
