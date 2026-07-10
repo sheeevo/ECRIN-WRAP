@@ -117,8 +117,13 @@ html,body{background:#050505;overflow:hidden}
         <!-- accent floor glow -->
         <div style="position:absolute;left:50%;bottom:78px;transform:translateX(-50%);width:60%;height:40px;border-radius:50%;background:radial-gradient(ellipse,var(--glow),transparent 70%);filter:blur(12px);opacity:.7;animation:ecPulse 6s ease-in-out infinite;"></div>
 
-        <!-- real 3D model (fades in when loaded; CSS car is the fallback) -->
+        <!-- real 3D model (fades in when loaded; CSS car is the fallback).
+             Skipped on mobile: phones commonly cap WebGL to a single live
+             context, and the configurator's viewer is the one that matters
+             there — the hero keeps its CSS car instead of fighting it for the GPU. -->
+        <sc-if value="{{ showHero3D }}" hint-placeholder-val="{{ true }}">
         <x-import component-from-global-scope="ecrin-car-viewer" from="./car-viewer.js" mood="{{ mood }}" finish="rouge" style="position:absolute;left:50%;bottom:-40px;transform:translateX(-50%);width:min(1050px,96vw);height:520px;z-index:2;pointer-events:none;" hint-size="100%,520px"></x-import>
+        </sc-if>
 
         <!-- reflection (mirrored, faded) -->
         <sc-if value="{{ cssCarVisible }}" hint-placeholder-val="{{ true }}">
@@ -1296,8 +1301,9 @@ class Component extends DCLogic {
       revealOpacity: s.revealOut ? 0 : 1,
       isHero: s.phase==='hero',
       mood: s.mood,
-      cssCarVisible: !s.carReady,
-      cssCarOpacity: s.carReady ? 0 : 1,
+      showHero3D: !s.isMobile,
+      cssCarVisible: !(s.carReady && !s.isMobile),
+      cssCarOpacity: (s.carReady && !s.isMobile) ? 0 : 1,
       showHeroBase: true,
       muted: s.muted,
       audioLabel: s.muted ? 'Son coup\u00e9' : 'Son actif',
