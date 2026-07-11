@@ -64,6 +64,37 @@
     window.dispatchEvent(new CustomEvent(name, { detail: detail }));
   }
 
+  // Self-contained placeholder shown until (or unless) the real 3D model
+  // renders. Every instance owns and clears its own copy, so a failure in
+  // one viewer (blocked CDN, no WebGL, GPU context limits, slow network...)
+  // never leaves that spot visually blank, regardless of the cause.
+  var FALLBACK_STYLE_ID = 'ecw-fallback-style';
+  function ensureFallbackStyle() {
+    if (document.getElementById(FALLBACK_STYLE_ID)) return;
+    var st = document.createElement('style');
+    st.id = FALLBACK_STYLE_ID;
+    st.textContent =
+      '@keyframes ecwFbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}' +
+      '@keyframes ecwFbPulse{0%,100%{opacity:.5}50%{opacity:.8}}' +
+      '._ecw-fb{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;pointer-events:none;transition:opacity .8s ease;animation:ecwFbFloat 6s ease-in-out infinite}' +
+      '._ecw-fb-wrap{position:relative;width:70%;max-width:420px;height:46%;min-height:110px}' +
+      '._ecw-fb-wheel{position:absolute;bottom:8%;width:17%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 40% 35%,#3a3d40,#0c0d0e 62%);box-shadow:inset 0 0 0 4px rgba(228,35,43,.18),0 6px 14px rgba(0,0,0,.5)}' +
+      '._ecw-fb-wheel-l{left:6%}._ecw-fb-wheel-r{right:6%}' +
+      '._ecw-fb-body{position:absolute;left:0;top:16%;width:100%;height:62%;clip-path:polygon(2% 78%,3% 60%,17% 55%,32% 40%,45% 20%,63% 15%,73% 22%,88% 52%,98% 60%,98% 78%);background:linear-gradient(172deg,#e9ecef 0%,#c3c8cc 18%,#82868b 42%,#33363a 62%,#5c6064 80%,#a9adb1 100%);opacity:.6;animation:ecwFbPulse 3.2s ease-in-out infinite}';
+    document.head.appendChild(st);
+  }
+  function makeFallback() {
+    ensureFallbackStyle();
+    var fb = document.createElement('div');
+    fb.className = '_ecw-fb';
+    fb.innerHTML = '<div class="_ecw-fb-wrap">' +
+      '<div class="_ecw-fb-wheel _ecw-fb-wheel-l"></div>' +
+      '<div class="_ecw-fb-wheel _ecw-fb-wheel-r"></div>' +
+      '<div class="_ecw-fb-body"></div>' +
+      '</div>';
+    return fb;
+  }
+
   // Parse the 11 MB FBX exactly ONCE, then clone per viewer (shared geometry).
   var modelPromise = null;
   function loadModelOnce(THREE) {
@@ -123,6 +154,8 @@
       this._init = true;
       if (!this.style.display) this.style.display = 'block';
       if (!this.clientHeight) this.style.minHeight = '460px';
+      this._fallback = makeFallback();
+      this.appendChild(this._fallback);
       // start when near the viewport; lazy instances never boot eagerly
       var self = this;
       var lazy = this.hasAttribute('lazy');
@@ -557,7 +590,16 @@
 
       if (this._canvas) this._canvas.style.opacity = '1';
       try { this._renderer.render(this._scene, this._camera); } catch (e) {}
+      this._hideFallback();
       fire('ecrin-car-ready');
+    }
+
+    _hideFallback() {
+      var fb = this._fallback;
+      if (!fb) return;
+      this._fallback = null;
+      fb.style.opacity = '0';
+      setTimeout(function () { if (fb.parentNode) fb.parentNode.removeChild(fb); }, 900);
     }
   }
 
