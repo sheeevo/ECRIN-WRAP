@@ -35,8 +35,7 @@ html,body{background:#050505;overflow:hidden}
 [data-ec-reveal]{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.8,.2,1)}
 [data-ec-reveal].ec-in{opacity:1;transform:none}
 @media (max-width:760px){
-  #portfolio .ec-pf-grid{grid-template-columns:1fr 1fr !important;grid-auto-rows:190px !important;gap:14px !important}
-  #portfolio .ec-pf-grid > div{grid-column:span 2 !important;grid-row:span 1 !important}
+  #portfolio .ec-pf-grid{grid-auto-rows:220px !important}
 
   /* nav */
   .ec-nav{padding:18px 20px !important;gap:12px !important}
@@ -80,7 +79,6 @@ html,body{background:#050505;overflow:hidden}
 @keyframes ecSquee{0%,100%{transform:translateX(-8px) rotate(-4deg)}50%{transform:translateX(8px) rotate(4deg)}}
 @keyframes ecFig{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 @keyframes ecHintPulse{0%,100%{opacity:.4}50%{opacity:.85}}
-#portfolio image-slot{display:block;width:100%;height:100%}
 </style>
 </helmet>
 
@@ -413,23 +411,27 @@ html,body{background:#050505;overflow:hidden}
       </div>
       <div style="font-size:12px;color:#7c8085;font-weight:300;letter-spacing:.06em;max-width:320px;text-wrap:pretty;">{{ t.pfHint }}</div>
     </div>
-    <div class="ec-pf-grid" style="display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:220px;gap:22px;margin-top:60px;">
-      <div style="grid-column:span 4;grid-row:span 2;">
-        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="pf-hero" placeholder="Vue principale — v&eacute;hicule termin&eacute;" shape="rounded" radius="4" hint-size="100%,462px"></x-import>
-      </div>
-      <div style="grid-column:span 2;">
-        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="pf-detail1" placeholder="D&eacute;tail — texture du film" shape="rounded" radius="4" hint-size="100%,220px"></x-import>
-      </div>
-      <div style="grid-column:span 2;">
-        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="pf-detail2" placeholder="D&eacute;tail — jante / &eacute;trier" shape="rounded" radius="4" hint-size="100%,220px"></x-import>
-      </div>
-      <div style="grid-column:span 3;">
-        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="pf-atelier" placeholder="L&rsquo;atelier en action" shape="rounded" radius="4" hint-size="100%,220px"></x-import>
-      </div>
-      <div style="grid-column:span 3;">
-        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="pf-avant-apres" placeholder="Avant / Apr&egrave;s" shape="rounded" radius="4" hint-size="100%,220px"></x-import>
-      </div>
+    <div style="display:flex;gap:10px;margin-top:40px;flex-wrap:wrap;">
+      <sc-for list="{{ pfTabs }}" as="tab" hint-placeholder-count="4">
+        <button onClick="{{ tab.onClick }}" style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:{{ tab.color }};background:{{ tab.bg }};border:1px solid {{ tab.border }};padding:11px 20px;border-radius:2px;cursor:pointer;transition:color .3s,background .3s,border-color .3s;" style-hover="color:#F7F7F7">{{ tab.label }}</button>
+      </sc-for>
     </div>
+
+    <sc-if value="{{ pfHasItems }}" hint-placeholder-val="{{ true }}">
+    <div class="ec-pf-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));grid-auto-rows:260px;gap:20px;margin-top:36px;">
+      <sc-for list="{{ pfItems }}" as="item" hint-placeholder-count="6">
+        <div style="position:relative;border-radius:4px;overflow:hidden;background:#111214;">
+          <img src="{{ item.src }}" alt="{{ item.alt }}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.2,.8,.2,1);" style-hover="transform:scale(1.06)" />
+        </div>
+      </sc-for>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ pfEmpty }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:36px;text-align:center;padding:70px 20px;border:1px dashed rgba(228,35,43,.3);border-radius:4px;">
+        <div style="font-size:15px;color:#9aa0a4;font-weight:300;">{{ t.pfComingSoon }}</div>
+      </div>
+    </sc-if>
   </div>
 
   <!-- ═══ TÉMOIGNAGES ═══ -->
@@ -759,7 +761,7 @@ class Component extends DCLogic {
     navMax: 10, mobileMenu: false, isMobile: false, lang: 'fr',
 
     // page sections: FAQ accordion, covering-vs-PPF tabs, detailing mode
-    faqOpen: 0, cmpTab: 'covering', dtMode: 'once',
+    faqOpen: 0, cmpTab: 'covering', dtMode: 'once', pfFilter: 'all',
 
     // configurateur (finish swatches, Avery/Hexis colour picker)
     finish: 'gloss', averyFam: 'gloss', averySel: null, averyReady: false, averyBrand: 'avery',
@@ -806,7 +808,7 @@ class Component extends DCLogic {
         servicesOver:'Savoir-faire', servicesTitle:'Nos services',
         configOver:'Votre vision', configTitle:'Le configurateur', configSub:'Choisissez une finition \u2014 le v\u00e9hicule se transforme instantan\u00e9ment.',
         processOver:'M\u00e9thode', processTitle:'Notre processus',
-        pfOver:'R\u00e9alisations', pfTitle:'Portfolio', pfHint:'D\u00e9posez vos photographies ici \u2014 elles prennent place dans la mise en page magazine.',
+        pfOver:'Réalisations', pfTitle:'Portfolio', pfHint:'Une sélection de nos réalisations récentes.', pfComingSoon:'Bientôt disponible — galerie en préparation.', pfFilterAll:'Tout', pfFilterCovering:'Covering', pfFilterPpf:'PPF', pfFilterDetailing:'Detailing',
         temOver:'Confiance', temTitle:'Ils nous ont confi\u00e9 leur v\u00e9hicule',
         faqOver:'Questions', faqTitle:'Questions fr\u00e9quentes',
         contactOver:'Rendez-vous', contactTitle:'\u00c9crivez-nous', contactSub:'Chaque projet commence par une conversation. Sur rendez-vous uniquement.',
@@ -904,7 +906,7 @@ class Component extends DCLogic {
         servicesOver:'Craftsmanship', servicesTitle:'Our services',
         configOver:'Your vision', configTitle:'The configurator', configSub:'Pick a finish \u2014 the vehicle transforms instantly.',
         processOver:'Method', processTitle:'Our process',
-        pfOver:'Work', pfTitle:'Portfolio', pfHint:'Drop your photographs here \u2014 they take their place in the magazine layout.',
+        pfOver:'Work', pfTitle:'Portfolio', pfHint:'A selection of our recent work.', pfComingSoon:'Coming soon \u2014 gallery in progress.', pfFilterAll:'All', pfFilterCovering:'Covering', pfFilterPpf:'PPF', pfFilterDetailing:'Detailing',
         temOver:'Trust', temTitle:'They trusted us with their cars',
         faqOver:'Questions', faqTitle:'Frequently asked questions',
         contactOver:'Appointment', contactTitle:'Get in touch', contactSub:'Every project starts with a conversation. By appointment only.',
@@ -1003,7 +1005,7 @@ class Component extends DCLogic {
         servicesOver:'Vakmanschap', servicesTitle:'Onze diensten',
         configOver:'Uw visie', configTitle:'De configurator', configSub:'Kies een afwerking \u2014 het voertuig transformeert onmiddellijk.',
         processOver:'Methode', processTitle:'Ons proces',
-        pfOver:'Realisaties', pfTitle:'Portfolio', pfHint:'Plaats hier uw foto\u2019s \u2014 ze nemen hun plaats in de magazine-lay-out.',
+        pfOver:'Realisaties', pfTitle:'Portfolio', pfHint:'Een selectie van ons recente werk.', pfComingSoon:'Binnenkort beschikbaar \u2014 galerij in voorbereiding.', pfFilterAll:'Alles', pfFilterCovering:'Covering', pfFilterPpf:'PPF', pfFilterDetailing:'Detailing',
         temOver:'Vertrouwen', temTitle:'Zij vertrouwden ons hun wagen toe',
         faqOver:'Vragen', faqTitle:'Veelgestelde vragen',
         contactOver:'Afspraak', contactTitle:'Schrijf ons', contactSub:'Elk project begint met een gesprek. Enkel op afspraak.',
@@ -1104,6 +1106,18 @@ class Component extends DCLogic {
       platine: { accent:'#CBCFD3', glow:'rgba(203,207,211,.45)', laser:'#eef0f1', ambient:'rgba(120,125,130,.18)' },
       nuit:    { accent:'#A80D14', glow:'rgba(130,15,22,.45)',   laser:'#E4232B', ambient:'rgba(110,12,20,.24)' }
     };
+    // real client photos — see assets/portfolio/<category>/. Add more
+    // entries here as new photos come in; no other code needs to change.
+    this.PORTFOLIO = [
+      { cat: 'covering', src: 'assets/portfolio/covering/bmw-m2-piste.jpg', alt: 'BMW M2 — covering' },
+      { cat: 'covering', src: 'assets/portfolio/covering/showroom-jaune-noir.jpg', alt: 'Covering jaune satin — atelier' },
+      { cat: 'covering', src: 'assets/portfolio/covering/ford-ranger-face.jpg', alt: 'Ford Ranger — covering vert mat' },
+      { cat: 'covering', src: 'assets/portfolio/covering/ford-ranger-arriere.jpg', alt: 'Ford Ranger — covering vert mat, vue arrière' },
+      { cat: 'covering', src: 'assets/portfolio/covering/ford-ranger-profil.jpg', alt: 'Ford Ranger — covering vert mat, profil' },
+      { cat: 'covering', src: 'assets/portfolio/covering/detail-aile-mat.jpg', alt: 'Détail covering mat — aile et poignée' },
+      { cat: 'covering', src: 'assets/portfolio/covering/ford-ranger-detail-aile.jpg', alt: 'Détail covering — aile et déflecteur carbone' },
+      { cat: 'detailing', src: 'assets/portfolio/detailing/lavage-mousse.jpg', alt: 'Lavage mousse active — detailing' }
+    ];
   }
 
   // ── React lifecycle ───────────────────────────────────────────────
@@ -1630,6 +1644,21 @@ class Component extends DCLogic {
       })),
       cmpIntro: L.cmp[s.cmpTab].intro,
       cmpRows: L.cmp[s.cmpTab].rows,
+      pfTabs: [
+        { key: 'all', label: L.pfFilterAll },
+        { key: 'covering', label: L.pfFilterCovering },
+        { key: 'ppf', label: L.pfFilterPpf },
+        { key: 'detailing', label: L.pfFilterDetailing }
+      ].map(tab => ({
+        ...tab,
+        onClick: () => this.setState({ pfFilter: tab.key }),
+        color: s.pfFilter === tab.key ? '#F7F7F7' : '#7c8085',
+        bg: s.pfFilter === tab.key ? 'linear-gradient(165deg,rgba(228,35,43,.16),rgba(228,35,43,.05))' : 'transparent',
+        border: s.pfFilter === tab.key ? 'rgba(228,35,43,.5)' : 'rgba(191,195,199,.14)'
+      })),
+      pfItems: this.PORTFOLIO.filter(p => s.pfFilter === 'all' || p.cat === s.pfFilter),
+      pfHasItems: this.PORTFOLIO.some(p => s.pfFilter === 'all' || p.cat === s.pfFilter),
+      pfEmpty: !this.PORTFOLIO.some(p => s.pfFilter === 'all' || p.cat === s.pfFilter),
       dtModes: ['once','sub'].map(k => ({
         key: k,
         label: L.dtModes[k],
