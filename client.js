@@ -67,6 +67,31 @@
     },
     addQuote: function (payload) {
       return getClient().then(function (c) { return c.from('quotes').insert(payload).select(); }).then(unwrap);
+    },
+    getSubscription: function () {
+      return getClient().then(function (c) {
+        return c.from('subscriptions').select('*').order('updated_at', { ascending: false }).limit(1);
+      }).then(unwrap).then(function (rows) { return (rows && rows[0]) || null; });
+    },
+    startCheckout: function (plan, userId, email) {
+      return fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan: plan, userId: userId, email: email })
+      }).then(function (r) { return r.json(); }).then(function (data) {
+        if (data.error) throw new Error(data.error);
+        window.location.href = data.url;
+      });
+    },
+    openBillingPortal: function (customerId) {
+      return fetch('/api/create-portal-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ customerId: customerId })
+      }).then(function (r) { return r.json(); }).then(function (data) {
+        if (data.error) throw new Error(data.error);
+        window.location.href = data.url;
+      });
     }
   };
 

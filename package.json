@@ -1,0 +1,10 @@
+{
+  "name": "ecrin-wrap",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Ecrin Wrap site + Vercel serverless functions (Stripe billing, Supabase webhook sync). The front-end itself has no build step.",
+  "dependencies": {
+    "stripe": "^17.4.0",
+    "@supabase/supabase-js": "^2.45.4"
+  }
+}

@@ -331,11 +331,14 @@ html,body{background:#050505;overflow:hidden}
               </div>
             </sc-for>
           </div>
-          <button onClick="{{ plan.onClick }}" style="margin-top:32px;font-family:inherit;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:{{ plan.ctaColor }};font-weight:600;padding:14px;border:1px solid {{ plan.ctaBorder }};border-radius:3px;cursor:pointer;background:{{ plan.ctaBg }};transition:transform .3s,border-color .3s;" style-hover="transform:translateY(-2px);border-color:rgba(228,35,43,.75)">{{ t.dtCta }}</button>
+          <button onClick="{{ plan.onClick }}" style="margin-top:32px;font-family:inherit;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:{{ plan.ctaColor }};font-weight:600;padding:14px;border:1px solid {{ plan.ctaBorder }};border-radius:3px;cursor:pointer;background:{{ plan.ctaBg }};transition:transform .3s,border-color .3s;" style-hover="transform:translateY(-2px);border-color:rgba(228,35,43,.75)">{{ plan.ctaLabel }}</button>
         </div>
       </sc-for>
     </div>
     <div style="text-align:center;margin-top:40px;font-size:12px;color:#7c8085;font-weight:300;letter-spacing:.05em;">{{ t.dtNote }}</div>
+    <sc-if value="{{ hasSubscribeError }}" hint-placeholder-val="{{ false }}">
+      <div style="text-align:center;margin-top:16px;font-size:12px;color:#ff8a8f;">{{ subscribeError }}</div>
+    </sc-if>
   </div>
 
   <!-- ═══ CONFIGURATEUR ═══ -->
@@ -633,6 +636,16 @@ html,body{background:#050505;overflow:hidden}
         <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:26px;margin-top:12px;letter-spacing:.02em;color:#F7F7F7;">{{ accountGreeting }}</div>
         <div style="margin-top:6px;font-size:13px;color:#9aa0a4;font-weight:300;">{{ accountEmail }}</div>
 
+        <div style="margin-top:26px;padding:16px 18px;border:1px solid rgba(228,35,43,.2);border-radius:3px;background:rgba(255,255,255,.02);display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+          <div>
+            <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#7c8085;">{{ t.subActive }}</div>
+            <div style="margin-top:4px;font-size:14px;color:#c8ccd0;">{{ subscriptionLabel }}</div>
+          </div>
+          <sc-if value="{{ hasSubscription }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ manageSubscription }}" style="font-family:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#D9D9D9;font-weight:400;padding:11px 18px;border:1px solid rgba(228,35,43,.35);border-radius:3px;cursor:pointer;background:none;transition:border-color .3s;" style-hover="border-color:rgba(228,35,43,.65)">{{ t.subManage }}</button>
+          </sc-if>
+        </div>
+
         <div style="margin-top:30px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8c9095;">{{ t.accVehiclesTitle }}</div>
         <div style="margin-top:14px;display:flex;flex-direction:column;gap:8px;">
           <sc-for list="{{ vehicleRows }}" as="v" hint-placeholder-count="2">
@@ -723,7 +736,7 @@ html,body{background:#050505;overflow:hidden}
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;companyName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Ecrin Wrap&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Marque&quot;},&quot;tagline&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;La perfection, sublimée&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Marque&quot;}}">
 class Component extends DCLogic {
-  state = { phase: 'loading', progress: 0, ready: false, revealOut: false, mood: 'or', muted: false, navMax: 10, carReady: false, finish: 'gloss', faqOpen: 0, devisOpen: false, devisService: 'Covering', devisSent: false, soundPreset: 'lounge', soundMenu: false, lang: 'fr', mobileMenu: false, isMobile: false, cmpTab: 'covering', dtMode: 'once', averyFam: 'gloss', averySel: null, averyReady: false, averyBrand: 'avery', accountOpen: false, authMode: 'signin', authError: '', authBusy: false, authSignupSent: false, user: null, vehicles: [], quotes: [] };
+  state = { phase: 'loading', progress: 0, ready: false, revealOut: false, mood: 'or', muted: false, navMax: 10, carReady: false, finish: 'gloss', faqOpen: 0, devisOpen: false, devisService: 'Covering', devisSent: false, soundPreset: 'lounge', soundMenu: false, lang: 'fr', mobileMenu: false, isMobile: false, cmpTab: 'covering', dtMode: 'once', averyFam: 'gloss', averySel: null, averyReady: false, averyBrand: 'avery', accountOpen: false, authMode: 'signin', authError: '', authBusy: false, authSignupSent: false, user: null, vehicles: [], quotes: [], subscription: null, pendingPlan: null, subscribeBusy: false, subscribeError: '' };
 
   constructor(props){
     super(props);
@@ -794,7 +807,8 @@ class Component extends DCLogic {
           ]}
         },
         dtOver:'\u00c9clat', dtTitle:'Detailing & formules', dtSub:'Trois niveaux de soin, du rafra\u00eechissement complet au programme c\u00e9ramique d\u2019exception.',
-        dtPopular:'Le plus choisi', dtCta:'R\u00e9server cette formule', dtNote:'Tarifs indicatifs selon l\u2019\u00e9tat et la taille du v\u00e9hicule \u2014 devis pr\u00e9cis apr\u00e8s inspection \u00e0 l\u2019atelier.',
+        dtPopular:'Le plus choisi', dtCta:'R\u00e9server cette formule', dtSubscribe:'S\u2019abonner', dtNote:'Tarifs indicatifs selon l\u2019\u00e9tat et la taille du v\u00e9hicule \u2014 devis pr\u00e9cis apr\u00e8s inspection \u00e0 l\u2019atelier.',
+        subManage:'G\u00e9rer mon abonnement', subActive:'Abonnement actif', subNone:'Aucun abonnement actif', subLoginFirst:'Connecte-toi pour t\u2019abonner.', subError:'Impossible de lancer le paiement. R\u00e9essaie.',
         dtModes:{once:'\u00c0 la carte',sub:'Abonnement'},
         dtSubPlans:[
           {name:'Club',price:'49\u00a0\u20ac',period:'par mois',feats:['1 lavage main premium par mois','Aspiration & vitres int\u00e9rieures','Contr\u00f4le visuel du film \u00e0 chaque visite','\u221210\u00a0% sur toutes les prestations']},
@@ -888,7 +902,8 @@ class Component extends DCLogic {
           ]}
         },
         dtOver:'Shine', dtTitle:'Detailing & plans', dtSub:'Three levels of care, from a full refresh to an exceptional ceramic programme.',
-        dtPopular:'Most popular', dtCta:'Book this plan', dtNote:'Indicative prices depending on vehicle size and condition \u2014 exact quote after workshop inspection.',
+        dtPopular:'Most popular', dtCta:'Book this plan', dtSubscribe:'Subscribe', dtNote:'Indicative prices depending on vehicle size and condition \u2014 exact quote after workshop inspection.',
+        subManage:'Manage my subscription', subActive:'Active subscription', subNone:'No active subscription', subLoginFirst:'Sign in to subscribe.', subError:'Could not start checkout. Try again.',
         dtModes:{once:'\u00c0 la carte',sub:'Membership'},
         dtSubPlans:[
           {name:'Club',price:'\u20ac49',period:'per month',feats:['1 premium hand wash per month','Vacuum & interior glass','Film visual check at every visit','\u221210% on all services']},
@@ -982,7 +997,8 @@ class Component extends DCLogic {
           ]}
         },
         dtOver:'Glans', dtTitle:'Detailing & formules', dtSub:'Drie zorgniveaus, van complete opfrissing tot een uitzonderlijk keramisch programma.',
-        dtPopular:'Meest gekozen', dtCta:'Deze formule boeken', dtNote:'Richtprijzen volgens staat en grootte van het voertuig \u2014 exacte offerte na inspectie in het atelier.',
+        dtPopular:'Meest gekozen', dtCta:'Deze formule boeken', dtSubscribe:'Abonneren', dtNote:'Richtprijzen volgens staat en grootte van het voertuig \u2014 exacte offerte na inspectie in het atelier.',
+        subManage:'Mijn abonnement beheren', subActive:'Actief abonnement', subNone:'Geen actief abonnement', subLoginFirst:'Log in om te abonneren.', subError:'Kon de betaling niet starten. Probeer opnieuw.',
         dtModes:{once:'\u00c0 la carte',sub:'Abonnement'},
         dtSubPlans:[
           {name:'Club',price:'\u20ac\u00a049',period:'per maand',feats:['1 premium handwas per maand','Stofzuigen & binnenruiten','Visuele foliecontrole bij elk bezoek','\u221210% op alle diensten']},
@@ -1093,14 +1109,23 @@ class Component extends DCLogic {
     window.EcrinAuth.onChange(session => {
       const user = session && session.user ? session.user : null;
       this.setState({ user });
-      if(user) this.loadAccountData(); else this.setState({ vehicles: [], quotes: [] });
+      if(user){
+        this.loadAccountData();
+        if(this.state.pendingPlan){
+          const plan = this.state.pendingPlan;
+          this.setState({ pendingPlan: null });
+          this.startSubscription(plan);
+        }
+      } else {
+        this.setState({ vehicles: [], quotes: [], subscription: null });
+      }
     });
   }
 
   loadAccountData(){
     if(!window.EcrinAuth) return;
-    Promise.all([window.EcrinAuth.listVehicles(), window.EcrinAuth.listQuotes()])
-      .then(([vehicles, quotes]) => this.setState({ vehicles: vehicles || [], quotes: quotes || [] }))
+    Promise.all([window.EcrinAuth.listVehicles(), window.EcrinAuth.listQuotes(), window.EcrinAuth.getSubscription()])
+      .then(([vehicles, quotes, subscription]) => this.setState({ vehicles: vehicles || [], quotes: quotes || [], subscription: subscription || null }))
       .catch(() => {});
   }
 
@@ -1366,6 +1391,27 @@ class Component extends DCLogic {
     }).catch(() => {});
   }
 
+  startSubscription(planKey){
+    if(!window.EcrinAuth || !planKey) return;
+    if(!this.state.user){
+      this.setState({ accountOpen: true, authMode: 'signup', authError: '', pendingPlan: planKey });
+      return;
+    }
+    this.setState({ subscribeBusy: true, subscribeError: '' });
+    window.EcrinAuth.startCheckout(planKey, this.state.user.id, this.state.user.email).catch(() => {
+      const L = this.I18N[this.state.lang] || this.I18N.fr;
+      this.setState({ subscribeBusy: false, subscribeError: L.subError });
+    });
+  }
+
+  manageSubscription(){
+    if(!window.EcrinAuth || !this.state.subscription) return;
+    window.EcrinAuth.openBillingPortal(this.state.subscription.stripe_customer_id).catch(() => {
+      const L = this.I18N[this.state.lang] || this.I18N.fr;
+      this.setState({ subscribeError: L.subError });
+    });
+  }
+
   buildDevisMessage(){
     const g = (r) => (r.current && r.current.value.trim()) || '\u2014';
     return [
@@ -1491,9 +1537,19 @@ class Component extends DCLogic {
         ctaColor: p.featured ? '#ffffff' : '#c8ccd0',
         ctaBg: p.featured ? 'linear-gradient(180deg,#ff525a,#e4232b 46%,#b8121a 54%,#f23c44)' : 'none',
         ctaBorder: p.featured ? 'transparent' : 'rgba(228,35,43,.4)',
+        ctaLabel: s.dtMode === 'sub' ? L.dtSubscribe : L.dtCta,
         feats: p.feats.map(f => ({ f })),
-        onClick: () => { this.setDevisService('Detailing'); this.openDevis(); }
+        onClick: s.dtMode === 'sub'
+          ? () => this.startSubscription({ 'Club': 'club', 'Club Sport': 'club_sport', 'Excellence': 'excellence' }[p.name])
+          : () => { this.setDevisService('Detailing'); this.openDevis(); }
       })),
+      subscribeError: s.subscribeError,
+      hasSubscribeError: !!s.subscribeError,
+      hasSubscription: !!(s.subscription && s.subscription.status === 'active'),
+      subscriptionLabel: s.subscription ? (
+        { club: 'Club', club_sport: 'Club Sport', excellence: 'Excellence' }[s.subscription.plan] || s.subscription.plan
+      ) + ' — ' + s.subscription.status : L.subNone,
+      manageSubscription: () => this.manageSubscription(),
       services: L.services,
       steps: L.steps,
       finish: s.finish,
