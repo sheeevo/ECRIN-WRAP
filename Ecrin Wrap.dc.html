@@ -586,7 +586,28 @@ html,body{background:#050505;overflow:hidden}
 
         <sc-if value="{{ authFormVisible }}" hint-placeholder-val="{{ true }}">
         <div style="margin-top:22px;">
-          <label style="display:block;">
+          <sc-if value="{{ authIsSignup }}" hint-placeholder-val="{{ true }}">
+          <div class="ec-devis-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <label style="display:block;">
+              <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8c9095;">{{ t.accFirstNameL }}</span>
+              <input ref="{{ authFirstNameRef }}" placeholder="{{ t.accFirstNamePh }}" style="width:100%;margin-top:8px;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:12px 14px;color:#F7F7F7;font-family:inherit;font-size:14px;outline:none;" />
+            </label>
+            <label style="display:block;">
+              <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8c9095;">{{ t.accLastNameL }}</span>
+              <input ref="{{ authLastNameRef }}" placeholder="{{ t.accLastNamePh }}" style="width:100%;margin-top:8px;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:12px 14px;color:#F7F7F7;font-family:inherit;font-size:14px;outline:none;" />
+            </label>
+          </div>
+          <label style="display:block;margin-top:14px;">
+            <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8c9095;">{{ t.accAddressL }}</span>
+            <input ref="{{ authAddressRef }}" placeholder="{{ t.accAddressPh }}" style="width:100%;margin-top:8px;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:12px 14px;color:#F7F7F7;font-family:inherit;font-size:14px;outline:none;" />
+          </label>
+          <label style="display:block;margin-top:14px;max-width:140px;">
+            <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8c9095;">{{ t.accAgeL }}</span>
+            <input ref="{{ authAgeRef }}" type="number" min="16" max="120" placeholder="{{ t.accAgePh }}" style="width:100%;margin-top:8px;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:12px 14px;color:#F7F7F7;font-family:inherit;font-size:14px;outline:none;" />
+          </label>
+          <div style="margin-top:22px;height:1px;background:linear-gradient(90deg,var(--accent),transparent);opacity:.3;"></div>
+          </sc-if>
+          <label style="display:block;margin-top:{{ authEmailMarginTop }};">
             <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8c9095;">{{ t.accEmailL }}</span>
             <input ref="{{ authEmailRef }}" type="email" placeholder="vous@exemple.com" style="width:100%;margin-top:8px;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:12px 14px;color:#F7F7F7;font-family:inherit;font-size:14px;outline:none;" />
           </label>
@@ -609,7 +630,7 @@ html,body{background:#050505;overflow:hidden}
       <sc-if value="{{ accountLoggedIn }}" hint-placeholder-val="{{ false }}">
       <div>
         <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:var(--accent);font-weight:600;">{{ t.accTag }}</div>
-        <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:26px;margin-top:12px;letter-spacing:.02em;color:#F7F7F7;">{{ t.accWelcome }}</div>
+        <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:26px;margin-top:12px;letter-spacing:.02em;color:#F7F7F7;">{{ accountGreeting }}</div>
         <div style="margin-top:6px;font-size:13px;color:#9aa0a4;font-weight:300;">{{ accountEmail }}</div>
 
         <div style="margin-top:30px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8c9095;">{{ t.accVehiclesTitle }}</div>
@@ -716,6 +737,10 @@ class Component extends DCLogic {
     this.dvContact = React.createRef();
     this.authEmailRef = React.createRef();
     this.authPasswordRef = React.createRef();
+    this.authFirstNameRef = React.createRef();
+    this.authLastNameRef = React.createRef();
+    this.authAddressRef = React.createRef();
+    this.authAgeRef = React.createRef();
     this.vehicleBrandRef = React.createRef();
     this.vehicleModelRef = React.createRef();
     this.I18N = {
@@ -739,6 +764,8 @@ class Component extends DCLogic {
         accQuotesTitle:'Historique de mes devis', accNoQuotes:'Aucune demande pour le moment.',
         accSignupSuccess:'Compte créé ! Vérifie ta boîte mail pour confirmer.', accErrorGeneric:'Une erreur est survenue. Réessaie.',
         accMissingFields:'E-mail et mot de passe requis.',
+        accFirstNameL:'Prénom', accFirstNamePh:'Votre prénom', accLastNameL:'Nom', accLastNamePh:'Votre nom',
+        accAddressL:'Adresse', accAddressPh:'Rue, numéro, ville', accAgeL:'Âge', accAgePh:'Âge',
         rights:'Tous droits r\u00e9serv\u00e9s', loadingBaseline:'Maison de covering \u00b7 PPF \u00b7 Detailing', enterBtn:'Entrer \u2014 avec le son',
         brandsTitle:'Ils roulent avec nous',
         dvTag:'Devis personnalis\u00e9', dvTitle:'Votre projet', dvSub:'Quelques d\u00e9tails et nous revenons vers vous rapidement.',
@@ -831,6 +858,8 @@ class Component extends DCLogic {
         accQuotesTitle:'My quote history', accNoQuotes:'No requests yet.',
         accSignupSuccess:'Account created! Check your inbox to confirm.', accErrorGeneric:'Something went wrong. Try again.',
         accMissingFields:'E-mail and password are required.',
+        accFirstNameL:'First name', accFirstNamePh:'Your first name', accLastNameL:'Last name', accLastNamePh:'Your last name',
+        accAddressL:'Address', accAddressPh:'Street, number, city', accAgeL:'Age', accAgePh:'Age',
         rights:'All rights reserved', loadingBaseline:'House of wrapping \u00b7 PPF \u00b7 Detailing', enterBtn:'Enter \u2014 with sound',
         brandsTitle:'They ride with us',
         dvTag:'Personalised quote', dvTitle:'Your project', dvSub:'A few details and we will get back to you quickly.',
@@ -923,6 +952,8 @@ class Component extends DCLogic {
         accQuotesTitle:'Mijn offertegeschiedenis', accNoQuotes:'Nog geen aanvragen.',
         accSignupSuccess:'Account aangemaakt! Controleer je inbox.', accErrorGeneric:'Er is iets misgegaan. Probeer opnieuw.',
         accMissingFields:'E-mail en wachtwoord zijn verplicht.',
+        accFirstNameL:'Voornaam', accFirstNamePh:'Je voornaam', accLastNameL:'Achternaam', accLastNamePh:'Je achternaam',
+        accAddressL:'Adres', accAddressPh:'Straat, nummer, stad', accAgeL:'Leeftijd', accAgePh:'Leeftijd',
         rights:'Alle rechten voorbehouden', loadingBaseline:'Huis van wrapping \u00b7 PPF \u00b7 Detailing', enterBtn:'Binnenkomen \u2014 met geluid',
         brandsTitle:'Zij rijden met ons',
         dvTag:'Offerte op maat', dvTitle:'Uw project', dvSub:'Enkele details en wij nemen snel contact met u op.',
@@ -1289,8 +1320,16 @@ class Component extends DCLogic {
     if(!email || !password){ this.setState({ authError: L.accMissingFields }); return; }
     this.setState({ authBusy: true, authError: '' });
     const isSignup = this.state.authMode === 'signup';
-    const fn = isSignup ? window.EcrinAuth.signUp : window.EcrinAuth.signIn;
-    fn(email, password).then(res => {
+    const g = (r) => (r.current && r.current.value.trim()) || '';
+    const promise = isSignup
+      ? window.EcrinAuth.signUp(email, password, {
+          first_name: g(this.authFirstNameRef),
+          last_name: g(this.authLastNameRef),
+          address: g(this.authAddressRef),
+          age: g(this.authAgeRef)
+        })
+      : window.EcrinAuth.signIn(email, password);
+    promise.then(res => {
       if(res.error) throw res.error;
       this.setState({ authBusy: false });
       if(isSignup && !(res.data && res.data.session)){
@@ -1485,6 +1524,9 @@ class Component extends DCLogic {
       accountLabel: s.user ? L.myAccount : L.login,
       accountInitial: s.user && s.user.email ? s.user.email[0].toUpperCase() : '',
       accountEmail: s.user ? s.user.email : '',
+      accountGreeting: (s.user && s.user.user_metadata && s.user.user_metadata.first_name)
+        ? L.accWelcome + ', ' + s.user.user_metadata.first_name
+        : L.accWelcome,
       openAccount: () => this.openAccount(),
       openAccountMobile: () => this.openAccountMobile(),
       closeAccount: () => this.closeAccount(),
@@ -1498,8 +1540,14 @@ class Component extends DCLogic {
       authFormVisible: !s.authSignupSent,
       authHasError: !!s.authError,
       authError: s.authError,
+      authIsSignup: s.authMode === 'signup',
+      authEmailMarginTop: s.authMode === 'signup' ? '14px' : '0',
       authEmailRef: this.authEmailRef,
       authPasswordRef: this.authPasswordRef,
+      authFirstNameRef: this.authFirstNameRef,
+      authLastNameRef: this.authLastNameRef,
+      authAddressRef: this.authAddressRef,
+      authAgeRef: this.authAgeRef,
       vehicleBrandRef: this.vehicleBrandRef,
       vehicleModelRef: this.vehicleModelRef,
       addVehicle: () => this.addVehicle(),

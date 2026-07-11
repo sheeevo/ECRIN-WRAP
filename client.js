@@ -36,8 +36,10 @@
         c.auth.onAuthStateChange(function (_event, session) { cb(session); });
       });
     },
-    signUp: function (email, password) {
-      return getClient().then(function (c) { return c.auth.signUp({ email: email, password: password }); });
+    signUp: function (email, password, profile) {
+      return getClient().then(function (c) {
+        return c.auth.signUp({ email: email, password: password, options: { data: profile || {} } });
+      });
     },
     signIn: function (email, password) {
       return getClient().then(function (c) { return c.auth.signInWithPassword({ email: email, password: password }); });
