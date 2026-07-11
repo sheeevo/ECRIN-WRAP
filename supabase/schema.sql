@@ -26,6 +26,13 @@ create table if not exists public.quotes (
   created_at timestamptz not null default now()
 );
 
+-- Deposit tracking for à la carte detailing (Essentiel/Signature/Prestige):
+-- paid via a one-time Stripe Checkout, confirmed by the webhook (service
+-- role, bypasses RLS — same pattern as public.subscriptions).
+alter table public.quotes add column if not exists deposit_amount integer;
+alter table public.quotes add column if not exists deposit_status text not null default 'none';
+alter table public.quotes add column if not exists stripe_checkout_session_id text;
+
 alter table public.vehicles enable row level security;
 alter table public.quotes enable row level security;
 

@@ -1,7 +1,8 @@
-// Stripe calls this on every subscription lifecycle event. We keep
-// public.subscriptions in sync so the site can show plan/status without
-// calling Stripe on every page load. Writes use the Supabase *service role*
-// key, which bypasses RLS — this endpoint is the only writer for that table.
+// Stripe calls this on every subscription lifecycle event, and on completed
+// one-time Checkout sessions (detailing deposits). We keep public.subscriptions
+// and public.quotes in sync so the site can show status without calling
+// Stripe on every page load. Writes use the Supabase *service role* key,
+// which bypasses RLS — this endpoint is the only writer for those rows.
 const stripe = require('./_stripe');
 const { createClient } = require('@supabase/supabase-js');
 
@@ -14,6 +15,13 @@ function readRawBody(req) {
     req.on('end', () => resolve(Buffer.concat(chunks)));
     req.on('error', reject);
   });
+}
+
+function getSupabase() {
+  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    throw new Error('Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY env var');
+  }
+  return createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
 }
 
 module.exports = async (req, res) => {
@@ -36,10 +44,7 @@ module.exports = async (req, res) => {
       const userId = sub.metadata && sub.metadata.supabase_user_id;
 
       if (userId) {
-        if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-          throw new Error('Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY env var');
-        }
-        const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+        const supabase = getSupabase();
         const row = {
           user_id: userId,
           stripe_customer_id: sub.customer,
@@ -50,7 +55,20 @@ module.exports = async (req, res) => {
           updated_at: new Date().toISOString()
         };
         const { error } = await supabase.from('subscriptions').upsert(row, { onConflict: 'stripe_subscription_id' });
-        if (error) throw new Error('Supabase upsert failed: ' + error.message);
+        if (error) throw new Error('Supabase upsert (subscriptions) failed: ' + error.message);
+      }
+    } else if (event.type === 'checkout.session.completed') {
+      const session = event.data.object;
+      if (session.mode === 'payment') {
+        const quoteId = session.metadata && session.metadata.quote_id;
+        if (quoteId) {
+          const supabase = getSupabase();
+          const { error } = await supabase
+            .from('quotes')
+            .update({ deposit_status: 'paid', stripe_checkout_session_id: session.id })
+            .eq('id', quoteId);
+          if (error) throw new Error('Supabase update (quotes) failed: ' + error.message);
+        }
       }
     }
   } catch (err) {

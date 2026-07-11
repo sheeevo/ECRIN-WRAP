@@ -557,6 +557,22 @@ html,body{background:#050505;overflow:hidden}
           <button onClick="{{ sendMail }}" style="flex:1;min-width:180px;font-family:inherit;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#ffffff;font-weight:600;padding:15px;border:none;border-radius:3px;cursor:pointer;background:linear-gradient(180deg,#ff6a70,#ee3038 46%,#e4232b 54%,#ff5a60);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 10px 26px rgba(0,0,0,.4);transition:transform .3s;" style-hover="transform:translateY(-2px)">{{ t.dvSendMail }}</button>
           <button onClick="{{ sendWhats }}" style="flex:1;min-width:180px;font-family:inherit;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#D9D9D9;font-weight:400;padding:15px;border:1px solid rgba(228,35,43,.4);border-radius:3px;cursor:pointer;background:none;transition:border-color .3s,transform .3s;" style-hover="border-color:rgba(228,35,43,.75);transform:translateY(-2px)">{{ t.dvSendWa }}</button>
         </div>
+
+        <sc-if value="{{ hasDevisPlan }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:22px;padding-top:22px;border-top:1px solid rgba(228,35,43,.16);">
+          <sc-if value="{{ devisPlanLoggedIn }}" hint-placeholder-val="{{ true }}">
+            <button onClick="{{ payDeposit }}" style="width:100%;font-family:inherit;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#ffffff;font-weight:600;padding:15px;border:none;border-radius:3px;cursor:pointer;background:linear-gradient(180deg,#3ac16a,#1f9450 60%,#167a3f);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 10px 26px rgba(0,0,0,.4);transition:transform .3s;" style-hover="transform:translateY(-2px)">{{ depositLabel }}</button>
+            <div style="margin-top:10px;font-size:11px;color:#7c8085;text-align:center;">{{ t.devisDepositNote }}</div>
+            <sc-if value="{{ hasDepositError }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:10px;font-size:12px;color:#ff8a8f;text-align:center;">{{ depositError }}</div>
+            </sc-if>
+          </sc-if>
+          <sc-if value="{{ devisPlanLoggedOut }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:13px;color:#9aa0a4;text-align:center;margin-bottom:12px;">{{ t.devisLoginFirst }}</div>
+            <button onClick="{{ openAccount }}" style="width:100%;font-family:inherit;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#D9D9D9;font-weight:400;padding:15px;border:1px solid rgba(228,35,43,.4);border-radius:3px;cursor:pointer;background:none;transition:border-color .3s;" style-hover="border-color:rgba(228,35,43,.75)">{{ t.login }}</button>
+          </sc-if>
+        </div>
+        </sc-if>
       </div>
       </sc-if>
 
@@ -736,7 +752,7 @@ html,body{background:#050505;overflow:hidden}
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;companyName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Ecrin Wrap&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Marque&quot;},&quot;tagline&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;La perfection, sublimée&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Marque&quot;}}">
 class Component extends DCLogic {
-  state = { phase: 'loading', progress: 0, ready: false, revealOut: false, mood: 'or', muted: false, navMax: 10, carReady: false, finish: 'gloss', faqOpen: 0, devisOpen: false, devisService: 'Covering', devisSent: false, soundPreset: 'lounge', soundMenu: false, lang: 'fr', mobileMenu: false, isMobile: false, cmpTab: 'covering', dtMode: 'once', averyFam: 'gloss', averySel: null, averyReady: false, averyBrand: 'avery', accountOpen: false, authMode: 'signin', authError: '', authBusy: false, authSignupSent: false, user: null, vehicles: [], quotes: [], subscription: null, pendingPlan: null, subscribeBusy: false, subscribeError: '' };
+  state = { phase: 'loading', progress: 0, ready: false, revealOut: false, mood: 'or', muted: false, navMax: 10, carReady: false, finish: 'gloss', faqOpen: 0, devisOpen: false, devisService: 'Covering', devisSent: false, soundPreset: 'lounge', soundMenu: false, lang: 'fr', mobileMenu: false, isMobile: false, cmpTab: 'covering', dtMode: 'once', averyFam: 'gloss', averySel: null, averyReady: false, averyBrand: 'avery', accountOpen: false, authMode: 'signin', authError: '', authBusy: false, authSignupSent: false, user: null, vehicles: [], quotes: [], subscription: null, pendingPlan: null, subscribeBusy: false, subscribeError: '', devisPlan: null, depositBusy: false, depositError: '' };
 
   constructor(props){
     super(props);
@@ -809,6 +825,8 @@ class Component extends DCLogic {
         dtOver:'\u00c9clat', dtTitle:'Detailing & formules', dtSub:'Trois niveaux de soin, du rafra\u00eechissement complet au programme c\u00e9ramique d\u2019exception.',
         dtPopular:'Le plus choisi', dtCta:'R\u00e9server cette formule', dtSubscribe:'S\u2019abonner', dtNote:'Tarifs indicatifs selon l\u2019\u00e9tat et la taille du v\u00e9hicule \u2014 devis pr\u00e9cis apr\u00e8s inspection \u00e0 l\u2019atelier.',
         subManage:'G\u00e9rer mon abonnement', subActive:'Abonnement actif', subNone:'Aucun abonnement actif', subLoginFirst:'Connecte-toi pour t\u2019abonner.', subError:'Impossible de lancer le paiement. R\u00e9essaie.',
+        devisDeposit:'Payer l\u2019acompte', devisDepositNote:'Acompte de 30% pour r\u00e9server \u2014 solde r\u00e9gl\u00e9 \u00e0 l\u2019atelier apr\u00e8s inspection.', devisLoginFirst:'Connecte-toi pour payer l\u2019acompte et r\u00e9server cette formule.',
+        accDepositPaid:'acompte pay\u00e9', accDepositPending:'acompte en attente',
         dtModes:{once:'\u00c0 la carte',sub:'Abonnement'},
         dtSubPlans:[
           {name:'Club',price:'49\u00a0\u20ac',period:'par mois',feats:['1 lavage main premium par mois','Aspiration & vitres int\u00e9rieures','Contr\u00f4le visuel du film \u00e0 chaque visite','\u221210\u00a0% sur toutes les prestations']},
@@ -904,6 +922,8 @@ class Component extends DCLogic {
         dtOver:'Shine', dtTitle:'Detailing & plans', dtSub:'Three levels of care, from a full refresh to an exceptional ceramic programme.',
         dtPopular:'Most popular', dtCta:'Book this plan', dtSubscribe:'Subscribe', dtNote:'Indicative prices depending on vehicle size and condition \u2014 exact quote after workshop inspection.',
         subManage:'Manage my subscription', subActive:'Active subscription', subNone:'No active subscription', subLoginFirst:'Sign in to subscribe.', subError:'Could not start checkout. Try again.',
+        devisDeposit:'Pay the deposit', devisDepositNote:'30% deposit to book — balance settled at the workshop after inspection.', devisLoginFirst:'Sign in to pay the deposit and book this plan.',
+        accDepositPaid:'deposit paid', accDepositPending:'deposit pending',
         dtModes:{once:'\u00c0 la carte',sub:'Membership'},
         dtSubPlans:[
           {name:'Club',price:'\u20ac49',period:'per month',feats:['1 premium hand wash per month','Vacuum & interior glass','Film visual check at every visit','\u221210% on all services']},
@@ -999,6 +1019,8 @@ class Component extends DCLogic {
         dtOver:'Glans', dtTitle:'Detailing & formules', dtSub:'Drie zorgniveaus, van complete opfrissing tot een uitzonderlijk keramisch programma.',
         dtPopular:'Meest gekozen', dtCta:'Deze formule boeken', dtSubscribe:'Abonneren', dtNote:'Richtprijzen volgens staat en grootte van het voertuig \u2014 exacte offerte na inspectie in het atelier.',
         subManage:'Mijn abonnement beheren', subActive:'Actief abonnement', subNone:'Geen actief abonnement', subLoginFirst:'Log in om te abonneren.', subError:'Kon de betaling niet starten. Probeer opnieuw.',
+        devisDeposit:'Voorschot betalen', devisDepositNote:'30% voorschot om te reserveren — saldo ter plaatse na inspectie.', devisLoginFirst:'Log in om het voorschot te betalen en deze formule te reserveren.',
+        accDepositPaid:'voorschot betaald', accDepositPending:'voorschot in behandeling',
         dtModes:{once:'\u00c0 la carte',sub:'Abonnement'},
         dtSubPlans:[
           {name:'Club',price:'\u20ac\u00a049',period:'per maand',feats:['1 premium handwas per maand','Stofzuigen & binnenruiten','Visuele foliecontrole bij elk bezoek','\u221210% op alle diensten']},
@@ -1328,8 +1350,9 @@ class Component extends DCLogic {
     this.createAudio(key);
   }
 
-  openDevis(){ this.setState({ devisOpen: true, devisSent: false }); }
-  closeDevis(){ this.setState({ devisOpen: false }); }
+  openDevis(){ this.setState(s => ({ devisOpen: true, devisSent: false, devisPlan: s.devisPlan })); }
+  openGeneralDevis(){ this.setState({ devisOpen: true, devisSent: false, devisPlan: null }); }
+  closeDevis(){ this.setState({ devisOpen: false, devisPlan: null, depositError: '' }); }
   setDevisService(s){ this.setState({ devisService: s }); }
 
   openAccount(){ this.setState({ accountOpen: true, authError: '' }); }
@@ -1441,6 +1464,33 @@ class Component extends DCLogic {
     }).catch(() => {});
   }
 
+  payDeposit(){
+    const plan = this.state.devisPlan;
+    if(!plan || !window.EcrinAuth) return;
+    const L = this.I18N[this.state.lang] || this.I18N.fr;
+    const DEPOSITS = { essentiel: 4470, signature: 11700, prestige: 26700 };
+    const g = (r) => (r.current && r.current.value.trim()) || null;
+
+    this.setState({ depositBusy: true, depositError: '' });
+    window.EcrinAuth.addQuote({
+      service: plan,
+      brand: g(this.dvBrand),
+      model: g(this.dvModel),
+      specs: g(this.dvSpecs),
+      contact_name: g(this.dvName),
+      contact_info: g(this.dvContact),
+      deposit_amount: DEPOSITS[plan],
+      deposit_status: 'pending'
+    }).then(rows => {
+      const quote = rows && rows[0];
+      if(!quote) throw new Error('quote not created');
+      this.setState(s => ({ quotes: [quote].concat(s.quotes) }));
+      return window.EcrinAuth.payDeposit(plan, quote.id, this.state.user.id, this.state.user.email);
+    }).catch(() => {
+      this.setState({ depositBusy: false, depositError: L.subError });
+    });
+  }
+
   sendMail(){
     const body = encodeURIComponent(this.buildDevisMessage());
     const subject = encodeURIComponent('Demande de devis \u2014 ' + this.state.devisService);
@@ -1529,7 +1579,7 @@ class Component extends DCLogic {
         color: s.dtMode===k ? '#ffffff' : '#7c8085',
         bg: s.dtMode===k ? 'linear-gradient(180deg,#ff525a,#e4232b 60%,#b8121a)' : 'transparent'
       })),
-      dtPlans: (s.dtMode==='sub' ? L.dtSubPlans : L.dtPlans).map(p => ({
+      dtPlans: (s.dtMode==='sub' ? L.dtSubPlans : L.dtPlans).map((p, i) => ({
         ...p,
         featured: !!p.featured,
         border: p.featured ? 'rgba(228,35,43,.5)' : 'rgba(191,195,199,.12)',
@@ -1541,7 +1591,7 @@ class Component extends DCLogic {
         feats: p.feats.map(f => ({ f })),
         onClick: s.dtMode === 'sub'
           ? () => this.startSubscription({ 'Club': 'club', 'Club Sport': 'club_sport', 'Excellence': 'excellence' }[p.name])
-          : () => { this.setDevisService('Detailing'); this.openDevis(); }
+          : () => { this.setState({ devisPlan: ['essentiel', 'signature', 'prestige'][i] }); this.setDevisService('Detailing'); this.openDevis(); }
       })),
       subscribeError: s.subscribeError,
       hasSubscribeError: !!s.subscribeError,
@@ -1556,6 +1606,14 @@ class Component extends DCLogic {
       devisOpen: s.devisOpen,
       devisSent: s.devisSent,
       devisNotSent: !s.devisSent,
+      hasDevisPlan: !!s.devisPlan,
+      devisPlanLoggedIn: !!(s.devisPlan && s.user),
+      devisPlanLoggedOut: !!(s.devisPlan && !s.user),
+      depositLabel: L.devisDeposit + ' — ' + ({ essentiel: '44,70 €', signature: '117 €', prestige: '267 €' }[s.devisPlan] || ''),
+      depositBusy: s.depositBusy,
+      hasDepositError: !!s.depositError,
+      depositError: s.depositError,
+      payDeposit: () => this.payDeposit(),
       services3: ['PPF','Covering','Detailing'].map(l => ({
         label: l,
         onClick: () => this.setDevisService(l),
@@ -1568,7 +1626,7 @@ class Component extends DCLogic {
       dvSpecs: this.dvSpecs,
       dvName: this.dvName,
       dvContact: this.dvContact,
-      openDevis: () => this.openDevis(),
+      openDevis: () => this.openGeneralDevis(),
       closeDevis: () => this.closeDevis(),
       sendMail: () => this.sendMail(),
       sendWhats: () => this.sendWhats(),
@@ -1616,7 +1674,7 @@ class Component extends DCLogic {
       quoteRows: (s.quotes || []).map(q => ({
         label: q.service + (q.brand ? ' — ' + q.brand + (q.model ? ' ' + q.model : '') : ''),
         date: q.created_at ? new Date(q.created_at).toLocaleDateString(s.lang === 'en' ? 'en-GB' : (s.lang === 'nl' ? 'nl-BE' : 'fr-BE')) : '',
-        status: q.status
+        status: q.deposit_amount ? q.status + ' · ' + (q.deposit_status === 'paid' ? L.accDepositPaid : L.accDepositPending) : q.status
       })),
       testimonials: L.testimonials,
       stats: L.stats,

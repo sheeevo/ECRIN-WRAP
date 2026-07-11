@@ -92,6 +92,16 @@
         if (data.error) throw new Error(data.error);
         window.location.href = data.url;
       });
+    },
+    payDeposit: function (plan, quoteId, userId, email) {
+      return fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'deposit', plan: plan, quoteId: quoteId, userId: userId, email: email })
+      }).then(function (r) { return r.json(); }).then(function (data) {
+        if (data.error) throw new Error(data.error);
+        window.location.href = data.url;
+      });
     }
   };
 
