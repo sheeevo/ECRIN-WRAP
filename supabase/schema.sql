@@ -88,6 +88,17 @@ begin
     nullif(new.raw_user_meta_data ->> 'age', '')::integer
   )
   on conflict (id) do nothing;
+
+  if coalesce(new.raw_user_meta_data ->> 'vehicle_brand', '') <> ''
+     and coalesce(new.raw_user_meta_data ->> 'vehicle_model', '') <> '' then
+    insert into public.vehicles (user_id, brand, model)
+    values (
+      new.id,
+      new.raw_user_meta_data ->> 'vehicle_brand',
+      new.raw_user_meta_data ->> 'vehicle_model'
+    );
+  end if;
+
   return new;
 end;
 $$;
