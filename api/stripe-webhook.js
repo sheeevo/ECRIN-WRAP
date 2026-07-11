@@ -2,7 +2,7 @@
 // public.subscriptions in sync so the site can show plan/status without
 // calling Stripe on every page load. Writes use the Supabase *service role*
 // key, which bypasses RLS — this endpoint is the only writer for that table.
-const Stripe = require('stripe');
+const stripe = require('./_stripe');
 const { createClient } = require('@supabase/supabase-js');
 
 module.exports.config = { api: { bodyParser: false } };
@@ -19,7 +19,6 @@ function readRawBody(req) {
 module.exports = async (req, res) => {
   if (req.method !== 'POST') { res.status(405).end(); return; }
 
-  const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
   const sig = req.headers['stripe-signature'];
   const raw = await readRawBody(req);
 

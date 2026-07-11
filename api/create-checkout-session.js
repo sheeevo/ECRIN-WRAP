@@ -2,7 +2,7 @@
 // Returns { url } — a Stripe Checkout URL to redirect the browser to.
 // The price IDs live in env vars, never in client code: the browser only
 // ever sends a plan *key*, so it can't ask Stripe to charge an arbitrary price.
-const Stripe = require('stripe');
+const stripe = require('./_stripe');
 
 const PRICE_MAP = {
   club: process.env.STRIPE_PRICE_CLUB,
@@ -19,7 +19,6 @@ module.exports = async (req, res) => {
   if (!userId) { res.status(400).json({ error: 'missing userId' }); return; }
 
   try {
-    const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
     const siteUrl = process.env.SITE_URL || `https://${req.headers.host}`;
 
     const session = await stripe.checkout.sessions.create({
