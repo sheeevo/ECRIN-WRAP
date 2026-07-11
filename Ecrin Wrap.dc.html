@@ -189,6 +189,15 @@ html,body{background:#050505;overflow:hidden}
           </div>
           </sc-if>
         </div>
+        <button onClick="{{ openAccount }}" title="{{ accountLabel }}" style="display:flex;align-items:center;justify-content:center;width:34px;height:34px;flex:none;background:none;border:1px solid rgba(228,35,43,.3);border-radius:50%;cursor:pointer;transition:border-color .3s;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:#c8ccd0;" style-hover="border-color:rgba(228,35,43,.65)">
+          <sc-if value="{{ accountLoggedIn }}" hint-placeholder-val="{{ false }}">{{ accountInitial }}</sc-if>
+          <sc-if value="{{ accountLoggedOut }}" hint-placeholder-val="{{ true }}">
+            <span style="position:relative;width:13px;height:13px;display:block;">
+              <span style="position:absolute;left:50%;top:0;transform:translateX(-50%);width:6px;height:6px;border-radius:50%;background:#c8ccd0;"></span>
+              <span style="position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:13px;height:6px;border-radius:6px 6px 0 0;background:#c8ccd0;"></span>
+            </span>
+          </sc-if>
+        </button>
         <button onClick="{{ openDevis }}" style="font-family:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#ffffff;font-weight:500;padding:11px 20px;border:none;border-radius:2px;cursor:pointer;background:linear-gradient(180deg,#ff6a70,#ee3038 46%,#e4232b 54%,#ff5a60);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 -1px 0 rgba(0,0,0,.25),0 8px 20px rgba(0,0,0,.4);transition:transform .3s,box-shadow .3s;white-space:nowrap;" style-hover="transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 14px 30px rgba(0,0,0,.5)">{{ t.devis }}</button>
         <button onClick="{{ toggleMobileMenu }}" style="display:{{ burgerDisplay }};flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;background:none;border:1px solid rgba(228,35,43,.3);border-radius:3px;cursor:pointer;padding:9px;">
           <span style="display:block;height:1px;background:#D9D9D9;"></span>
@@ -207,6 +216,7 @@ html,body{background:#050505;overflow:hidden}
       <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="6">
         <a href="{{ item.href }}" onClick="{{ toggleMobileMenu }}" style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:20px;letter-spacing:.18em;text-transform:uppercase;color:#c8ccd0;text-decoration:none;padding:10px;transition:color .3s;" style-hover="color:#F7F7F7">{{ item.label }}</a>
       </sc-for>
+      <button onClick="{{ openAccountMobile }}" style="margin-top:8px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);background:none;border:1px solid rgba(228,35,43,.4);border-radius:3px;padding:11px 22px;cursor:pointer;">{{ accountLabel }}</button>
       <div style="display:flex;gap:10px;margin-top:22px;">
         <sc-for list="{{ langs }}" as="lg" hint-placeholder-count="3">
           <button onClick="{{ lg.onClick }}" style="background:none;border:1px solid {{ lg.border }};border-radius:3px;font-family:inherit;font-size:12px;letter-spacing:.14em;color:{{ lg.color }};padding:9px 16px;cursor:pointer;">{{ lg.label }}</button>
@@ -559,6 +569,87 @@ html,body{background:#050505;overflow:hidden}
   </div>
   </sc-if>
 
+  <!-- ═══ ACCOUNT MODAL ═══ -->
+  <sc-if value="{{ accountOpen }}" hint-placeholder-val="{{ false }}">
+  <div class="ec-devis-overlay" onClick="{{ closeAccount }}" style="position:fixed;inset:0;z-index:120;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(3,3,3,.72);backdrop-filter:blur(10px);animation:ecUp .4s ease both;">
+    <div class="ec-devis-card" onClick="{{ stop }}" style="position:relative;width:min(640px,94vw);max-height:92vh;overflow-y:auto;border:1px solid rgba(228,35,43,.28);border-radius:6px;background:linear-gradient(165deg,rgba(24,25,27,.98),rgba(10,11,12,.99));box-shadow:0 40px 100px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.06);padding:44px 42px 40px;">
+      <button onClick="{{ closeAccount }}" style="position:absolute;top:18px;right:18px;width:34px;height:34px;border-radius:50%;border:1px solid rgba(228,35,43,.26);background:none;color:#9aa0a4;font-size:16px;cursor:pointer;line-height:1;transition:border-color .3s,color .3s;" style-hover="border-color:rgba(228,35,43,.6);color:#F7F7F7">&times;</button>
+
+      <sc-if value="{{ accountLoggedOut }}" hint-placeholder-val="{{ true }}">
+      <div>
+        <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:var(--accent);font-weight:600;">{{ t.accTag }}</div>
+        <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:30px;margin-top:12px;letter-spacing:.02em;color:#F7F7F7;">{{ authTitle }}</div>
+
+        <sc-if value="{{ authSignupSent }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:20px;font-size:14px;color:#c8ccd0;font-weight:300;line-height:1.7;">{{ t.accSignupSuccess }}</div>
+        </sc-if>
+
+        <sc-if value="{{ authFormVisible }}" hint-placeholder-val="{{ true }}">
+        <div style="margin-top:22px;">
+          <label style="display:block;">
+            <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8c9095;">{{ t.accEmailL }}</span>
+            <input ref="{{ authEmailRef }}" type="email" placeholder="vous@exemple.com" style="width:100%;margin-top:8px;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:12px 14px;color:#F7F7F7;font-family:inherit;font-size:14px;outline:none;" />
+          </label>
+          <label style="display:block;margin-top:14px;">
+            <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8c9095;">{{ t.accPasswordL }}</span>
+            <input ref="{{ authPasswordRef }}" type="password" placeholder="••••••••" style="width:100%;margin-top:8px;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:12px 14px;color:#F7F7F7;font-family:inherit;font-size:14px;outline:none;" />
+          </label>
+
+          <sc-if value="{{ authHasError }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:14px;font-size:12px;color:#ff8a8f;">{{ authError }}</div>
+          </sc-if>
+
+          <button onClick="{{ submitAuth }}" style="margin-top:22px;width:100%;font-family:inherit;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#ffffff;font-weight:600;padding:15px;border:none;border-radius:3px;cursor:pointer;background:linear-gradient(180deg,#ff6a70,#ee3038 46%,#e4232b 54%,#ff5a60);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 10px 26px rgba(0,0,0,.4);transition:transform .3s;" style-hover="transform:translateY(-2px)">{{ authSubmitLabel }}</button>
+          <button onClick="{{ toggleAuthMode }}" style="margin-top:14px;width:100%;background:none;border:none;font-family:inherit;font-size:12px;color:#9aa0a4;cursor:pointer;text-decoration:underline;">{{ authSwitchLabel }}</button>
+        </div>
+        </sc-if>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ accountLoggedIn }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:var(--accent);font-weight:600;">{{ t.accTag }}</div>
+        <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:26px;margin-top:12px;letter-spacing:.02em;color:#F7F7F7;">{{ t.accWelcome }}</div>
+        <div style="margin-top:6px;font-size:13px;color:#9aa0a4;font-weight:300;">{{ accountEmail }}</div>
+
+        <div style="margin-top:30px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8c9095;">{{ t.accVehiclesTitle }}</div>
+        <div style="margin-top:14px;display:flex;flex-direction:column;gap:8px;">
+          <sc-for list="{{ vehicleRows }}" as="v" hint-placeholder-count="2">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border:1px solid rgba(228,35,43,.16);border-radius:3px;background:rgba(255,255,255,.02);">
+              <span style="font-size:13px;color:#c8ccd0;">{{ v.label }}</span>
+              <button onClick="{{ v.onDelete }}" style="background:none;border:none;color:#7c8085;font-size:16px;cursor:pointer;line-height:1;" style-hover="color:#ff8a8f">&times;</button>
+            </div>
+          </sc-for>
+          <sc-if value="{{ vehiclesEmpty }}" hint-placeholder-val="{{ true }}">
+            <div style="font-size:12px;color:#7c8085;">{{ t.accNoVehicles }}</div>
+          </sc-if>
+        </div>
+        <div class="ec-devis-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;">
+          <input ref="{{ vehicleBrandRef }}" placeholder="{{ t.accVehicleBrandPh }}" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:11px 13px;color:#F7F7F7;font-family:inherit;font-size:13px;outline:none;" />
+          <input ref="{{ vehicleModelRef }}" placeholder="{{ t.accVehicleModelPh }}" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:11px 13px;color:#F7F7F7;font-family:inherit;font-size:13px;outline:none;" />
+        </div>
+        <button onClick="{{ addVehicle }}" style="margin-top:10px;font-family:inherit;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#D9D9D9;font-weight:400;padding:11px 20px;border:1px solid rgba(228,35,43,.35);border-radius:3px;cursor:pointer;background:none;transition:border-color .3s;" style-hover="border-color:rgba(228,35,43,.65)">{{ t.accAddVehicle }}</button>
+
+        <div style="margin-top:34px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8c9095;">{{ t.accQuotesTitle }}</div>
+        <div style="margin-top:14px;display:flex;flex-direction:column;gap:8px;">
+          <sc-for list="{{ quoteRows }}" as="q" hint-placeholder-count="2">
+            <div style="padding:12px 14px;border:1px solid rgba(228,35,43,.16);border-radius:3px;background:rgba(255,255,255,.02);">
+              <div style="font-size:13px;color:#c8ccd0;">{{ q.label }}</div>
+              <div style="margin-top:4px;font-size:11px;color:#7c8085;">{{ q.date }} &middot; {{ q.status }}</div>
+            </div>
+          </sc-for>
+          <sc-if value="{{ quotesEmpty }}" hint-placeholder-val="{{ true }}">
+            <div style="font-size:12px;color:#7c8085;">{{ t.accNoQuotes }}</div>
+          </sc-if>
+        </div>
+
+        <button onClick="{{ signOutAccount }}" style="margin-top:30px;width:100%;font-family:inherit;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#D9D9D9;font-weight:400;padding:14px;border:1px solid rgba(228,35,43,.4);border-radius:3px;cursor:pointer;background:none;transition:border-color .3s;" style-hover="border-color:rgba(228,35,43,.75)">{{ t.accSignout }}</button>
+      </div>
+      </sc-if>
+    </div>
+  </div>
+  </sc-if>
+
   <!-- REVEAL -->
   <sc-if value="{{ showReveal }}" hint-placeholder-val="{{ false }}">
   <div style="position:fixed;inset:0;z-index:80;opacity:{{ revealOpacity }};transition:opacity .5s ease;pointer-events:none;">
@@ -611,7 +702,7 @@ html,body{background:#050505;overflow:hidden}
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;companyName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Ecrin Wrap&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Marque&quot;},&quot;tagline&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;La perfection, sublimée&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Marque&quot;}}">
 class Component extends DCLogic {
-  state = { phase: 'loading', progress: 0, ready: false, revealOut: false, mood: 'or', muted: false, navMax: 10, carReady: false, finish: 'gloss', faqOpen: 0, devisOpen: false, devisService: 'Covering', devisSent: false, soundPreset: 'lounge', soundMenu: false, lang: 'fr', mobileMenu: false, isMobile: false, cmpTab: 'covering', dtMode: 'once', averyFam: 'gloss', averySel: null, averyReady: false, averyBrand: 'avery' };
+  state = { phase: 'loading', progress: 0, ready: false, revealOut: false, mood: 'or', muted: false, navMax: 10, carReady: false, finish: 'gloss', faqOpen: 0, devisOpen: false, devisService: 'Covering', devisSent: false, soundPreset: 'lounge', soundMenu: false, lang: 'fr', mobileMenu: false, isMobile: false, cmpTab: 'covering', dtMode: 'once', averyFam: 'gloss', averySel: null, averyReady: false, averyBrand: 'avery', accountOpen: false, authMode: 'signin', authError: '', authBusy: false, authSignupSent: false, user: null, vehicles: [], quotes: [] };
 
   constructor(props){
     super(props);
@@ -623,6 +714,10 @@ class Component extends DCLogic {
     this.dvSpecs = React.createRef();
     this.dvName = React.createRef();
     this.dvContact = React.createRef();
+    this.authEmailRef = React.createRef();
+    this.authPasswordRef = React.createRef();
+    this.vehicleBrandRef = React.createRef();
+    this.vehicleModelRef = React.createRef();
     this.I18N = {
       fr: {
         servicesOver:'Savoir-faire', servicesTitle:'Nos services',
@@ -634,6 +729,16 @@ class Component extends DCLogic {
         contactOver:'Rendez-vous', contactTitle:'\u00c9crivez-nous', contactSub:'Chaque projet commence par une conversation. Sur rendez-vous uniquement.',
         heroSub:'Studio de finition automobile d\u2019exception', ambiance:'Ambiance', soundTitle:'Ambiance sonore',
         finitionLabel:'Finition', teinteLabel:'Teinte', devis:'Devis', askQuote:'Demander un devis',
+        login:'Connexion', myAccount:'Mon compte', accTag:'Espace client',
+        accSigninTitle:'Connexion', accSignupTitle:'Créer un compte',
+        accEmailL:'E-mail', accPasswordL:'Mot de passe',
+        accSigninBtn:'Se connecter', accSignupBtn:'Créer mon compte',
+        accSwitchToSignup:'Pas de compte ? Créer un compte', accSwitchToSignin:'Déjà un compte ? Se connecter',
+        accWelcome:'Bienvenue', accSignout:'Se déconnecter',
+        accVehiclesTitle:'Mes véhicules', accVehicleBrandPh:'Marque', accVehicleModelPh:'Modèle', accAddVehicle:'Ajouter', accNoVehicles:'Aucun véhicule enregistré.',
+        accQuotesTitle:'Historique de mes devis', accNoQuotes:'Aucune demande pour le moment.',
+        accSignupSuccess:'Compte créé ! Vérifie ta boîte mail pour confirmer.', accErrorGeneric:'Une erreur est survenue. Réessaie.',
+        accMissingFields:'E-mail et mot de passe requis.',
         rights:'Tous droits r\u00e9serv\u00e9s', loadingBaseline:'Maison de covering \u00b7 PPF \u00b7 Detailing', enterBtn:'Entrer \u2014 avec le son',
         brandsTitle:'Ils roulent avec nous',
         dvTag:'Devis personnalis\u00e9', dvTitle:'Votre projet', dvSub:'Quelques d\u00e9tails et nous revenons vers vous rapidement.',
@@ -716,6 +821,16 @@ class Component extends DCLogic {
         contactOver:'Appointment', contactTitle:'Get in touch', contactSub:'Every project starts with a conversation. By appointment only.',
         heroSub:'An exceptional automotive finishing studio', ambiance:'Mood', soundTitle:'Soundscape',
         finitionLabel:'Finish', teinteLabel:'Colour', devis:'Quote', askQuote:'Request a quote',
+        login:'Log in', myAccount:'My account', accTag:'Client area',
+        accSigninTitle:'Sign in', accSignupTitle:'Create an account',
+        accEmailL:'E-mail', accPasswordL:'Password',
+        accSigninBtn:'Sign in', accSignupBtn:'Create my account',
+        accSwitchToSignup:'No account? Create one', accSwitchToSignin:'Already have an account? Sign in',
+        accWelcome:'Welcome', accSignout:'Sign out',
+        accVehiclesTitle:'My vehicles', accVehicleBrandPh:'Brand', accVehicleModelPh:'Model', accAddVehicle:'Add', accNoVehicles:'No vehicles yet.',
+        accQuotesTitle:'My quote history', accNoQuotes:'No requests yet.',
+        accSignupSuccess:'Account created! Check your inbox to confirm.', accErrorGeneric:'Something went wrong. Try again.',
+        accMissingFields:'E-mail and password are required.',
         rights:'All rights reserved', loadingBaseline:'House of wrapping \u00b7 PPF \u00b7 Detailing', enterBtn:'Enter \u2014 with sound',
         brandsTitle:'They ride with us',
         dvTag:'Personalised quote', dvTitle:'Your project', dvSub:'A few details and we will get back to you quickly.',
@@ -798,6 +913,16 @@ class Component extends DCLogic {
         contactOver:'Afspraak', contactTitle:'Schrijf ons', contactSub:'Elk project begint met een gesprek. Enkel op afspraak.',
         heroSub:'Een uitzonderlijke autofinishing-studio', ambiance:'Sfeer', soundTitle:'Geluidssfeer',
         finitionLabel:'Afwerking', teinteLabel:'Kleur', devis:'Offerte', askQuote:'Offerte aanvragen',
+        login:'Inloggen', myAccount:'Mijn account', accTag:'Klantenzone',
+        accSigninTitle:'Inloggen', accSignupTitle:'Account aanmaken',
+        accEmailL:'E-mail', accPasswordL:'Wachtwoord',
+        accSigninBtn:'Inloggen', accSignupBtn:'Account aanmaken',
+        accSwitchToSignup:'Nog geen account? Account aanmaken', accSwitchToSignin:'Al een account? Inloggen',
+        accWelcome:'Welkom', accSignout:'Uitloggen',
+        accVehiclesTitle:'Mijn voertuigen', accVehicleBrandPh:'Merk', accVehicleModelPh:'Model', accAddVehicle:'Toevoegen', accNoVehicles:'Nog geen voertuigen.',
+        accQuotesTitle:'Mijn offertegeschiedenis', accNoQuotes:'Nog geen aanvragen.',
+        accSignupSuccess:'Account aangemaakt! Controleer je inbox.', accErrorGeneric:'Er is iets misgegaan. Probeer opnieuw.',
+        accMissingFields:'E-mail en wachtwoord zijn verplicht.',
         rights:'Alle rechten voorbehouden', loadingBaseline:'Huis van wrapping \u00b7 PPF \u00b7 Detailing', enterBtn:'Binnenkomen \u2014 met geluid',
         brandsTitle:'Zij rijden met ons',
         dvTag:'Offerte op maat', dvTitle:'Uw project', dvSub:'Enkele details en wij nemen snel contact met u op.',
@@ -921,6 +1046,31 @@ class Component extends DCLogic {
       sc.onload = () => this.setState({ averyReady: true });
       document.head.appendChild(sc);
     });
+    import('./client.js').then(() => this.initAuth()).catch(() => {
+      const sc = document.createElement('script'); sc.src = 'client.js';
+      sc.onload = () => this.initAuth();
+      document.head.appendChild(sc);
+    });
+  }
+
+  initAuth(){
+    if(!window.EcrinAuth || this._authInit) return;
+    this._authInit = true;
+    window.EcrinAuth.getSession().then(session => {
+      if(session && session.user){ this.setState({ user: session.user }); this.loadAccountData(); }
+    }).catch(() => {});
+    window.EcrinAuth.onChange(session => {
+      const user = session && session.user ? session.user : null;
+      this.setState({ user });
+      if(user) this.loadAccountData(); else this.setState({ vehicles: [], quotes: [] });
+    });
+  }
+
+  loadAccountData(){
+    if(!window.EcrinAuth) return;
+    Promise.all([window.EcrinAuth.listVehicles(), window.EcrinAuth.listQuotes()])
+      .then(([vehicles, quotes]) => this.setState({ vehicles: vehicles || [], quotes: quotes || [] }))
+      .catch(() => {});
   }
 
   componentDidUpdate(){
@@ -1126,6 +1276,57 @@ class Component extends DCLogic {
   closeDevis(){ this.setState({ devisOpen: false }); }
   setDevisService(s){ this.setState({ devisService: s }); }
 
+  openAccount(){ this.setState({ accountOpen: true, authError: '' }); }
+  openAccountMobile(){ this.setState({ accountOpen: true, authError: '', mobileMenu: false }); }
+  closeAccount(){ this.setState({ accountOpen: false }); }
+  toggleAuthMode(){ this.setState(s => ({ authMode: s.authMode === 'signup' ? 'signin' : 'signup', authError: '', authSignupSent: false })); }
+
+  submitAuth(){
+    const L = this.I18N[this.state.lang] || this.I18N.fr;
+    if(!window.EcrinAuth){ this.setState({ authError: L.accErrorGeneric }); return; }
+    const email = (this.authEmailRef.current && this.authEmailRef.current.value.trim()) || '';
+    const password = (this.authPasswordRef.current && this.authPasswordRef.current.value) || '';
+    if(!email || !password){ this.setState({ authError: L.accMissingFields }); return; }
+    this.setState({ authBusy: true, authError: '' });
+    const isSignup = this.state.authMode === 'signup';
+    const fn = isSignup ? window.EcrinAuth.signUp : window.EcrinAuth.signIn;
+    fn(email, password).then(res => {
+      if(res.error) throw res.error;
+      this.setState({ authBusy: false });
+      if(isSignup && !(res.data && res.data.session)){
+        this.setState({ authSignupSent: true });
+        return;
+      }
+      this.loadAccountData();
+    }).catch(err => {
+      this.setState({ authBusy: false, authError: (err && err.message) || L.accErrorGeneric });
+    });
+  }
+
+  signOutAccount(){
+    if(!window.EcrinAuth) return;
+    window.EcrinAuth.signOut().then(() => this.setState({ user: null, vehicles: [], quotes: [], accountOpen: false }));
+  }
+
+  addVehicle(){
+    if(!window.EcrinAuth) return;
+    const brand = (this.vehicleBrandRef.current && this.vehicleBrandRef.current.value.trim()) || '';
+    const model = (this.vehicleModelRef.current && this.vehicleModelRef.current.value.trim()) || '';
+    if(!brand || !model) return;
+    window.EcrinAuth.addVehicle(brand, model, this.state.finish).then(rows => {
+      this.setState(s => ({ vehicles: (rows || []).concat(s.vehicles) }));
+      if(this.vehicleBrandRef.current) this.vehicleBrandRef.current.value = '';
+      if(this.vehicleModelRef.current) this.vehicleModelRef.current.value = '';
+    }).catch(() => {});
+  }
+
+  removeVehicle(id){
+    if(!window.EcrinAuth) return;
+    window.EcrinAuth.deleteVehicle(id).then(() => {
+      this.setState(s => ({ vehicles: s.vehicles.filter(v => v.id !== id) }));
+    }).catch(() => {});
+  }
+
   buildDevisMessage(){
     const g = (r) => (r.current && r.current.value.trim()) || '\u2014';
     return [
@@ -1140,16 +1341,33 @@ class Component extends DCLogic {
     ].join('\n');
   }
 
+  persistDevisIfLoggedIn(){
+    if(!window.EcrinAuth || !this.state.user) return;
+    const g = (r) => (r.current && r.current.value.trim()) || null;
+    window.EcrinAuth.addQuote({
+      service: this.state.devisService,
+      brand: g(this.dvBrand),
+      model: g(this.dvModel),
+      specs: g(this.dvSpecs),
+      contact_name: g(this.dvName),
+      contact_info: g(this.dvContact)
+    }).then(rows => {
+      this.setState(s => ({ quotes: (rows || []).concat(s.quotes) }));
+    }).catch(() => {});
+  }
+
   sendMail(){
     const body = encodeURIComponent(this.buildDevisMessage());
     const subject = encodeURIComponent('Demande de devis \u2014 ' + this.state.devisService);
     window.open('mailto:ecrinwrapofficel@gmail.com?subject=' + subject + '&body=' + body, '_blank');
+    this.persistDevisIfLoggedIn();
     this.setState({ devisSent: true });
   }
 
   sendWhats(){
     const text = encodeURIComponent(this.buildDevisMessage());
     window.open('https://wa.me/32474638261?text=' + text, '_blank');
+    this.persistDevisIfLoggedIn();
     this.setState({ devisSent: true });
   }
 
@@ -1260,6 +1478,42 @@ class Component extends DCLogic {
       sendMail: () => this.sendMail(),
       sendWhats: () => this.sendWhats(),
       stop: (e) => e.stopPropagation(),
+
+      accountOpen: s.accountOpen,
+      accountLoggedIn: !!s.user,
+      accountLoggedOut: !s.user,
+      accountLabel: s.user ? L.myAccount : L.login,
+      accountInitial: s.user && s.user.email ? s.user.email[0].toUpperCase() : '',
+      accountEmail: s.user ? s.user.email : '',
+      openAccount: () => this.openAccount(),
+      openAccountMobile: () => this.openAccountMobile(),
+      closeAccount: () => this.closeAccount(),
+      toggleAuthMode: () => this.toggleAuthMode(),
+      submitAuth: () => this.submitAuth(),
+      signOutAccount: () => this.signOutAccount(),
+      authTitle: s.authMode === 'signup' ? L.accSignupTitle : L.accSigninTitle,
+      authSubmitLabel: s.authMode === 'signup' ? L.accSignupBtn : L.accSigninBtn,
+      authSwitchLabel: s.authMode === 'signup' ? L.accSwitchToSignin : L.accSwitchToSignup,
+      authSignupSent: s.authSignupSent,
+      authFormVisible: !s.authSignupSent,
+      authHasError: !!s.authError,
+      authError: s.authError,
+      authEmailRef: this.authEmailRef,
+      authPasswordRef: this.authPasswordRef,
+      vehicleBrandRef: this.vehicleBrandRef,
+      vehicleModelRef: this.vehicleModelRef,
+      addVehicle: () => this.addVehicle(),
+      vehiclesEmpty: !(s.vehicles && s.vehicles.length),
+      vehicleRows: (s.vehicles || []).map(v => ({
+        label: v.brand + ' ' + v.model + (v.finish ? ' — ' + v.finish : ''),
+        onDelete: () => this.removeVehicle(v.id)
+      })),
+      quotesEmpty: !(s.quotes && s.quotes.length),
+      quoteRows: (s.quotes || []).map(q => ({
+        label: q.service + (q.brand ? ' — ' + q.brand + (q.model ? ' ' + q.model : '') : ''),
+        date: q.created_at ? new Date(q.created_at).toLocaleDateString(s.lang === 'en' ? 'en-GB' : (s.lang === 'nl' ? 'nl-BE' : 'fr-BE')) : '',
+        status: q.status
+      })),
       testimonials: L.testimonials,
       stats: L.stats,
       faqs: L.faqs.map((f, i) => ({
