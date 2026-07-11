@@ -748,7 +748,35 @@ html,body{background:#050505;overflow:hidden}
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;companyName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Ecrin Wrap&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Marque&quot;},&quot;tagline&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;La perfection, sublimée&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Marque&quot;}}">
 class Component extends DCLogic {
-  state = { phase: 'loading', progress: 0, ready: false, revealOut: false, mood: 'or', muted: false, navMax: 10, carReady: false, finish: 'gloss', faqOpen: 0, devisOpen: false, devisService: 'Covering', devisSent: false, soundPreset: 'lounge', soundMenu: false, lang: 'fr', mobileMenu: false, isMobile: false, cmpTab: 'covering', dtMode: 'once', averyFam: 'gloss', averySel: null, averyReady: false, averyBrand: 'avery', accountOpen: false, authMode: 'signin', authError: '', authBusy: false, authSignupSent: false, user: null, vehicles: [], quotes: [], subscription: null, pendingPlan: null, pendingDeposit: null, subscribeBusy: false, subscribeError: '' };
+  state = {
+    // boot sequence (loading screen -> door reveal -> hero)
+    phase: 'loading', progress: 0, ready: false, revealOut: false,
+
+    // hero ambiance (mood swatches, background audio, 3D car fallback)
+    mood: 'or', muted: false, soundPreset: 'lounge', soundMenu: false, carReady: false,
+
+    // nav / layout
+    navMax: 10, mobileMenu: false, isMobile: false, lang: 'fr',
+
+    // page sections: FAQ accordion, covering-vs-PPF tabs, detailing mode
+    faqOpen: 0, cmpTab: 'covering', dtMode: 'once',
+
+    // configurateur (finish swatches, Avery/Hexis colour picker)
+    finish: 'gloss', averyFam: 'gloss', averySel: null, averyReady: false, averyBrand: 'avery',
+
+    // devis modal (quote request form)
+    devisOpen: false, devisService: 'Covering', devisSent: false,
+
+    // client account: auth modal + session
+    accountOpen: false, authMode: 'signin', authError: '', authBusy: false, authSignupSent: false, user: null,
+
+    // client account: data loaded once signed in (see loadAccountData)
+    vehicles: [], quotes: [], subscription: null,
+
+    // Stripe checkout continuation (set when a signed-out visitor clicks
+    // subscribe/reserve; resumed once they finish signing up/in)
+    pendingPlan: null, pendingDeposit: null, subscribeBusy: false, subscribeError: ''
+  };
 
   constructor(props){
     super(props);
@@ -770,6 +798,9 @@ class Component extends DCLogic {
     this.authVehicleModelRef = React.createRef();
     this.vehicleBrandRef = React.createRef();
     this.vehicleModelRef = React.createRef();
+
+    // fr / en / nl — same key set in every block, in the same order, so a
+    // diff between languages is meaningful (missing/extra keys stand out).
     this.I18N = {
       fr: {
         servicesOver:'Savoir-faire', servicesTitle:'Nos services',
@@ -1075,6 +1106,7 @@ class Component extends DCLogic {
     };
   }
 
+  // ── React lifecycle ───────────────────────────────────────────────
   componentDidMount(){
     this.applyMood(this.state.mood);
     this.mouse = { x: window.innerWidth/2, y: window.innerHeight/2 };
@@ -1125,6 +1157,7 @@ class Component extends DCLogic {
     });
   }
 
+  // ── client account bootstrap (Supabase session + data) ────────────────
   initAuth(){
     if(!window.EcrinAuth || this._authInit) return;
     this._authInit = true;
@@ -1175,6 +1208,7 @@ class Component extends DCLogic {
     if(this.ac) try{ this.ac.close(); }catch(e){}
   }
 
+  // ── ambiance: mood palette, loading sequence, dust particles, audio ──
   applyMood(key){
     const m = this.MOODS[key]; const el = this.wrapper.current; if(!el||!m) return;
     el.style.setProperty('--accent', m.accent);
@@ -1358,6 +1392,7 @@ class Component extends DCLogic {
     this.createAudio(key);
   }
 
+  // ── devis modal open/close, account modal open/close ─────────────────
   openDevis(){ this.setState({ devisOpen: true, devisSent: false }); }
   closeDevis(){ this.setState({ devisOpen: false }); }
   setDevisService(s){ this.setState({ devisService: s }); }
@@ -1367,6 +1402,7 @@ class Component extends DCLogic {
   closeAccount(){ this.setState({ accountOpen: false }); }
   toggleAuthMode(){ this.setState(s => ({ authMode: s.authMode === 'signup' ? 'signin' : 'signup', authError: '', authSignupSent: false })); }
 
+  // ── auth (sign in / sign up / sign out / vehicles) ───────────────────
   submitAuth(){
     const L = this.I18N[this.state.lang] || this.I18N.fr;
     if(!window.EcrinAuth){ this.setState({ authError: L.accErrorGeneric }); return; }
@@ -1426,6 +1462,7 @@ class Component extends DCLogic {
     }).catch(() => {});
   }
 
+  // ── subscriptions (Club / Club Sport / Excellence) ───────────────────
   startSubscription(planKey){
     if(!window.EcrinAuth || !planKey) return;
     if(!this.state.user){
@@ -1447,6 +1484,7 @@ class Component extends DCLogic {
     });
   }
 
+  // ── devis modal (general quote request: PPF / Covering / Detailing) ─
   buildDevisMessage(){
     const g = (r) => (r.current && r.current.value.trim()) || '\u2014';
     return [
@@ -1476,6 +1514,9 @@ class Component extends DCLogic {
     }).catch(() => {});
   }
 
+  // ── a la carte deposits (Essentiel / Signature / Prestige) ──────────
+  // Clicking "Reserver" pays a 30% deposit directly, no form: the vehicle
+  // on file (collected at signup) is attached automatically.
   startDeposit(planKey){
     if(!planKey || !window.EcrinAuth) return;
     if(!this.state.user){
@@ -1526,6 +1567,10 @@ class Component extends DCLogic {
     if(this.master && this.ac) this.master.gain.setTargetAtTime(next?0.0001:0.06, this.ac.currentTime, 0.4);
   }
 
+  // ── template bindings ──────────────────────────────────────────────
+  // Builds every value/handler the markup above reads via {{ }}. One big
+  // object by necessity (the template can only bind flat names), but
+  // grouped by page section in the order those sections appear on the page.
   renderVals(){
     const s = this.state;
     const L = this.I18N[s.lang] || this.I18N.fr;
