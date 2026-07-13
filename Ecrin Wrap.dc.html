@@ -415,6 +415,11 @@ html,body{background:#050505;overflow:hidden}
         <div style="margin-top:16px;font-size:22px;font-weight:200;color:#F7F7F7;letter-spacing:.01em;">{{ t.formPpfName }}</div>
         <div style="margin-top:16px;height:1px;background:linear-gradient(90deg,var(--accent),transparent);opacity:.4;"></div>
         <div style="margin-top:20px;font-size:14px;line-height:1.85;color:#9aa0a4;font-weight:300;text-wrap:pretty;">{{ t.formPpfDesc }}</div>
+        <div style="margin-top:26px;display:flex;flex-wrap:wrap;gap:8px;">
+          <sc-for list="{{ formPpfBadges }}" as="b" hint-placeholder-count="3">
+            <div style="font-size:10.5px;letter-spacing:.05em;color:#c8ccd0;border:1px solid rgba(228,35,43,.32);border-radius:20px;padding:7px 14px;white-space:nowrap;">{{ b.label }}</div>
+          </sc-for>
+        </div>
       </div>
       <div style="padding:44px 38px;border:1px solid rgba(228,35,43,.16);border-radius:3px;background:linear-gradient(165deg,rgba(24,26,28,.9),rgba(9,10,11,.95));">
         <div style="font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);font-weight:600;">Covering</div>
@@ -878,7 +883,8 @@ class Component extends DCLogic {
         processOver:'M\u00e9thode', processTitle:'Notre processus',
         formOver:'Expertise', formTitle:'Form\u00e9s par les meilleurs',
         formPpfName:'Ultimate Wrap \u2014 Medhi',
-        formPpfDesc:'Notre ma\u00eetrise du film de protection (PPF) a \u00e9t\u00e9 acquise aupr\u00e8s d\u2019Ultimate Wrap, dirig\u00e9 par Medhi, professionnel reconnu depuis plus de 10 ans dans le domaine.',
+        formPpfDesc:'Notre ma\u00eetrise du film de protection (PPF) a \u00e9t\u00e9 acquise aupr\u00e8s d\u2019Ultimate Wrap, dirig\u00e9 par Medhi et fort de plus de 15 ans d\u2019exp\u00e9rience dans le secteur. Certifi\u00e9 par les plus grandes marques du domaine, Ultimate Wrap a notamment pos\u00e9 sa confiance aupr\u00e8s de clients aussi exigeants que Ferrari Belgique, Porsche ou Lamborghini.',
+        formPpfBadges:['15+ ans d\u2019exp\u00e9rience', 'Certifi\u00e9 Xpel \u00b7 3M \u00b7 Avery \u00b7 Hexis', 'Clients : Ferrari, Porsche, Lamborghini\u2026'],
         formCoveringName:'John De Weert',
         formCoveringDesc:'Pour le covering, notre formation a \u00e9t\u00e9 dispens\u00e9e par John De Weert, expert reconnu du wrapping automobile et de la formation professionnelle. Fort de plus de 20 ans d\u2019exp\u00e9rience, il transmet une m\u00e9thode rigoureuse, orient\u00e9e terrain et r\u00e9sultats, utilis\u00e9e par des professionnels du covering \u00e0 travers l\u2019Europe. R\u00e9compens\u00e9 \u00e0 de multiples reprises, il est aujourd\u2019hui une r\u00e9f\u00e9rence internationale dans l\u2019univers du wrap et de l\u2019enseignement technique de haut niveau.',
         formBadges:['Platinum Hexpert \u2014 HEXIS', '1\u00e8re place Belgique & Pays-Bas \u2014 comp\u00e9tition 3M', '3e place au championnat d\u2019Europe', '12e place au championnat du monde'],
@@ -984,7 +990,8 @@ class Component extends DCLogic {
         processOver:'Method', processTitle:'Our process',
         formOver:'Expertise', formTitle:'Trained by the best',
         formPpfName:'Ultimate Wrap — Medhi',
-        formPpfDesc:'Our paint protection film (PPF) skills come from Ultimate Wrap, led by Medhi, a professional recognised in the field for over 10 years.',
+        formPpfDesc:'Our paint protection film (PPF) skills come from Ultimate Wrap, led by Medhi and backed by over 15 years of experience in the field. Certified by the industry’s leading brands, Ultimate Wrap has earned the trust of demanding clients such as Ferrari Belgium, Porsche and Lamborghini.',
+        formPpfBadges:['15+ years of experience', 'Certified Xpel · 3M · Avery · Hexis', 'Clients: Ferrari, Porsche, Lamborghini…'],
         formCoveringName:'John De Weert',
         formCoveringDesc:'For wrapping, our training was delivered by John De Weert, a recognised expert in automotive wrapping and professional training. With over 20 years of experience, he passes on a rigorous, results-driven method used by wrap professionals across Europe. A multiple award winner, he is today an international reference in the world of wrap and high-level technical teaching.',
         formBadges:['Platinum Hexpert — HEXIS', '1st place Belgium & Netherlands — 3M competition', '3rd place European Championship', '12th place World Championship'],
@@ -1091,7 +1098,8 @@ class Component extends DCLogic {
         processOver:'Methode', processTitle:'Ons proces',
         formOver:'Expertise', formTitle:'Opgeleid door de besten',
         formPpfName:'Ultimate Wrap — Medhi',
-        formPpfDesc:'Onze beheersing van paint protection film (PPF) komt van Ultimate Wrap, geleid door Medhi, een professional die al meer dan 10 jaar erkend is in het vakgebied.',
+        formPpfDesc:'Onze beheersing van paint protection film (PPF) komt van Ultimate Wrap, geleid door Medhi en met meer dan 15 jaar ervaring in de sector. Gecertificeerd door de grootste merken in het vakgebied, won Ultimate Wrap het vertrouwen van veeleisende klanten zoals Ferrari België, Porsche en Lamborghini.',
+        formPpfBadges:['15+ jaar ervaring', 'Gecertificeerd Xpel · 3M · Avery · Hexis', 'Klanten: Ferrari, Porsche, Lamborghini…'],
         formCoveringName:'John De Weert',
         formCoveringDesc:'Voor wrapping werden we opgeleid door John De Weert, een erkende expert in autowrapping en professionele opleiding. Met meer dan 20 jaar ervaring draagt hij een rigoureuze, praktijkgerichte methode over die door wrapprofessionals in heel Europa wordt gebruikt. Meermaals bekroond, is hij vandaag een internationale referentie in de wereld van wrap en hoogwaardig technisch onderwijs.',
         formBadges:['Platinum Hexpert — HEXIS', '1e plaats België & Nederland — 3M-wedstrijd', '3e plaats Europees kampioenschap', '12e plaats wereldkampioenschap'],
@@ -1834,6 +1842,7 @@ class Component extends DCLogic {
       services: L.services,
       steps: L.steps,
       formBadges: L.formBadges.map(label => ({ label })),
+      formPpfBadges: L.formPpfBadges.map(label => ({ label })),
       finish: s.finish,
       devisOpen: s.devisOpen,
       devisSent: s.devisSent,
