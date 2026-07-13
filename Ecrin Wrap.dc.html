@@ -404,10 +404,37 @@ html,body{background:#050505;overflow:hidden}
   </div>
 
   <!-- ═══ PORTFOLIO ═══ -->
+  <div id="formation" data-screen-label="Formation" style="position:relative;padding:150px 7vw 130px;background:radial-gradient(120% 100% at 50% 20%,#101112 0%,#060707 60%,#050505 100%);">
+    <div style="text-align:center;">
+      <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#7c8085;font-weight:300;">06 &mdash; {{ t.formOver }}</div>
+      <div style="font-family:'Montserrat',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.03em;font-size:clamp(30px,4.2vw,64px);line-height:1.08;margin-top:16px;background:linear-gradient(180deg,#FF6067 0%,#EE3038 38%,#E4232B 60%,#A80D14 100%);-webkit-background-clip:text;background-clip:text;color:transparent;">{{ t.formTitle }}</div>
+    </div>
+    <div class="ec-card-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:28px;margin-top:70px;max-width:1150px;margin-left:auto;margin-right:auto;align-items:stretch;">
+      <div style="padding:44px 38px;border:1px solid rgba(228,35,43,.16);border-radius:3px;background:linear-gradient(165deg,rgba(24,26,28,.9),rgba(9,10,11,.95));">
+        <div style="font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);font-weight:600;">PPF</div>
+        <div style="margin-top:16px;font-size:22px;font-weight:200;color:#F7F7F7;letter-spacing:.01em;">{{ t.formPpfName }}</div>
+        <div style="margin-top:16px;height:1px;background:linear-gradient(90deg,var(--accent),transparent);opacity:.4;"></div>
+        <div style="margin-top:20px;font-size:14px;line-height:1.85;color:#9aa0a4;font-weight:300;text-wrap:pretty;">{{ t.formPpfDesc }}</div>
+      </div>
+      <div style="padding:44px 38px;border:1px solid rgba(228,35,43,.16);border-radius:3px;background:linear-gradient(165deg,rgba(24,26,28,.9),rgba(9,10,11,.95));">
+        <div style="font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);font-weight:600;">Covering</div>
+        <div style="margin-top:16px;font-size:22px;font-weight:200;color:#F7F7F7;letter-spacing:.01em;">{{ t.formCoveringName }}</div>
+        <div style="margin-top:16px;height:1px;background:linear-gradient(90deg,var(--accent),transparent);opacity:.4;"></div>
+        <div style="margin-top:20px;font-size:14px;line-height:1.85;color:#9aa0a4;font-weight:300;text-wrap:pretty;">{{ t.formCoveringDesc }}</div>
+        <div style="margin-top:26px;display:flex;flex-wrap:wrap;gap:8px;">
+          <sc-for list="{{ formBadges }}" as="b" hint-placeholder-count="4">
+            <div style="font-size:10.5px;letter-spacing:.05em;color:#c8ccd0;border:1px solid rgba(228,35,43,.32);border-radius:20px;padding:7px 14px;white-space:nowrap;">{{ b.label }}</div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:50px;font-size:14px;color:#9aa0a4;font-weight:300;max-width:680px;margin-left:auto;margin-right:auto;text-wrap:pretty;">{{ t.formOutro }}</div>
+  </div>
+
   <div id="portfolio" data-screen-label="Portfolio" style="position:relative;padding:150px 7vw 130px;background:linear-gradient(180deg,#050505,#0b0c0d 50%,#050505);">
     <div style="display:flex;align-items:baseline;justify-content:space-between;gap:30px;flex-wrap:wrap;">
       <div>
-        <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#7c8085;font-weight:300;">06 &mdash; {{ t.pfOver }}</div>
+        <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#7c8085;font-weight:300;">07 &mdash; {{ t.pfOver }}</div>
         <div style="font-family:'Montserrat',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.03em;font-size:clamp(30px,4.2vw,64px);line-height:1.08;margin-top:16px;background:linear-gradient(180deg,#FF6067 0%,#EE3038 38%,#E4232B 60%,#A80D14 100%);-webkit-background-clip:text;background-clip:text;color:transparent;">{{ t.pfTitle }}</div>
       </div>
       <div style="font-size:12px;color:#7c8085;font-weight:300;letter-spacing:.06em;max-width:320px;text-wrap:pretty;">{{ t.pfHint }}</div>
@@ -438,7 +465,7 @@ html,body{background:#050505;overflow:hidden}
   <!-- ═══ TÉMOIGNAGES ═══ -->
   <div id="temoignages" data-screen-label="Témoignages" style="position:relative;padding:150px 7vw 130px;background:radial-gradient(120% 100% at 50% 20%,#101112 0%,#060707 60%,#050505 100%);">
     <div style="text-align:center;">
-      <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#7c8085;font-weight:300;">07 &mdash; {{ t.temOver }}</div>
+      <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#7c8085;font-weight:300;">08 &mdash; {{ t.temOver }}</div>
       <div style="font-family:'Montserrat',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.03em;font-size:clamp(30px,4.2vw,64px);line-height:1.08;margin-top:16px;background:linear-gradient(180deg,#FF6067 0%,#EE3038 38%,#E4232B 60%,#A80D14 100%);-webkit-background-clip:text;background-clip:text;color:transparent;">{{ t.temTitle }}</div>
     </div>
     <div class="ec-card-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:26px;margin-top:70px;max-width:1150px;margin-left:auto;margin-right:auto;">
@@ -470,7 +497,7 @@ html,body{background:#050505;overflow:hidden}
   <!-- ═══ FAQ ═══ -->
   <div id="faq" data-screen-label="FAQ" style="position:relative;padding:150px 7vw 130px;background:#050505;">
     <div style="max-width:900px;margin:0 auto;">
-      <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#7c8085;font-weight:300;">08 &mdash; {{ t.faqOver }}</div>
+      <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#7c8085;font-weight:300;">09 &mdash; {{ t.faqOver }}</div>
       <div style="font-family:'Montserrat',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.03em;font-size:clamp(30px,4.2vw,64px);line-height:1.08;margin-top:16px;background:linear-gradient(180deg,#FF6067 0%,#EE3038 38%,#E4232B 60%,#A80D14 100%);-webkit-background-clip:text;background-clip:text;color:transparent;">{{ t.faqTitle }}</div>
       <div style="margin-top:56px;">
         <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="5">
@@ -493,7 +520,7 @@ html,body{background:#050505;overflow:hidden}
 
   <!-- ═══ CONTACT ═══ -->
   <div id="contact" data-screen-label="Contact" style="position:relative;padding:150px 7vw 60px;background:#050505;text-align:center;">
-    <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#7c8085;font-weight:300;">09 &mdash; {{ t.contactOver }}</div>
+    <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#7c8085;font-weight:300;">10 &mdash; {{ t.contactOver }}</div>
     <div style="font-family:'Montserrat',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.03em;font-size:clamp(34px,4.8vw,74px);line-height:1.08;margin-top:16px;background:linear-gradient(180deg,#FF6067 0%,#EE3038 38%,#E4232B 60%,#A80D14 100%);-webkit-background-clip:text;background-clip:text;color:transparent;">{{ t.contactTitle }}</div>
     <div style="margin-top:26px;font-size:15px;color:#9aa0a4;font-weight:300;letter-spacing:.04em;">{{ t.contactSub }}</div>
     <div style="display:flex;justify-content:center;gap:16px;margin-top:44px;flex-wrap:wrap;">
@@ -849,6 +876,13 @@ class Component extends DCLogic {
         servicesOver:'Savoir-faire', servicesTitle:'Nos services',
         configOver:'Votre vision', configTitle:'Le configurateur', configSub:'Choisissez une finition \u2014 le v\u00e9hicule se transforme instantan\u00e9ment.',
         processOver:'M\u00e9thode', processTitle:'Notre processus',
+        formOver:'Expertise', formTitle:'Form\u00e9s par les meilleurs',
+        formPpfName:'Ultimate Wrap \u2014 Medhi',
+        formPpfDesc:'Notre ma\u00eetrise du film de protection (PPF) a \u00e9t\u00e9 acquise aupr\u00e8s d\u2019Ultimate Wrap, dirig\u00e9 par Medhi, professionnel reconnu depuis plus de 10 ans dans le domaine.',
+        formCoveringName:'John De Weert',
+        formCoveringDesc:'Pour le covering, notre formation a \u00e9t\u00e9 dispens\u00e9e par John De Weert, expert reconnu du wrapping automobile et de la formation professionnelle. Fort de plus de 20 ans d\u2019exp\u00e9rience, il transmet une m\u00e9thode rigoureuse, orient\u00e9e terrain et r\u00e9sultats, utilis\u00e9e par des professionnels du covering \u00e0 travers l\u2019Europe. R\u00e9compens\u00e9 \u00e0 de multiples reprises, il est aujourd\u2019hui une r\u00e9f\u00e9rence internationale dans l\u2019univers du wrap et de l\u2019enseignement technique de haut niveau.',
+        formBadges:['Platinum Hexpert \u2014 HEXIS', '1\u00e8re place Belgique & Pays-Bas \u2014 comp\u00e9tition 3M', '3e place au championnat d\u2019Europe', '12e place au championnat du monde'],
+        formOutro:'R\u00e9sultat pour vous : un savoir-faire supervis\u00e9 par deux r\u00e9f\u00e9rences du secteur, appliqu\u00e9 \u00e0 chaque v\u00e9hicule qui passe \u00e0 l\u2019atelier.',
         pfOver:'Réalisations', pfTitle:'Portfolio', pfHint:'Une sélection de nos réalisations récentes.', pfComingSoon:'Bientôt disponible — galerie en préparation.', pfFilterAll:'Tout', pfFilterCovering:'Covering', pfFilterPpf:'PPF', pfFilterDetailing:'Detailing',
         temOver:'Confiance', temTitle:'Ils nous ont confi\u00e9 leur v\u00e9hicule',
         faqOver:'Questions', faqTitle:'Questions fr\u00e9quentes',
@@ -876,7 +910,7 @@ class Component extends DCLogic {
         dvService:'Prestation', dvBrandL:'Marque', dvModelL:'Mod\u00e8le', dvSpecsL:'Sp\u00e9cifications', dvNameL:'Nom', dvContactL:'E-mail ou t\u00e9l\u00e9phone',
         dvSendMail:'Envoyer par e-mail', dvSendWa:'Envoyer via WhatsApp', dvThanks:'Merci', dvThanksSub:'Votre demande est pr\u00eate dans votre messagerie. Envoyez-la et nous vous r\u00e9pondons sous 24 h.', dvClose:'Fermer',
         dvBrandPh:'Tesla, BMW, Porsche...', dvModelPh:'Model 3, 911...', dvSpecsPh:'Teinte souhait\u00e9e, finition, zones \u00e0 couvrir, d\u00e9lai...', dvNamePh:'Votre nom', dvContactPh:'Pour vous recontacter',
-        nav:{accueil:'Accueil',services:'Services',configurateur:'Configurateur',processus:'Processus',portfolio:'Portfolio',temoignages:'T\u00e9moignages',faq:'FAQ',contact:'Contact'},
+        nav:{accueil:'Accueil',services:'Services',configurateur:'Configurateur',processus:'Processus',formation:'Formation',portfolio:'Portfolio',temoignages:'T\u00e9moignages',faq:'FAQ',contact:'Contact'},
         averyLabel:'Nuancier Avery Dennison', hexisLabel:'Nuancier Hexis Skintac HX2000', averyPick:'Choisissez une teinte',
         averyFams:{gloss:'Gloss',matte:'Mat',satin:'Satin',metallic:'M\u00e9tallis\u00e9',satinmet:'Satin m\u00e9tal',flip:'ColorFlow'},
         cmpOver:'Comprendre', cmpTitle:'Covering ou PPF ?', cmpNote:'Les deux se combinent : covering pour le style, PPF sur les zones les plus expos\u00e9es.',
@@ -948,6 +982,13 @@ class Component extends DCLogic {
         servicesOver:'Craftsmanship', servicesTitle:'Our services',
         configOver:'Your vision', configTitle:'The configurator', configSub:'Pick a finish \u2014 the vehicle transforms instantly.',
         processOver:'Method', processTitle:'Our process',
+        formOver:'Expertise', formTitle:'Trained by the best',
+        formPpfName:'Ultimate Wrap — Medhi',
+        formPpfDesc:'Our paint protection film (PPF) skills come from Ultimate Wrap, led by Medhi, a professional recognised in the field for over 10 years.',
+        formCoveringName:'John De Weert',
+        formCoveringDesc:'For wrapping, our training was delivered by John De Weert, a recognised expert in automotive wrapping and professional training. With over 20 years of experience, he passes on a rigorous, results-driven method used by wrap professionals across Europe. A multiple award winner, he is today an international reference in the world of wrap and high-level technical teaching.',
+        formBadges:['Platinum Hexpert — HEXIS', '1st place Belgium & Netherlands — 3M competition', '3rd place European Championship', '12th place World Championship'],
+        formOutro:'The result for you: expertise supervised by two industry references, applied to every vehicle that comes through the workshop.',
         pfOver:'Work', pfTitle:'Portfolio', pfHint:'A selection of our recent work.', pfComingSoon:'Coming soon \u2014 gallery in progress.', pfFilterAll:'All', pfFilterCovering:'Covering', pfFilterPpf:'PPF', pfFilterDetailing:'Detailing',
         temOver:'Trust', temTitle:'They trusted us with their cars',
         faqOver:'Questions', faqTitle:'Frequently asked questions',
@@ -975,7 +1016,7 @@ class Component extends DCLogic {
         dvService:'Service', dvBrandL:'Brand', dvModelL:'Model', dvSpecsL:'Specifications', dvNameL:'Name', dvContactL:'E-mail or phone',
         dvSendMail:'Send by e-mail', dvSendWa:'Send via WhatsApp', dvThanks:'Thank you', dvThanksSub:'Your request is ready in your mail app. Send it and we reply within 24 h.', dvClose:'Close',
         dvBrandPh:'Tesla, BMW, Porsche...', dvModelPh:'Model 3, 911...', dvSpecsPh:'Desired colour, finish, areas to cover, timing...', dvNamePh:'Your name', dvContactPh:'So we can reach you',
-        nav:{accueil:'Home',services:'Services',configurateur:'Configurator',processus:'Process',portfolio:'Portfolio',temoignages:'Testimonials',faq:'FAQ',contact:'Contact'},
+        nav:{accueil:'Home',services:'Services',configurateur:'Configurator',processus:'Process',formation:'Training',portfolio:'Portfolio',temoignages:'Testimonials',faq:'FAQ',contact:'Contact'},
         averyLabel:'Avery Dennison colour chart', hexisLabel:'Hexis Skintac HX2000 colour chart', averyPick:'Pick a colour',
         averyFams:{gloss:'Gloss',matte:'Matte',satin:'Satin',metallic:'Metallic',satinmet:'Satin metallic',flip:'ColorFlow'},
         cmpOver:'Understand', cmpTitle:'Wrap or PPF?', cmpNote:'The two combine beautifully: wrap for style, PPF on the most exposed areas.',
@@ -1048,6 +1089,13 @@ class Component extends DCLogic {
         servicesOver:'Vakmanschap', servicesTitle:'Onze diensten',
         configOver:'Uw visie', configTitle:'De configurator', configSub:'Kies een afwerking \u2014 het voertuig transformeert onmiddellijk.',
         processOver:'Methode', processTitle:'Ons proces',
+        formOver:'Expertise', formTitle:'Opgeleid door de besten',
+        formPpfName:'Ultimate Wrap — Medhi',
+        formPpfDesc:'Onze beheersing van paint protection film (PPF) komt van Ultimate Wrap, geleid door Medhi, een professional die al meer dan 10 jaar erkend is in het vakgebied.',
+        formCoveringName:'John De Weert',
+        formCoveringDesc:'Voor wrapping werden we opgeleid door John De Weert, een erkende expert in autowrapping en professionele opleiding. Met meer dan 20 jaar ervaring draagt hij een rigoureuze, praktijkgerichte methode over die door wrapprofessionals in heel Europa wordt gebruikt. Meermaals bekroond, is hij vandaag een internationale referentie in de wereld van wrap en hoogwaardig technisch onderwijs.',
+        formBadges:['Platinum Hexpert — HEXIS', '1e plaats België & Nederland — 3M-wedstrijd', '3e plaats Europees kampioenschap', '12e plaats wereldkampioenschap'],
+        formOutro:'Het resultaat voor u: vakmanschap onder toezicht van twee referenties in de sector, toegepast op elk voertuig dat in het atelier komt.',
         pfOver:'Realisaties', pfTitle:'Portfolio', pfHint:'Een selectie van ons recente werk.', pfComingSoon:'Binnenkort beschikbaar \u2014 galerij in voorbereiding.', pfFilterAll:'Alles', pfFilterCovering:'Covering', pfFilterPpf:'PPF', pfFilterDetailing:'Detailing',
         temOver:'Vertrouwen', temTitle:'Zij vertrouwden ons hun wagen toe',
         faqOver:'Vragen', faqTitle:'Veelgestelde vragen',
@@ -1075,7 +1123,7 @@ class Component extends DCLogic {
         dvService:'Dienst', dvBrandL:'Merk', dvModelL:'Model', dvSpecsL:'Specificaties', dvNameL:'Naam', dvContactL:'E-mail of telefoon',
         dvSendMail:'Verzenden per e-mail', dvSendWa:'Verzenden via WhatsApp', dvThanks:'Bedankt', dvThanksSub:'Uw aanvraag staat klaar in uw mailprogramma. Verstuur ze en wij antwoorden binnen 24 u.', dvClose:'Sluiten',
         dvBrandPh:'Tesla, BMW, Porsche...', dvModelPh:'Model 3, 911...', dvSpecsPh:'Gewenste kleur, afwerking, zones, timing...', dvNamePh:'Uw naam', dvContactPh:'Om u te bereiken',
-        nav:{accueil:'Home',services:'Diensten',configurateur:'Configurator',processus:'Proces',portfolio:'Portfolio',temoignages:'Getuigenissen',faq:'FAQ',contact:'Contact'},
+        nav:{accueil:'Home',services:'Diensten',configurateur:'Configurator',processus:'Proces',formation:'Opleiding',portfolio:'Portfolio',temoignages:'Getuigenissen',faq:'FAQ',contact:'Contact'},
         averyLabel:'Avery Dennison kleurenwaaier', hexisLabel:'Hexis Skintac HX2000 kleurenwaaier', averyPick:'Kies een kleur',
         averyFams:{gloss:'Glans',matte:'Mat',satin:'Satijn',metallic:'Metallic',satinmet:'Satijn metallic',flip:'ColorFlow'},
         cmpOver:'Begrijpen', cmpTitle:'Wrap of PPF?', cmpNote:'Beide zijn perfect combineerbaar: wrap voor de stijl, PPF op de meest blootgestelde zones.',
@@ -1684,8 +1732,8 @@ class Component extends DCLogic {
   renderVals(){
     const s = this.state;
     const L = this.I18N[s.lang] || this.I18N.fr;
-    const navIds = ['accueil','services','configurateur','processus','portfolio','temoignages','faq','contact'];
-    const priority = ['services','portfolio','configurateur','processus','contact','temoignages','accueil','faq'];
+    const navIds = ['accueil','services','configurateur','processus','formation','portfolio','temoignages','faq','contact'];
+    const priority = ['services','portfolio','configurateur','processus','contact','temoignages','accueil','faq','formation'];
     const keep = new Set(priority.slice(0, s.navMax));
     return {
       companyName: this.props.companyName ?? 'Ecrin Wrap',
@@ -1785,6 +1833,7 @@ class Component extends DCLogic {
       manageSubscription: () => this.manageSubscription(),
       services: L.services,
       steps: L.steps,
+      formBadges: L.formBadges.map(label => ({ label })),
       finish: s.finish,
       devisOpen: s.devisOpen,
       devisSent: s.devisSent,
