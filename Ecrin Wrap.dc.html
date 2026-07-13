@@ -506,6 +506,11 @@ html,body{background:#050505;overflow:hidden}
       <div style="font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#5c6064;">Covering &middot; PPF &middot; Detailing &mdash; Villers-le-Bouillet</div>
       <div style="font-size:10px;letter-spacing:.18em;color:#5c6064;">&copy; 2026 &mdash; {{ t.rights }}</div>
     </div>
+    <div style="margin-top:14px;text-align:center;">
+      <button onClick="{{ openPrivacy }}" style="background:none;border:none;font-family:inherit;font-size:9px;letter-spacing:.08em;color:#454749;cursor:pointer;text-decoration:underline;padding:4px 6px;" style-hover="color:#7c8085">{{ legalPrivacyLabel }}</button>
+      <span style="font-size:9px;color:#3a3c3e;">&middot;</span>
+      <button onClick="{{ openTerms }}" style="background:none;border:none;font-family:inherit;font-size:9px;letter-spacing:.08em;color:#454749;cursor:pointer;text-decoration:underline;padding:4px 6px;" style-hover="color:#7c8085">{{ legalTermsLabel }}</button>
+    </div>
   </div>
 
   </sc-if>
@@ -699,6 +704,41 @@ html,body{background:#050505;overflow:hidden}
   </div>
   </sc-if>
 
+  <!-- ═══ LEGAL MODAL (privacy policy / terms) ═══ -->
+  <sc-if value="{{ legalIsOpen }}" hint-placeholder-val="{{ false }}">
+  <div class="ec-devis-overlay" onClick="{{ closeLegal }}" style="position:fixed;inset:0;z-index:120;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(3,3,3,.72);backdrop-filter:blur(10px);animation:ecUp .4s ease both;">
+    <div class="ec-devis-card" onClick="{{ stop }}" style="position:relative;width:min(720px,94vw);max-height:88vh;overflow-y:auto;border:1px solid rgba(228,35,43,.28);border-radius:6px;background:linear-gradient(165deg,rgba(24,25,27,.98),rgba(10,11,12,.99));box-shadow:0 40px 100px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.06);padding:44px 42px 40px;">
+      <button onClick="{{ closeLegal }}" style="position:absolute;top:18px;right:18px;width:34px;height:34px;border-radius:50%;border:1px solid rgba(228,35,43,.26);background:none;color:#9aa0a4;font-size:16px;cursor:pointer;line-height:1;transition:border-color .3s,color .3s;" style-hover="border-color:rgba(228,35,43,.6);color:#F7F7F7">&times;</button>
+
+      <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:26px;letter-spacing:.02em;color:#F7F7F7;">{{ legalDoc.title }}</div>
+      <div style="margin-top:8px;font-size:11px;letter-spacing:.1em;color:#7c8085;">{{ legalDoc.updated }}</div>
+
+      <div style="margin-top:30px;display:flex;flex-direction:column;gap:24px;">
+        <sc-for list="{{ legalDoc.sections }}" as="sec" hint-placeholder-count="6">
+          <div>
+            <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;letter-spacing:.03em;color:var(--accent);">{{ sec.h }}</div>
+            <sc-if value="{{ sec.hasP }}" hint-placeholder-val="{{ true }}">
+              <div style="margin-top:8px;font-size:13.5px;line-height:1.8;color:#c8ccd0;font-weight:300;">{{ sec.p }}</div>
+            </sc-if>
+            <sc-if value="{{ sec.hasList }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px;">
+                <sc-for list="{{ sec.list }}" as="item" hint-placeholder-count="4">
+                  <div style="display:flex;align-items:baseline;gap:10px;">
+                    <span style="flex:none;width:4px;height:4px;border-radius:50%;background:var(--accent);"></span>
+                    <span style="font-size:13.5px;color:#c8ccd0;font-weight:300;line-height:1.7;">{{ item.li }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+
+      <button onClick="{{ closeLegal }}" style="margin-top:34px;width:100%;font-family:inherit;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#D9D9D9;font-weight:400;padding:14px;border:1px solid rgba(228,35,43,.4);border-radius:3px;cursor:pointer;background:none;transition:border-color .3s;" style-hover="border-color:rgba(228,35,43,.75)">{{ t.legalClose }}</button>
+    </div>
+  </div>
+  </sc-if>
+
   <!-- REVEAL -->
   <sc-if value="{{ showReveal }}" hint-placeholder-val="{{ false }}">
   <div style="position:fixed;inset:0;z-index:80;opacity:{{ revealOpacity }};transition:opacity .5s ease;pointer-events:none;">
@@ -762,7 +802,7 @@ class Component extends DCLogic {
     navMax: 10, mobileMenu: false, isMobile: false, lang: 'fr',
 
     // page sections: FAQ accordion, covering-vs-PPF tabs, detailing mode
-    faqOpen: 0, cmpTab: 'covering', dtMode: 'once', pfFilter: 'all',
+    faqOpen: 0, cmpTab: 'covering', dtMode: 'once', pfFilter: 'all', legalOpen: null,
 
     // configurateur (finish swatches, Avery/Hexis colour picker)
     finish: 'gloss', averyFam: 'gloss', averySel: null, averyReady: false, averyBrand: 'avery',
@@ -830,6 +870,7 @@ class Component extends DCLogic {
         accVehicleTitle:'Votre véhicule', accVehicleBrandL:'Marque', accVehicleModelL:'Modèle', accVehicleNote:'Utilisé pour préremplir tes réservations — modifiable ensuite dans ton compte.',
         accVehicleRequired:'Merci de renseigner la marque et le modèle de ton véhicule.',
         rights:'Tous droits r\u00e9serv\u00e9s', loadingBaseline:'Maison de covering \u00b7 PPF \u00b7 Detailing', enterBtn:'Entrer \u2014 avec le son',
+        legalPrivacy:'Politique de confidentialit\u00e9', legalTerms:'Conditions g\u00e9n\u00e9rales', legalClose:'Fermer',
         brandsTitle:'Ils roulent avec nous',
         dvTag:'Devis personnalis\u00e9', dvTitle:'Votre projet', dvSub:'Quelques d\u00e9tails et nous revenons vers vous rapidement.',
         dvService:'Prestation', dvBrandL:'Marque', dvModelL:'Mod\u00e8le', dvSpecsL:'Sp\u00e9cifications', dvNameL:'Nom', dvContactL:'E-mail ou t\u00e9l\u00e9phone',
@@ -928,6 +969,7 @@ class Component extends DCLogic {
         accVehicleTitle:'Your vehicle', accVehicleBrandL:'Brand', accVehicleModelL:'Model', accVehicleNote:'Used to pre-fill your bookings — editable later in your account.',
         accVehicleRequired:'Please enter your vehicle’s brand and model.',
         rights:'All rights reserved', loadingBaseline:'House of wrapping \u00b7 PPF \u00b7 Detailing', enterBtn:'Enter \u2014 with sound',
+        legalPrivacy:'Privacy Policy', legalTerms:'Terms of Service', legalClose:'Close',
         brandsTitle:'They ride with us',
         dvTag:'Personalised quote', dvTitle:'Your project', dvSub:'A few details and we will get back to you quickly.',
         dvService:'Service', dvBrandL:'Brand', dvModelL:'Model', dvSpecsL:'Specifications', dvNameL:'Name', dvContactL:'E-mail or phone',
@@ -1027,6 +1069,7 @@ class Component extends DCLogic {
         accVehicleTitle:'Jouw voertuig', accVehicleBrandL:'Merk', accVehicleModelL:'Model', accVehicleNote:'Gebruikt om je reserveringen vooraf in te vullen — later aanpasbaar in je account.',
         accVehicleRequired:'Vul het merk en model van je voertuig in.',
         rights:'Alle rechten voorbehouden', loadingBaseline:'Huis van wrapping \u00b7 PPF \u00b7 Detailing', enterBtn:'Binnenkomen \u2014 met geluid',
+        legalPrivacy:'Privacybeleid', legalTerms:'Algemene voorwaarden', legalClose:'Sluiten',
         brandsTitle:'Zij rijden met ons',
         dvTag:'Offerte op maat', dvTitle:'Uw project', dvSub:'Enkele details en wij nemen snel contact met u op.',
         dvService:'Dienst', dvBrandL:'Merk', dvModelL:'Model', dvSpecsL:'Specificaties', dvNameL:'Naam', dvContactL:'E-mail of telefoon',
@@ -1119,6 +1162,53 @@ class Component extends DCLogic {
       { cat: 'covering', src: 'assets/portfolio/covering/ford-ranger-detail-aile.jpg', alt: 'Détail covering — aile et déflecteur carbone' },
       { cat: 'detailing', src: 'assets/portfolio/detailing/lavage-mousse.jpg', alt: 'Lavage mousse active — detailing' }
     ];
+    // Legal content — French only for now (see chat: drafted as a
+    // reasonable default, NOT reviewed by a lawyer; the BCE/VAT number is
+    // a placeholder to fill in). Structured as sections so the modal can
+    // render either a paragraph or a bullet list per section.
+    this.LEGAL = {
+      privacy: {
+        title: 'Politique de confidentialité',
+        updated: 'Dernière mise à jour : 13 juillet 2026',
+        sections: [
+          { h: '1. Qui sommes-nous', p: 'Ecrin Wrap est un studio de finition automobile (covering, protection PPF, detailing) basé Rue de la Science 13, 4530 Villers-le-Bouillet, Belgique. Numéro d’entreprise (BCE) : à compléter. Pour toute question relative à vos données personnelles, contactez-nous à ecrinwrapofficel@gmail.com.' },
+          { h: '2. Données que nous collectons', p: 'Lorsque vous créez un compte ou effectuez une demande de devis, nous collectons : votre prénom et nom, votre adresse e-mail et mot de passe (stocké de façon chiffrée), votre adresse postale, votre âge, la marque et le modèle de votre véhicule, ainsi que les détails de vos demandes de devis et réservations. Lors d’un paiement, les données de carte bancaire sont saisies directement sur les pages sécurisées de notre prestataire Stripe — nous n’avons jamais accès à votre numéro de carte complet.' },
+          { h: '3. Pourquoi nous collectons ces données', list: [
+            'Créer et gérer votre compte client',
+            'Traiter vos demandes de devis et vos réservations',
+            'Traiter les paiements d’acompte et les abonnements via Stripe',
+            'Vous recontacter au sujet de votre projet',
+            'Respecter nos obligations légales et comptables'
+          ] },
+          { h: '4. Base légale du traitement', p: 'Nous traitons vos données sur la base de l’exécution du contrat qui nous lie (création de compte, devis, réservation, abonnement), de votre consentement lors de l’inscription et, le cas échéant, de notre intérêt légitime à assurer le bon fonctionnement et la sécurité du site.' },
+          { h: '5. Qui a accès à vos données', p: 'Vos données sont hébergées et traitées par les prestataires suivants, chacun agissant comme sous-traitant au sens du RGPD : Supabase (base de données et authentification), Stripe (paiement) et Vercel (hébergement du site). Nous ne vendons ni ne louons vos données à des tiers à des fins commerciales.' },
+          { h: '6. Durée de conservation', p: 'Vos données de compte sont conservées tant que votre compte reste actif. Les données liées à des obligations comptables et fiscales sont conservées pendant la durée légale requise (en principe 7 ans en Belgique). Vous pouvez demander la suppression de votre compte à tout moment.' },
+          { h: '7. Vos droits', p: 'Conformément au Règlement Général sur la Protection des Données (RGPD), vous disposez d’un droit d’accès, de rectification, d’effacement, de limitation, d’opposition et de portabilité de vos données. Pour exercer ces droits, contactez-nous à ecrinwrapofficel@gmail.com. Vous disposez également du droit d’introduire une réclamation auprès de l’Autorité de protection des données (APD) belge.' },
+          { h: '8. Cookies et traceurs', p: 'Notre site utilise le stockage local de votre navigateur (localStorage) pour maintenir votre session connectée. Lors d’un paiement, Stripe peut déposer ses propres cookies techniques nécessaires à la sécurisation de la transaction. Nous n’utilisons pas de cookies publicitaires ou de traceurs à des fins de profilage marketing.' },
+          { h: '9. Sécurité', p: 'Nous mettons en œuvre des mesures techniques raisonnables (chiffrement des mots de passe, connexions HTTPS, restrictions d’accès à la base de données) pour protéger vos données contre l’accès, la modification ou la divulgation non autorisés.' },
+          { h: '10. Modification de cette politique', p: 'Cette politique peut être mise à jour occasionnellement. La date de dernière mise à jour est indiquée en haut de ce document.' },
+          { h: '11. Contact', p: 'Pour toute question, écrivez-nous à ecrinwrapofficel@gmail.com.' }
+        ]
+      },
+      terms: {
+        title: 'Conditions générales d’utilisation',
+        updated: 'Dernière mise à jour : 13 juillet 2026',
+        sections: [
+          { h: '1. Objet', p: 'Les présentes conditions générales régissent l’utilisation du site ecrinwrap.be édité par Ecrin Wrap ainsi que les prestations de covering, protection PPF et detailing automobile proposées.' },
+          { h: '2. Acceptation', p: 'En créant un compte ou en utilisant nos services, vous acceptez sans réserve les présentes conditions générales d’utilisation.' },
+          { h: '3. Compte client', p: 'La création d’un compte requiert la communication d’informations exactes (identité, coordonnées, véhicule). Vous êtes responsable de la confidentialité de votre mot de passe et de toute activité effectuée depuis votre compte.' },
+          { h: '4. Devis et estimations', p: 'Les tarifs affichés sur le site pour les formules à la carte (Essentiel, Signature, Prestige) sont indicatifs. Le prix définitif est confirmé après inspection du véhicule à l’atelier de Villers-le-Bouillet.' },
+          { h: '5. Réservation et acompte', p: 'La réservation d’une formule à la carte requiert le paiement d’un acompte de 30 % du montant indicatif, réglé en ligne via Stripe. Le solde est réglé directement à l’atelier après inspection et avant restitution du véhicule.' },
+          { h: '6. Abonnements', p: 'Les formules Club, Club Sport et Excellence sont des abonnements mensuels avec reconduction automatique, facturés via Stripe. Vous pouvez à tout moment consulter, modifier ou résilier votre abonnement depuis votre espace client (« Gérer mon abonnement »), qui vous redirige vers le portail de facturation sécurisé de Stripe.' },
+          { h: '7. Paiement', p: 'Tous les paiements en ligne sont traités par Stripe, prestataire de paiement certifié PCI-DSS. Ecrin Wrap n’a jamais accès à vos coordonnées bancaires complètes.' },
+          { h: '8. Annulation et remboursement', p: 'Toute demande d’annulation ou de remboursement d’un acompte ou d’un abonnement doit être adressée à ecrinwrapofficel@gmail.com. Les acomptes versés pour une prestation déjà réalisée, en tout ou partie, ne sont pas remboursables.' },
+          { h: '9. Responsabilité', p: 'Ecrin Wrap met tout en œuvre pour garantir la qualité de ses prestations. Les visuels et le configurateur présents sur le site ont une valeur indicative et peuvent différer légèrement du rendu final selon le véhicule.' },
+          { h: '10. Propriété intellectuelle', p: 'L’ensemble des contenus du site (textes, images, logo, configurateur) est la propriété d’Ecrin Wrap et ne peut être reproduit sans autorisation préalable.' },
+          { h: '11. Droit applicable', p: 'Les présentes conditions sont soumises au droit belge. Tout litige relève de la compétence exclusive des tribunaux de l’arrondissement judiciaire de Liège.' },
+          { h: '12. Contact', p: 'Pour toute question relative aux présentes conditions, contactez-nous à ecrinwrapofficel@gmail.com.' }
+        ]
+      }
+    };
   }
 
   // ── React lifecycle ───────────────────────────────────────────────
@@ -1415,6 +1505,11 @@ class Component extends DCLogic {
   openAccount(){ this.setState({ accountOpen: true, authError: '' }); }
   openAccountMobile(){ this.setState({ accountOpen: true, authError: '', mobileMenu: false }); }
   closeAccount(){ this.setState({ accountOpen: false }); }
+
+  // ── legal modal (privacy policy / terms) ──────────────────────────────
+  openPrivacy(){ this.setState({ legalOpen: 'privacy' }); }
+  openTerms(){ this.setState({ legalOpen: 'terms' }); }
+  closeLegal(){ this.setState({ legalOpen: null }); }
   toggleAuthMode(){ this.setState(s => ({ authMode: s.authMode === 'signup' ? 'signin' : 'signup', authError: '', authSignupSent: false })); }
 
   // ── auth (sign in / sign up / sign out / vehicles) ───────────────────
@@ -1814,7 +1909,28 @@ class Component extends DCLogic {
           bg: active ? 'rgba(228,35,43,.12)' : 'transparent',
           dot: active ? 1 : 0.15
         };
-      })
+      }),
+
+      legalPrivacyLabel: L.legalPrivacy,
+      legalTermsLabel: L.legalTerms,
+      openPrivacy: () => this.openPrivacy(),
+      openTerms: () => this.openTerms(),
+      closeLegal: () => this.closeLegal(),
+      legalIsOpen: !!s.legalOpen,
+      legalDoc: (() => {
+        const doc = (s.legalOpen && this.LEGAL[s.legalOpen]) || { title: '', updated: '', sections: [] };
+        return {
+          title: doc.title,
+          updated: doc.updated,
+          sections: doc.sections.map(sec => ({
+            h: sec.h,
+            p: sec.p || '',
+            hasP: !!sec.p,
+            hasList: !!sec.list,
+            list: (sec.list || []).map(li => ({ li }))
+          }))
+        };
+      })()
     };
   }
 }
