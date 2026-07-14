@@ -142,6 +142,37 @@
     return t;
   }
 
+  // Stylized front/rear plate texture — drawn on canvas, no image asset needed.
+  function makePlateTexture(THREE, text) {
+    var c = document.createElement('canvas');
+    c.width = 512; c.height = 110;
+    var ctx = c.getContext('2d');
+    ctx.fillStyle = '#f2f3f4';
+    ctx.fillRect(0, 0, c.width, c.height);
+    ctx.strokeStyle = '#141516';
+    ctx.lineWidth = 6;
+    ctx.strokeRect(3, 3, c.width - 6, c.height - 6);
+    // brand band, EU-plate-style, left edge
+    ctx.fillStyle = '#E4232B';
+    ctx.fillRect(6, 6, 34, c.height - 12);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '700 15px Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('EW', 23, c.height / 2 + 1);
+    // plate text
+    ctx.fillStyle = '#111214';
+    ctx.font = '700 56px Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    try { ctx.letterSpacing = '6px'; } catch (e) {}
+    ctx.fillText(text, (c.width + 40) / 2, c.height / 2 + 3);
+    var t = new THREE.CanvasTexture(c);
+    t.encoding = THREE.sRGBEncoding;
+    t.anisotropy = 4;
+    return t;
+  }
+
   class EcrinCarViewer extends HTMLElement {
     static get observedAttributes() { return ['mood', 'finish', 'paint']; }
     get mood() { return this.getAttribute('mood') || 'noir'; }
@@ -586,12 +617,43 @@
       // iterative self-correcting normalization (handles weird nested FBX scales)
       for (var it = 0; it < 4; it++) this._normalize();
 
+      this._addPlates();
       this._applyMood();
 
       if (this._canvas) this._canvas.style.opacity = '1';
       try { this._renderer.render(this._scene, this._camera); } catch (e) {}
       this._hideFallback();
       fire('ecrin-car-ready');
+    }
+
+    // Front + rear "ECRIN WRAP" plates, sized/placed from the model's own
+    // (post-normalize) bounding box so they fit regardless of which real
+    // vehicle svroadster.fbx happens to be. Both ends get one (real EU cars
+    // have front+rear plates anyway), each facing outward from the body —
+    // sidesteps ever having to know which end the FBX author modeled as
+    // the front.
+    _addPlates() {
+      var THREE = window.THREE;
+      var box = this._robustBox(this._car);
+      var size = box.getSize(new THREE.Vector3());
+      if (!isFinite(size.x) || !isFinite(size.y) || !isFinite(size.z)) return;
+
+      var plateW = Math.max(0.45, size.x * 0.32);
+      var plateH = plateW * (110 / 512);
+      var plateY = box.min.y + Math.max(0.16, size.y * 0.09);
+
+      var tex = makePlateTexture(THREE, 'ECRIN WRAP');
+      var mat = new THREE.MeshStandardMaterial({ map: tex, metalness: 0.1, roughness: 0.55 });
+      var geo = new THREE.PlaneGeometry(plateW, plateH);
+
+      var front = new THREE.Mesh(geo, mat);
+      front.position.set(0, plateY, box.max.z + 0.02);
+      this._group.add(front);
+
+      var rear = new THREE.Mesh(geo, mat);
+      rear.position.set(0, plateY, box.min.z - 0.02);
+      rear.rotation.y = Math.PI;
+      this._group.add(rear);
     }
 
     _hideFallback() {
