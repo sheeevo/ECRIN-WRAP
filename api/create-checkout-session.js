@@ -1,18 +1,21 @@
-// POST for a subscription: { plan: 'club'|'club_sport'|'excellence', userId, email }
+// POST for a subscription: { plan: 'club'|'club_sport'|'excellence', category, userId, email }
 // POST for a deposit:      { type: 'deposit', plan: 'essentiel'|'signature'|'prestige', category, quoteId, userId, email }
 // Returns { url } — a Stripe Checkout URL to redirect the browser to.
-// Subscription price IDs live in env vars, never in client code. Deposit
-// amounts vary by vehicle category (5 categories x 3 plans) so they are
-// computed here from a fixed table and sent to Stripe as inline price_data
-// instead of needing 15 pre-created Stripe Price objects — either way the
-// browser only ever sends plan+category *keys*, never an amount, so it
-// can't ask Stripe to charge anything arbitrary.
+// Both subscription and deposit prices vary by vehicle category (5
+// categories x 3 plans each) so neither uses pre-created Stripe Price
+// objects -- amounts are computed here from a fixed table and sent to
+// Stripe as inline price_data instead, which also works for recurring
+// subscription prices. Either way the browser only ever sends plan+category
+// *keys*, never an amount, so it can't ask Stripe to charge anything
+// arbitrary.
 const stripe = require('./_stripe');
 
-const SUB_PRICE_MAP = {
-  club: process.env.STRIPE_PRICE_CLUB,
-  club_sport: process.env.STRIPE_PRICE_CLUB_SPORT,
-  excellence: process.env.STRIPE_PRICE_EXCELLENCE
+// monthly subscription amount, in cents, per plan x vehicle category —
+// mirrors dtSubPlans in the front-end I18N.
+const SUB_AMOUNTS = {
+  club: { citadine: 19000, berline: 21500, sportive: 24000, suv: 26000, supercar: 28500 },
+  club_sport: { citadine: 38000, berline: 40000, sportive: 45000, suv: 51000, supercar: 58000 },
+  excellence: { citadine: 89000, berline: 94000, sportive: 104000, suv: 119000, supercar: 139000 }
 };
 
 // 30% deposit, in cents, per plan x vehicle category — mirrors the à la
@@ -24,6 +27,7 @@ const DEPOSIT_AMOUNTS = {
   prestige: { citadine: 26700, berline: 28200, sportive: 31200, suv: 35700, supercar: 41700 }
 };
 
+const SUB_PLAN_LABELS = { club: 'Club', club_sport: 'Club Sport', excellence: 'Excellence' };
 const PLAN_LABELS = { essentiel: 'Essentiel', signature: 'Signature', prestige: 'Prestige' };
 const CATEGORY_LABELS = {
   citadine: 'Citadine / Compacte',
@@ -70,15 +74,25 @@ module.exports = async (req, res) => {
       return;
     }
 
-    const priceId = SUB_PRICE_MAP[plan];
-    if (!priceId) { res.status(400).json({ error: 'unknown plan' }); return; }
+    const subAmount = SUB_AMOUNTS[plan] && SUB_AMOUNTS[plan][category];
+    if (!subAmount) { res.status(400).json({ error: 'unknown plan or category' }); return; }
 
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
-      line_items: [{ price: priceId, quantity: 1 }],
+      line_items: [{
+        price_data: {
+          currency: 'eur',
+          unit_amount: subAmount,
+          recurring: { interval: 'month' },
+          product_data: {
+            name: `Abonnement ${SUB_PLAN_LABELS[plan] || plan} — ${CATEGORY_LABELS[category] || category}`
+          }
+        },
+        quantity: 1
+      }],
       customer_email: email || undefined,
       client_reference_id: userId,
-      subscription_data: { metadata: { supabase_user_id: userId, plan } },
+      subscription_data: { metadata: { supabase_user_id: userId, plan, category } },
       success_url: siteUrl + '/?checkout=success',
       cancel_url: siteUrl + '/?checkout=cancelled'
     });

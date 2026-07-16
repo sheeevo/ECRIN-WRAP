@@ -310,7 +310,6 @@ html,body{background:#050505;overflow:hidden}
         </sc-for>
       </div>
     </div>
-    <sc-if value="{{ dtModeOnce }}" hint-placeholder-val="{{ true }}">
     <div style="max-width:1150px;margin:56px auto 0;text-align:center;">
       <div style="font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:#7c8085;font-weight:300;">{{ t.dtCatLabel }}</div>
       <div class="ec-vehcat-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-top:20px;">
@@ -326,7 +325,6 @@ html,body{background:#050505;overflow:hidden}
         </sc-for>
       </div>
     </div>
-    </sc-if>
     <div class="ec-card-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:26px;margin-top:70px;max-width:1150px;margin-left:auto;margin-right:auto;align-items:stretch;">
       <sc-for list="{{ dtPlans }}" as="plan" hint-placeholder-count="3">
         <div style="position:relative;display:flex;flex-direction:column;padding:44px 38px 38px;border:1px solid {{ plan.border }};border-radius:4px;background:{{ plan.bg }};transition:transform .45s cubic-bezier(.2,.8,.2,1),border-color .45s;" style-hover="transform:translateY(-8px);border-color:rgba(228,35,43,.55)">
@@ -962,9 +960,9 @@ class Component extends DCLogic {
         dtCatLabel:'Votre v\u00e9hicule',
         vehCat:{citadine:'Citadine / Compacte',berline:'Berline / Break',sportive:'Sportive',suv:'Grand SUV / Utilitaire / Pick-up',supercar:'Supercar'},
         dtSubPlans:[
-          {name:'Club',price:'95\u00a0\u20ac',period:'par mois',feats:['1 lavage main premium par mois','Aspiration & vitres int\u00e9rieures','Contr\u00f4le visuel du film \u00e0 chaque visite','\u221210\u00a0% sur toutes les prestations']},
-          {name:'Club Sport',price:'200\u00a0\u20ac',period:'par mois',featured:true,feats:['2 entretiens premium par mois','Rafra\u00eechissement hydrophobe trimestriel','Int\u00e9rieur d\u00e9taill\u00e9 une fois par trimestre','\u221215\u00a0% sur covering & PPF']},
-          {name:'Excellence',price:'350\u00a0\u20ac',period:'par mois',feats:['Entretiens illimit\u00e9s sur rendez-vous','Recharge c\u00e9ramique annuelle incluse','V\u00e9hicule de courtoisie \u00e0 l\u2019atelier','Acc\u00e8s prioritaire & conciergerie d\u00e9di\u00e9e']}
+          {name:'Club',priceByCat:{citadine:'190\u00a0\u20ac',berline:'215\u00a0\u20ac',sportive:'240\u00a0\u20ac',suv:'260\u00a0\u20ac',supercar:'285\u00a0\u20ac'},period:'par mois',feats:['1 lavage main premium par mois','Aspiration & vitres int\u00e9rieures','Contr\u00f4le visuel du film \u00e0 chaque visite','\u221210\u00a0% sur toutes les prestations']},
+          {name:'Club Sport',priceByCat:{citadine:'380\u00a0\u20ac',berline:'400\u00a0\u20ac',sportive:'450\u00a0\u20ac',suv:'510\u00a0\u20ac',supercar:'580\u00a0\u20ac'},period:'par mois',featured:true,feats:['2 entretiens premium par mois','Rafra\u00eechissement hydrophobe trimestriel','Int\u00e9rieur d\u00e9taill\u00e9 une fois par trimestre','\u221215\u00a0% sur covering & PPF']},
+          {name:'Excellence',priceByCat:{citadine:'890\u00a0\u20ac',berline:'940\u00a0\u20ac',sportive:'1040\u00a0\u20ac',suv:'1190\u00a0\u20ac',supercar:'1390\u00a0\u20ac'},period:'par mois',feats:['Jusqu\u2019\u00e0 5 entretiens par mois sur rendez-vous','Recharge c\u00e9ramique annuelle incluse','Prise en charge & restitution \u00e0 domicile','Acc\u00e8s prioritaire & conciergerie d\u00e9di\u00e9e']}
         ],
         dtPlans:[
           {name:'Essentiel',priceByCat:{citadine:'149\u00a0\u20ac',berline:'169\u00a0\u20ac',sportive:'189\u00a0\u20ac',suv:'205\u00a0\u20ac',supercar:'225\u00a0\u20ac'},period:'par entretien',feats:['Lavage main m\u00e9thode deux seaux','D\u00e9contamination l\u00e9g\u00e8re de la carrosserie','Aspiration compl\u00e8te & plastiques int\u00e9rieurs','Finition hydrophobe 3 mois']},
@@ -1072,9 +1070,9 @@ class Component extends DCLogic {
         dtCatLabel:'Your vehicle',
         vehCat:{citadine:'City / Compact',berline:'Saloon / Estate',sportive:'Sports',suv:'Large SUV / Van / Pick-up',supercar:'Supercar'},
         dtSubPlans:[
-          {name:'Club',price:'\u20ac95',period:'per month',feats:['1 premium hand wash per month','Vacuum & interior glass','Film visual check at every visit','\u221210% on all services']},
-          {name:'Club Sport',price:'\u20ac200',period:'per month',featured:true,feats:['2 premium services per month','Quarterly hydrophobic refresh','Detailed interior once per quarter','\u221215% on wrap & PPF']},
-          {name:'Excellence',price:'\u20ac350',period:'per month',feats:['Unlimited services by appointment','Yearly ceramic top-up included','Courtesy car at the workshop','Priority access & dedicated concierge']}
+          {name:'Club',priceByCat:{citadine:'\u20ac190',berline:'\u20ac215',sportive:'\u20ac240',suv:'\u20ac260',supercar:'\u20ac285'},period:'per month',feats:['1 premium hand wash per month','Vacuum & interior glass','Film visual check at every visit','\u221210% on all services']},
+          {name:'Club Sport',priceByCat:{citadine:'\u20ac380',berline:'\u20ac400',sportive:'\u20ac450',suv:'\u20ac510',supercar:'\u20ac580'},period:'per month',featured:true,feats:['2 premium services per month','Quarterly hydrophobic refresh','Detailed interior once per quarter','\u221215% on wrap & PPF']},
+          {name:'Excellence',priceByCat:{citadine:'\u20ac890',berline:'\u20ac940',sportive:'\u20ac1040',suv:'\u20ac1190',supercar:'\u20ac1390'},period:'per month',feats:['Up to 5 services per month by appointment','Yearly ceramic top-up included','Home pick-up & drop-off','Priority access & dedicated concierge']}
         ],
         dtPlans:[
           {name:'Essential',priceByCat:{citadine:'\u20ac149',berline:'\u20ac169',sportive:'\u20ac189',suv:'\u20ac205',supercar:'\u20ac225'},period:'per service',feats:['Two-bucket hand wash','Light bodywork decontamination','Full interior vacuum & plastics','3-month hydrophobic finish']},
@@ -1182,9 +1180,9 @@ class Component extends DCLogic {
         dtCatLabel:'Uw voertuig',
         vehCat:{citadine:'Stadswagen / Compact',berline:'Berline / Break',sportive:'Sportwagen',suv:'Grote SUV / Bestelwagen / Pick-up',supercar:'Supercar'},
         dtSubPlans:[
-          {name:'Club',price:'\u20ac\u00a095',period:'per maand',feats:['1 premium handwas per maand','Stofzuigen & binnenruiten','Visuele foliecontrole bij elk bezoek','\u221210% op alle diensten']},
-          {name:'Club Sport',price:'\u20ac\u00a0200',period:'per maand',featured:true,feats:['2 premium onderhoudsbeurten per maand','Driemaandelijkse hydrofobe opfrissing','Interieurdetailing elk kwartaal','\u221215% op wrap & PPF']},
-          {name:'Excellence',price:'\u20ac\u00a0350',period:'per maand',feats:['Onbeperkt onderhoud op afspraak','Jaarlijkse keramische top-up inbegrepen','Vervangwagen in het atelier','Prioritaire toegang & conci\u00ebrgedienst']}
+          {name:'Club',priceByCat:{citadine:'\u20ac\u00a0190',berline:'\u20ac\u00a0215',sportive:'\u20ac\u00a0240',suv:'\u20ac\u00a0260',supercar:'\u20ac\u00a0285'},period:'per maand',feats:['1 premium handwas per maand','Stofzuigen & binnenruiten','Visuele foliecontrole bij elk bezoek','\u221210% op alle diensten']},
+          {name:'Club Sport',priceByCat:{citadine:'\u20ac\u00a0380',berline:'\u20ac\u00a0400',sportive:'\u20ac\u00a0450',suv:'\u20ac\u00a0510',supercar:'\u20ac\u00a0580'},period:'per maand',featured:true,feats:['2 premium onderhoudsbeurten per maand','Driemaandelijkse hydrofobe opfrissing','Interieurdetailing elk kwartaal','\u221215% op wrap & PPF']},
+          {name:'Excellence',priceByCat:{citadine:'\u20ac\u00a0890',berline:'\u20ac\u00a0940',sportive:'\u20ac\u00a01040',suv:'\u20ac\u00a01190',supercar:'\u20ac\u00a01390'},period:'per maand',feats:['Tot 5 onderhoudsbeurten per maand op afspraak','Jaarlijkse keramische top-up inbegrepen','Ophaal- & brengservice aan huis','Prioritaire toegang & conci\u00ebrgedienst']}
         ],
         dtPlans:[
           {name:'Essentieel',priceByCat:{citadine:'\u20ac\u00a0149',berline:'\u20ac\u00a0169',sportive:'\u20ac\u00a0189',suv:'\u20ac\u00a0205',supercar:'\u20ac\u00a0225'},period:'per onderhoud',feats:['Handwas met twee-emmermethode','Lichte decontaminatie van het koetswerk','Volledig interieur \u2014 stofzuigen & kunststoffen','Hydrofobe afwerking 3 maanden']},
@@ -1246,7 +1244,7 @@ class Component extends DCLogic {
     // used for categories awaiting a dedicated photo).
     this.VEHICLE_CATEGORIES = [
       { key: 'citadine', img: 'assets/vehicle-categories/citadine.jpg' },
-      { key: 'berline', img: null },
+      { key: 'berline', img: 'assets/vehicle-categories/berline.jpg' },
       { key: 'sportive', img: 'assets/vehicle-categories/sportive.jpg' },
       { key: 'suv', img: 'assets/vehicle-categories/suv.jpg' },
       { key: 'supercar', img: 'assets/vehicle-categories/supercar.jpg' }
@@ -1669,7 +1667,7 @@ class Component extends DCLogic {
       return;
     }
     this.setState({ subscribeBusy: true, subscribeError: '' });
-    window.EcrinAuth.startCheckout(planKey, this.state.user.id, this.state.user.email).catch(() => {
+    window.EcrinAuth.startCheckout(planKey, this.state.user.id, this.state.user.email, this.state.dtCategory).catch(() => {
       const L = this.I18N[this.state.lang] || this.I18N.fr;
       this.setState({ subscribeBusy: false, subscribeError: L.subError });
     });
@@ -1861,7 +1859,6 @@ class Component extends DCLogic {
         color: s.dtMode===k ? '#ffffff' : '#7c8085',
         bg: s.dtMode===k ? 'linear-gradient(180deg,#ff525a,#e4232b 60%,#b8121a)' : 'transparent'
       })),
-      dtModeOnce: s.dtMode !== 'sub',
       vehCategories: this.VEHICLE_CATEGORIES.map(vc => ({
         key: vc.key,
         img: vc.img,
@@ -1874,7 +1871,7 @@ class Component extends DCLogic {
       })),
       dtPlans: (s.dtMode==='sub' ? L.dtSubPlans : L.dtPlans).map((p, i) => ({
         ...p,
-        price: s.dtMode==='sub' ? p.price : p.priceByCat[s.dtCategory],
+        price: p.priceByCat[s.dtCategory],
         featured: !!p.featured,
         border: p.featured ? 'rgba(228,35,43,.5)' : 'rgba(191,195,199,.12)',
         bg: p.featured ? 'linear-gradient(165deg,rgba(34,14,16,.92),rgba(12,8,9,.96))' : 'linear-gradient(165deg,rgba(22,24,26,.9),rgba(9,10,11,.95))',
