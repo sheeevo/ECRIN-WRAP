@@ -960,16 +960,16 @@ class Component extends DCLogic {
         accDepositPaid:'acompte pay\u00e9', accDepositPending:'acompte en attente',
         dtModes:{once:'\u00c0 la carte',sub:'Abonnement'},
         dtCatLabel:'Votre v\u00e9hicule',
-        vehCat:{citadine:'Citadine / Compacte',berline:'Berline / Break',suvc:'SUV compact',suv:'Grand SUV / Utilitaire / Pick-up',sportive:'Sportive / Supercar'},
+        vehCat:{citadine:'Citadine / Compacte',berline:'Berline / Break',sportive:'Sportive',suv:'Grand SUV / Utilitaire / Pick-up',supercar:'Supercar'},
         dtSubPlans:[
           {name:'Club',price:'95\u00a0\u20ac',period:'par mois',feats:['1 lavage main premium par mois','Aspiration & vitres int\u00e9rieures','Contr\u00f4le visuel du film \u00e0 chaque visite','\u221210\u00a0% sur toutes les prestations']},
           {name:'Club Sport',price:'200\u00a0\u20ac',period:'par mois',featured:true,feats:['2 entretiens premium par mois','Rafra\u00eechissement hydrophobe trimestriel','Int\u00e9rieur d\u00e9taill\u00e9 une fois par trimestre','\u221215\u00a0% sur covering & PPF']},
           {name:'Excellence',price:'350\u00a0\u20ac',period:'par mois',feats:['Entretiens illimit\u00e9s sur rendez-vous','Recharge c\u00e9ramique annuelle incluse','V\u00e9hicule de courtoisie \u00e0 l\u2019atelier','Acc\u00e8s prioritaire & conciergerie d\u00e9di\u00e9e']}
         ],
         dtPlans:[
-          {name:'Essentiel',priceByCat:{citadine:'149\u00a0\u20ac',berline:'169\u00a0\u20ac',suvc:'189\u00a0\u20ac',suv:'205\u00a0\u20ac',sportive:'225\u00a0\u20ac'},period:'par entretien',feats:['Lavage main m\u00e9thode deux seaux','D\u00e9contamination l\u00e9g\u00e8re de la carrosserie','Aspiration compl\u00e8te & plastiques int\u00e9rieurs','Finition hydrophobe 3 mois']},
-          {name:'Signature',priceByCat:{citadine:'390\u00a0\u20ac',berline:'410\u00a0\u20ac',suvc:'460\u00a0\u20ac',suv:'520\u00a0\u20ac',sportive:'590\u00a0\u20ac'},period:'par cure',featured:true,feats:['Correction de peinture 1 \u00e9tape','D\u00e9contamination compl\u00e8te ferreux & goudron','Int\u00e9rieur d\u00e9taill\u00e9 \u2014 cuirs & textiles nourris','Protection c\u00e9ramique 12 mois']},
-          {name:'Prestige',priceByCat:{citadine:'d\u00e8s 890\u00a0\u20ac',berline:'d\u00e8s 940\u00a0\u20ac',suvc:'d\u00e8s 1040\u00a0\u20ac',suv:'d\u00e8s 1190\u00a0\u20ac',sportive:'d\u00e8s 1390\u00a0\u20ac'},period:'programme annuel',feats:['Correction multi-\u00e9tapes finition concours','C\u00e9ramique haute densit\u00e9 3\u20135 ans','Jantes, vitres et \u00e9chappements trait\u00e9s','4 entretiens annuels inclus \u00e0 l\u2019atelier']}
+          {name:'Essentiel',priceByCat:{citadine:'149\u00a0\u20ac',berline:'169\u00a0\u20ac',sportive:'189\u00a0\u20ac',suv:'205\u00a0\u20ac',supercar:'225\u00a0\u20ac'},period:'par entretien',feats:['Lavage main m\u00e9thode deux seaux','D\u00e9contamination l\u00e9g\u00e8re de la carrosserie','Aspiration compl\u00e8te & plastiques int\u00e9rieurs','Finition hydrophobe 3 mois']},
+          {name:'Signature',priceByCat:{citadine:'390\u00a0\u20ac',berline:'410\u00a0\u20ac',sportive:'460\u00a0\u20ac',suv:'520\u00a0\u20ac',supercar:'590\u00a0\u20ac'},period:'par cure',featured:true,feats:['Correction de peinture 1 \u00e9tape','D\u00e9contamination compl\u00e8te ferreux & goudron','Int\u00e9rieur d\u00e9taill\u00e9 \u2014 cuirs & textiles nourris','Protection c\u00e9ramique 12 mois']},
+          {name:'Prestige',priceByCat:{citadine:'d\u00e8s 890\u00a0\u20ac',berline:'d\u00e8s 940\u00a0\u20ac',sportive:'d\u00e8s 1040\u00a0\u20ac',suv:'d\u00e8s 1190\u00a0\u20ac',supercar:'d\u00e8s 1390\u00a0\u20ac'},period:'programme annuel',feats:['Correction multi-\u00e9tapes finition concours','C\u00e9ramique haute densit\u00e9 3\u20135 ans','Jantes, vitres et \u00e9chappements trait\u00e9s','4 entretiens annuels inclus \u00e0 l\u2019atelier']}
         ],
         moods:{or:'Rouge',platine:'Platine',nuit:'Nuit'},
         sounds:{off:'Silence',lounge:'Lounge \u2014 nappes chill',deep:'Deep \u2014 basses feutr\u00e9es',nuit:'Nuit \u2014 halo a\u00e9rien',atelier:'Atelier \u2014 ambiance studio'},
@@ -1070,16 +1070,16 @@ class Component extends DCLogic {
         accDepositPaid:'deposit paid', accDepositPending:'deposit pending',
         dtModes:{once:'\u00c0 la carte',sub:'Membership'},
         dtCatLabel:'Your vehicle',
-        vehCat:{citadine:'City / Compact',berline:'Saloon / Estate',suvc:'Compact SUV',suv:'Large SUV / Van / Pick-up',sportive:'Sports / Supercar'},
+        vehCat:{citadine:'City / Compact',berline:'Saloon / Estate',sportive:'Sports',suv:'Large SUV / Van / Pick-up',supercar:'Supercar'},
         dtSubPlans:[
           {name:'Club',price:'\u20ac95',period:'per month',feats:['1 premium hand wash per month','Vacuum & interior glass','Film visual check at every visit','\u221210% on all services']},
           {name:'Club Sport',price:'\u20ac200',period:'per month',featured:true,feats:['2 premium services per month','Quarterly hydrophobic refresh','Detailed interior once per quarter','\u221215% on wrap & PPF']},
           {name:'Excellence',price:'\u20ac350',period:'per month',feats:['Unlimited services by appointment','Yearly ceramic top-up included','Courtesy car at the workshop','Priority access & dedicated concierge']}
         ],
         dtPlans:[
-          {name:'Essential',priceByCat:{citadine:'\u20ac149',berline:'\u20ac169',suvc:'\u20ac189',suv:'\u20ac205',sportive:'\u20ac225'},period:'per service',feats:['Two-bucket hand wash','Light bodywork decontamination','Full interior vacuum & plastics','3-month hydrophobic finish']},
-          {name:'Signature',priceByCat:{citadine:'\u20ac390',berline:'\u20ac410',suvc:'\u20ac460',suv:'\u20ac520',sportive:'\u20ac590'},period:'per treatment',featured:true,feats:['Single-stage paint correction','Full iron & tar decontamination','Detailed interior \u2014 leather & fabrics fed','12-month ceramic protection']},
-          {name:'Prestige',priceByCat:{citadine:'from \u20ac890',berline:'from \u20ac940',suvc:'from \u20ac1040',suv:'from \u20ac1190',sportive:'from \u20ac1390'},period:'yearly programme',feats:['Multi-stage concours correction','High-density ceramic, 3\u20135 years','Wheels, glass and exhausts coated','4 yearly maintenance visits included']}
+          {name:'Essential',priceByCat:{citadine:'\u20ac149',berline:'\u20ac169',sportive:'\u20ac189',suv:'\u20ac205',supercar:'\u20ac225'},period:'per service',feats:['Two-bucket hand wash','Light bodywork decontamination','Full interior vacuum & plastics','3-month hydrophobic finish']},
+          {name:'Signature',priceByCat:{citadine:'\u20ac390',berline:'\u20ac410',sportive:'\u20ac460',suv:'\u20ac520',supercar:'\u20ac590'},period:'per treatment',featured:true,feats:['Single-stage paint correction','Full iron & tar decontamination','Detailed interior \u2014 leather & fabrics fed','12-month ceramic protection']},
+          {name:'Prestige',priceByCat:{citadine:'from \u20ac890',berline:'from \u20ac940',sportive:'from \u20ac1040',suv:'from \u20ac1190',supercar:'from \u20ac1390'},period:'yearly programme',feats:['Multi-stage concours correction','High-density ceramic, 3\u20135 years','Wheels, glass and exhausts coated','4 yearly maintenance visits included']}
         ],
         moods:{or:'Red',platine:'Platinum',nuit:'Night'},
         sounds:{off:'Silence',lounge:'Lounge \u2014 chill pads',deep:'Deep \u2014 soft bass',nuit:'Night \u2014 airy halo',atelier:'Workshop \u2014 studio ambience'},
@@ -1180,16 +1180,16 @@ class Component extends DCLogic {
         accDepositPaid:'voorschot betaald', accDepositPending:'voorschot in behandeling',
         dtModes:{once:'\u00c0 la carte',sub:'Abonnement'},
         dtCatLabel:'Uw voertuig',
-        vehCat:{citadine:'Stadswagen / Compact',berline:'Berline / Break',suvc:'Compacte SUV',suv:'Grote SUV / Bestelwagen / Pick-up',sportive:'Sportwagen / Supercar'},
+        vehCat:{citadine:'Stadswagen / Compact',berline:'Berline / Break',sportive:'Sportwagen',suv:'Grote SUV / Bestelwagen / Pick-up',supercar:'Supercar'},
         dtSubPlans:[
           {name:'Club',price:'\u20ac\u00a095',period:'per maand',feats:['1 premium handwas per maand','Stofzuigen & binnenruiten','Visuele foliecontrole bij elk bezoek','\u221210% op alle diensten']},
           {name:'Club Sport',price:'\u20ac\u00a0200',period:'per maand',featured:true,feats:['2 premium onderhoudsbeurten per maand','Driemaandelijkse hydrofobe opfrissing','Interieurdetailing elk kwartaal','\u221215% op wrap & PPF']},
           {name:'Excellence',price:'\u20ac\u00a0350',period:'per maand',feats:['Onbeperkt onderhoud op afspraak','Jaarlijkse keramische top-up inbegrepen','Vervangwagen in het atelier','Prioritaire toegang & conci\u00ebrgedienst']}
         ],
         dtPlans:[
-          {name:'Essentieel',priceByCat:{citadine:'\u20ac\u00a0149',berline:'\u20ac\u00a0169',suvc:'\u20ac\u00a0189',suv:'\u20ac\u00a0205',sportive:'\u20ac\u00a0225'},period:'per onderhoud',feats:['Handwas met twee-emmermethode','Lichte decontaminatie van het koetswerk','Volledig interieur \u2014 stofzuigen & kunststoffen','Hydrofobe afwerking 3 maanden']},
-          {name:'Signature',priceByCat:{citadine:'\u20ac\u00a0390',berline:'\u20ac\u00a0410',suvc:'\u20ac\u00a0460',suv:'\u20ac\u00a0520',sportive:'\u20ac\u00a0590'},period:'per kuur',featured:true,feats:['Lakcorrectie in 1 fase','Volledige decontaminatie ijzer & teer','Gedetailleerd interieur \u2014 leder & textiel gevoed','Keramische bescherming 12 maanden']},
-          {name:'Prestige',priceByCat:{citadine:'vanaf \u20ac\u00a0890',berline:'vanaf \u20ac\u00a0940',suvc:'vanaf \u20ac\u00a01040',suv:'vanaf \u20ac\u00a01190',sportive:'vanaf \u20ac\u00a01390'},period:'jaarprogramma',feats:['Meerfasige concours-correctie','Keramische coating 3\u20135 jaar','Velgen, ruiten en uitlaten behandeld','4 jaarlijkse onderhoudsbeurten inbegrepen']}
+          {name:'Essentieel',priceByCat:{citadine:'\u20ac\u00a0149',berline:'\u20ac\u00a0169',sportive:'\u20ac\u00a0189',suv:'\u20ac\u00a0205',supercar:'\u20ac\u00a0225'},period:'per onderhoud',feats:['Handwas met twee-emmermethode','Lichte decontaminatie van het koetswerk','Volledig interieur \u2014 stofzuigen & kunststoffen','Hydrofobe afwerking 3 maanden']},
+          {name:'Signature',priceByCat:{citadine:'\u20ac\u00a0390',berline:'\u20ac\u00a0410',sportive:'\u20ac\u00a0460',suv:'\u20ac\u00a0520',supercar:'\u20ac\u00a0590'},period:'per kuur',featured:true,feats:['Lakcorrectie in 1 fase','Volledige decontaminatie ijzer & teer','Gedetailleerd interieur \u2014 leder & textiel gevoed','Keramische bescherming 12 maanden']},
+          {name:'Prestige',priceByCat:{citadine:'vanaf \u20ac\u00a0890',berline:'vanaf \u20ac\u00a0940',sportive:'vanaf \u20ac\u00a01040',suv:'vanaf \u20ac\u00a01190',supercar:'vanaf \u20ac\u00a01390'},period:'jaarprogramma',feats:['Meerfasige concours-correctie','Keramische coating 3\u20135 jaar','Velgen, ruiten en uitlaten behandeld','4 jaarlijkse onderhoudsbeurten inbegrepen']}
         ],
         moods:{or:'Rood',platine:'Platina',nuit:'Nacht'},
         sounds:{off:'Stilte',lounge:'Lounge \u2014 chill klanken',deep:'Deep \u2014 zachte bas',nuit:'Nacht \u2014 luchtige gloed',atelier:'Atelier \u2014 studiosfeer'},
@@ -1247,9 +1247,9 @@ class Component extends DCLogic {
     this.VEHICLE_CATEGORIES = [
       { key: 'citadine', img: 'assets/vehicle-categories/citadine.jpg' },
       { key: 'berline', img: null },
-      { key: 'suvc', img: null },
+      { key: 'sportive', img: 'assets/vehicle-categories/sportive.jpg' },
       { key: 'suv', img: 'assets/vehicle-categories/suv.jpg' },
-      { key: 'sportive', img: 'assets/vehicle-categories/supercar.jpg' }
+      { key: 'supercar', img: 'assets/vehicle-categories/supercar.jpg' }
     ];
     // Legal content — French only for now (see chat: drafted as a
     // reasonable default, NOT reviewed by a lawyer; the BCE/VAT number is
@@ -1726,9 +1726,9 @@ class Component extends DCLogic {
       return;
     }
     const DEPOSITS = {
-      essentiel: { citadine: 4470, berline: 5070, suvc: 5670, suv: 6150, sportive: 6750 },
-      signature: { citadine: 11700, berline: 12300, suvc: 13800, suv: 15600, sportive: 17700 },
-      prestige: { citadine: 26700, berline: 28200, suvc: 31200, suv: 35700, sportive: 41700 }
+      essentiel: { citadine: 4470, berline: 5070, sportive: 5670, suv: 6150, supercar: 6750 },
+      signature: { citadine: 11700, berline: 12300, sportive: 13800, suv: 15600, supercar: 17700 },
+      prestige: { citadine: 26700, berline: 28200, sportive: 31200, suv: 35700, supercar: 41700 }
     };
     const category = this.state.dtCategory;
     const L = this.I18N[this.state.lang] || this.I18N.fr;
@@ -1866,7 +1866,7 @@ class Component extends DCLogic {
         key: vc.key,
         img: vc.img,
         hasImg: !!vc.img,
-        imgOpacity: s.dtCategory === vc.key ? 1 : 0.55,
+        imgOpacity: s.dtCategory === vc.key ? 1 : 0.8,
         label: L.vehCat[vc.key],
         onClick: () => this.setState({ dtCategory: vc.key }),
         border: s.dtCategory === vc.key ? 'rgba(228,35,43,.7)' : 'rgba(191,195,199,.16)',

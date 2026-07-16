@@ -30,15 +30,16 @@ $dstRect = New-Object System.Drawing.Rectangle(0, 0, $OutW, $OutH)
 $g.DrawImage($src, $dstRect, $srcRect, [System.Drawing.GraphicsUnit]::Pixel)
 $src.Dispose()
 
-# uniform dark wash over the whole photo first, so a bright studio backdrop
-# doesn't read as a pasted light rectangle next to the site's near-black page
-$washBrush = New-Object System.Drawing.SolidBrush([System.Drawing.Color]::FromArgb(100, 5, 5, 5))
+# light uniform wash over the whole photo first, so a bright studio backdrop
+# doesn't read as a pasted white rectangle next to the site's near-black page
+# -- kept subtle so the car itself stays bright and clearly visible.
+$washBrush = New-Object System.Drawing.SolidBrush([System.Drawing.Color]::FromArgb(40, 5, 5, 5))
 $g.FillRectangle($washBrush, 0, 0, $OutW, $OutH)
 
-# dark vignette: soft in the center, fading to near-black at the edges/corners.
-# The gradient ellipse circumscribes the whole canvas (its boundary passes
-# through the 4 corners) so corners land at the outermost, darkest stop --
-# no separate corner fill needed, and there is no hard edge anywhere.
+# soft vignette: barely-there in the center, fading to dark only at the very
+# edges/corners. The gradient ellipse circumscribes the whole canvas (its
+# boundary passes through the 4 corners) so corners land at the outermost,
+# darkest stop -- no separate corner fill needed, no hard edge anywhere.
 $cx = $OutW / 2.0
 $cy = $OutH / 2.0
 $maxR = [Math]::Sqrt($cx * $cx + $cy * $cy)
@@ -49,11 +50,11 @@ $brush.CenterPoint = New-Object System.Drawing.PointF($cx, $cy)
 $colorBlend = New-Object System.Drawing.Drawing2D.ColorBlend(4)
 $colorBlend.Colors = @(
   [System.Drawing.Color]::FromArgb(0, 5, 5, 5),
-  [System.Drawing.Color]::FromArgb(50, 5, 5, 5),
-  [System.Drawing.Color]::FromArgb(165, 5, 5, 5),
-  [System.Drawing.Color]::FromArgb(240, 5, 5, 5)
+  [System.Drawing.Color]::FromArgb(20, 5, 5, 5),
+  [System.Drawing.Color]::FromArgb(80, 5, 5, 5),
+  [System.Drawing.Color]::FromArgb(150, 5, 5, 5)
 )
-$colorBlend.Positions = @(0.0, 0.45, 0.7, 1.0)
+$colorBlend.Positions = @(0.0, 0.5, 0.75, 1.0)
 $brush.InterpolationColors = $colorBlend
 $g.FillRectangle($brush, 0, 0, $OutW, $OutH)
 

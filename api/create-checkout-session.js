@@ -19,18 +19,18 @@ const SUB_PRICE_MAP = {
 // carte price grid shown on the site (full prices: see dtPlans in the
 // front-end I18N; these are exactly 30% of each, rounded to the cent).
 const DEPOSIT_AMOUNTS = {
-  essentiel: { citadine: 4470, berline: 5070, suvc: 5670, suv: 6150, sportive: 6750 },
-  signature: { citadine: 11700, berline: 12300, suvc: 13800, suv: 15600, sportive: 17700 },
-  prestige: { citadine: 26700, berline: 28200, suvc: 31200, suv: 35700, sportive: 41700 }
+  essentiel: { citadine: 4470, berline: 5070, sportive: 5670, suv: 6150, supercar: 6750 },
+  signature: { citadine: 11700, berline: 12300, sportive: 13800, suv: 15600, supercar: 17700 },
+  prestige: { citadine: 26700, berline: 28200, sportive: 31200, suv: 35700, supercar: 41700 }
 };
 
 const PLAN_LABELS = { essentiel: 'Essentiel', signature: 'Signature', prestige: 'Prestige' };
 const CATEGORY_LABELS = {
   citadine: 'Citadine / Compacte',
   berline: 'Berline / Break',
-  suvc: 'SUV compact',
+  sportive: 'Sportive',
   suv: 'Grand SUV / Utilitaire / Pick-up',
-  sportive: 'Sportive / Supercar'
+  supercar: 'Supercar'
 };
 
 module.exports = async (req, res) => {
