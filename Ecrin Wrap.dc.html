@@ -331,6 +331,9 @@ html,body{background:#050505;overflow:hidden}
           <sc-if value="{{ plan.featured }}" hint-placeholder-val="{{ false }}">
             <div style="position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:#ffffff;font-weight:700;background:linear-gradient(180deg,#ff525a,#e4232b 60%,#b8121a);padding:7px 16px;border-radius:2px;white-space:nowrap;">{{ t.dtPopular }}</div>
           </sc-if>
+          <sc-if value="{{ plan.limited }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:#F7F7F7;font-weight:700;background:linear-gradient(180deg,#3a3d40,#202224 60%,#111214);border:1px solid rgba(228,35,43,.4);padding:6px 16px;border-radius:2px;white-space:nowrap;">{{ t.dtLimited }}</div>
+          </sc-if>
           <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:15px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);">{{ plan.name }}</div>
           <div style="margin-top:20px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;">
             <span style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:clamp(34px,3.4vw,46px);color:#F7F7F7;letter-spacing:.01em;">{{ plan.price }}</span>
@@ -954,6 +957,7 @@ class Component extends DCLogic {
         },
         dtOver:'\u00c9clat', dtTitle:'Detailing & formules', dtSub:'Trois niveaux de soin, du rafra\u00eechissement complet au programme c\u00e9ramique d\u2019exception.',
         dtPopular:'Le plus choisi', dtCta:'R\u00e9server cette formule', dtSubscribe:'S\u2019abonner', dtNote:'Tarifs indicatifs selon l\u2019\u00e9tat et la taille du v\u00e9hicule \u2014 devis pr\u00e9cis apr\u00e8s inspection \u00e0 l\u2019atelier.',
+        dtOnRequest:'Sur demande', dtLimited:'Acc\u00e8s limit\u00e9', dtRequestCta:'Faire une demande',
         subManage:'G\u00e9rer mon abonnement', subActive:'Abonnement actif', subNone:'Aucun abonnement actif', subLoginFirst:'Connecte-toi pour t\u2019abonner.', subError:'Impossible de lancer le paiement. R\u00e9essaie.',
         accDepositPaid:'acompte pay\u00e9', accDepositPending:'acompte en attente',
         dtModes:{once:'\u00c0 la carte',sub:'Abonnement'},
@@ -962,7 +966,7 @@ class Component extends DCLogic {
         dtSubPlans:[
           {name:'Club',priceByCat:{citadine:'190\u00a0\u20ac',berline:'215\u00a0\u20ac',sportive:'240\u00a0\u20ac',suv:'260\u00a0\u20ac',supercar:'285\u00a0\u20ac'},period:'par mois',feats:['1 lavage main premium par mois','Aspiration & vitres int\u00e9rieures','Contr\u00f4le visuel du film \u00e0 chaque visite','\u221210\u00a0% sur toutes les prestations']},
           {name:'Club Sport',priceByCat:{citadine:'380\u00a0\u20ac',berline:'400\u00a0\u20ac',sportive:'450\u00a0\u20ac',suv:'510\u00a0\u20ac',supercar:'580\u00a0\u20ac'},period:'par mois',featured:true,feats:['2 entretiens premium par mois','Rafra\u00eechissement hydrophobe trimestriel','Int\u00e9rieur d\u00e9taill\u00e9 une fois par trimestre','\u221215\u00a0% sur covering & PPF']},
-          {name:'Excellence',priceByCat:{citadine:'890\u00a0\u20ac',berline:'940\u00a0\u20ac',sportive:'1040\u00a0\u20ac',suv:'1190\u00a0\u20ac',supercar:'1390\u00a0\u20ac'},period:'par mois',feats:['Jusqu\u2019\u00e0 5 entretiens par mois sur rendez-vous','Recharge c\u00e9ramique annuelle incluse','Prise en charge & restitution \u00e0 domicile','Acc\u00e8s prioritaire & conciergerie d\u00e9di\u00e9e']}
+          {name:'Excellence',onRequest:true,limited:true,period:'',feats:[]}
         ],
         dtPlans:[
           {name:'Essentiel',priceByCat:{citadine:'149\u00a0\u20ac',berline:'169\u00a0\u20ac',sportive:'189\u00a0\u20ac',suv:'205\u00a0\u20ac',supercar:'225\u00a0\u20ac'},period:'par entretien',feats:['Lavage main m\u00e9thode deux seaux','D\u00e9contamination l\u00e9g\u00e8re de la carrosserie','Aspiration compl\u00e8te & plastiques int\u00e9rieurs','Finition hydrophobe 3 mois']},
@@ -1063,6 +1067,7 @@ class Component extends DCLogic {
         },
         dtOver:'Shine', dtTitle:'Detailing & plans', dtSub:'Three levels of care, from a full refresh to an exceptional ceramic programme.',
         dtPopular:'Most popular', dtCta:'Book this plan', dtSubscribe:'Subscribe', dtNote:'Indicative prices depending on vehicle size and condition \u2014 exact quote after workshop inspection.',
+        dtOnRequest:'On request', dtLimited:'Limited access', dtRequestCta:'Apply now',
         subManage:'Manage my subscription', subActive:'Active subscription', subNone:'No active subscription', subLoginFirst:'Sign in to subscribe.', subError:'Could not start checkout. Try again.',
         
         accDepositPaid:'deposit paid', accDepositPending:'deposit pending',
@@ -1072,7 +1077,7 @@ class Component extends DCLogic {
         dtSubPlans:[
           {name:'Club',priceByCat:{citadine:'\u20ac190',berline:'\u20ac215',sportive:'\u20ac240',suv:'\u20ac260',supercar:'\u20ac285'},period:'per month',feats:['1 premium hand wash per month','Vacuum & interior glass','Film visual check at every visit','\u221210% on all services']},
           {name:'Club Sport',priceByCat:{citadine:'\u20ac380',berline:'\u20ac400',sportive:'\u20ac450',suv:'\u20ac510',supercar:'\u20ac580'},period:'per month',featured:true,feats:['2 premium services per month','Quarterly hydrophobic refresh','Detailed interior once per quarter','\u221215% on wrap & PPF']},
-          {name:'Excellence',priceByCat:{citadine:'\u20ac890',berline:'\u20ac940',sportive:'\u20ac1040',suv:'\u20ac1190',supercar:'\u20ac1390'},period:'per month',feats:['Up to 5 services per month by appointment','Yearly ceramic top-up included','Home pick-up & drop-off','Priority access & dedicated concierge']}
+          {name:'Excellence',onRequest:true,limited:true,period:'',feats:[]}
         ],
         dtPlans:[
           {name:'Essential',priceByCat:{citadine:'\u20ac149',berline:'\u20ac169',sportive:'\u20ac189',suv:'\u20ac205',supercar:'\u20ac225'},period:'per service',feats:['Two-bucket hand wash','Light bodywork decontamination','Full interior vacuum & plastics','3-month hydrophobic finish']},
@@ -1173,6 +1178,7 @@ class Component extends DCLogic {
         },
         dtOver:'Glans', dtTitle:'Detailing & formules', dtSub:'Drie zorgniveaus, van complete opfrissing tot een uitzonderlijk keramisch programma.',
         dtPopular:'Meest gekozen', dtCta:'Deze formule boeken', dtSubscribe:'Abonneren', dtNote:'Richtprijzen volgens staat en grootte van het voertuig \u2014 exacte offerte na inspectie in het atelier.',
+        dtOnRequest:'Op aanvraag', dtLimited:'Beperkte toegang', dtRequestCta:'Aanvraag indienen',
         subManage:'Mijn abonnement beheren', subActive:'Actief abonnement', subNone:'Geen actief abonnement', subLoginFirst:'Log in om te abonneren.', subError:'Kon de betaling niet starten. Probeer opnieuw.',
         
         accDepositPaid:'voorschot betaald', accDepositPending:'voorschot in behandeling',
@@ -1182,7 +1188,7 @@ class Component extends DCLogic {
         dtSubPlans:[
           {name:'Club',priceByCat:{citadine:'\u20ac\u00a0190',berline:'\u20ac\u00a0215',sportive:'\u20ac\u00a0240',suv:'\u20ac\u00a0260',supercar:'\u20ac\u00a0285'},period:'per maand',feats:['1 premium handwas per maand','Stofzuigen & binnenruiten','Visuele foliecontrole bij elk bezoek','\u221210% op alle diensten']},
           {name:'Club Sport',priceByCat:{citadine:'\u20ac\u00a0380',berline:'\u20ac\u00a0400',sportive:'\u20ac\u00a0450',suv:'\u20ac\u00a0510',supercar:'\u20ac\u00a0580'},period:'per maand',featured:true,feats:['2 premium onderhoudsbeurten per maand','Driemaandelijkse hydrofobe opfrissing','Interieurdetailing elk kwartaal','\u221215% op wrap & PPF']},
-          {name:'Excellence',priceByCat:{citadine:'\u20ac\u00a0890',berline:'\u20ac\u00a0940',sportive:'\u20ac\u00a01040',suv:'\u20ac\u00a01190',supercar:'\u20ac\u00a01390'},period:'per maand',feats:['Tot 5 onderhoudsbeurten per maand op afspraak','Jaarlijkse keramische top-up inbegrepen','Ophaal- & brengservice aan huis','Prioritaire toegang & conci\u00ebrgedienst']}
+          {name:'Excellence',onRequest:true,limited:true,period:'',feats:[]}
         ],
         dtPlans:[
           {name:'Essentieel',priceByCat:{citadine:'\u20ac\u00a0149',berline:'\u20ac\u00a0169',sportive:'\u20ac\u00a0189',suv:'\u20ac\u00a0205',supercar:'\u20ac\u00a0225'},period:'per onderhoud',feats:['Handwas met twee-emmermethode','Lichte decontaminatie van het koetswerk','Volledig interieur \u2014 stofzuigen & kunststoffen','Hydrofobe afwerking 3 maanden']},
@@ -1871,18 +1877,21 @@ class Component extends DCLogic {
       })),
       dtPlans: (s.dtMode==='sub' ? L.dtSubPlans : L.dtPlans).map((p, i) => ({
         ...p,
-        price: p.priceByCat[s.dtCategory],
+        price: p.onRequest ? L.dtOnRequest : p.priceByCat[s.dtCategory],
         featured: !!p.featured,
+        limited: !!p.limited,
         border: p.featured ? 'rgba(228,35,43,.5)' : 'rgba(191,195,199,.12)',
         bg: p.featured ? 'linear-gradient(165deg,rgba(34,14,16,.92),rgba(12,8,9,.96))' : 'linear-gradient(165deg,rgba(22,24,26,.9),rgba(9,10,11,.95))',
         ctaColor: p.featured ? '#ffffff' : '#c8ccd0',
         ctaBg: p.featured ? 'linear-gradient(180deg,#ff525a,#e4232b 46%,#b8121a 54%,#f23c44)' : 'none',
         ctaBorder: p.featured ? 'transparent' : 'rgba(228,35,43,.4)',
-        ctaLabel: s.dtMode === 'sub' ? L.dtSubscribe : L.dtCta,
-        feats: p.feats.map(f => ({ f })),
-        onClick: s.dtMode === 'sub'
-          ? () => this.startSubscription({ 'Club': 'club', 'Club Sport': 'club_sport', 'Excellence': 'excellence' }[p.name])
-          : () => this.startDeposit(['essentiel', 'signature', 'prestige'][i])
+        ctaLabel: p.onRequest ? L.dtRequestCta : (s.dtMode === 'sub' ? L.dtSubscribe : L.dtCta),
+        feats: (p.feats || []).map(f => ({ f })),
+        onClick: p.onRequest
+          ? () => { this.setDevisService(p.name); this.openDevis(); }
+          : (s.dtMode === 'sub'
+            ? () => this.startSubscription({ 'Club': 'club', 'Club Sport': 'club_sport', 'Excellence': 'excellence' }[p.name])
+            : () => this.startDeposit(['essentiel', 'signature', 'prestige'][i]))
       })),
       subscribeError: s.subscribeError,
       hasSubscribeError: !!s.subscribeError,

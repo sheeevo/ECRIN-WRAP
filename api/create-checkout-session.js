@@ -11,11 +11,12 @@
 const stripe = require('./_stripe');
 
 // monthly subscription amount, in cents, per plan x vehicle category —
-// mirrors dtSubPlans in the front-end I18N.
+// mirrors dtSubPlans in the front-end I18N. Excellence is on-request only
+// (see dtSubPlans' onRequest flag) so it's not sold through Checkout and
+// has no entry here.
 const SUB_AMOUNTS = {
   club: { citadine: 19000, berline: 21500, sportive: 24000, suv: 26000, supercar: 28500 },
-  club_sport: { citadine: 38000, berline: 40000, sportive: 45000, suv: 51000, supercar: 58000 },
-  excellence: { citadine: 89000, berline: 94000, sportive: 104000, suv: 119000, supercar: 139000 }
+  club_sport: { citadine: 38000, berline: 40000, sportive: 45000, suv: 51000, supercar: 58000 }
 };
 
 // 30% deposit, in cents, per plan x vehicle category — mirrors the à la
@@ -27,7 +28,7 @@ const DEPOSIT_AMOUNTS = {
   prestige: { citadine: 26700, berline: 28200, sportive: 31200, suv: 35700, supercar: 41700 }
 };
 
-const SUB_PLAN_LABELS = { club: 'Club', club_sport: 'Club Sport', excellence: 'Excellence' };
+const SUB_PLAN_LABELS = { club: 'Club', club_sport: 'Club Sport' };
 const PLAN_LABELS = { essentiel: 'Essentiel', signature: 'Signature', prestige: 'Prestige' };
 const CATEGORY_LABELS = {
   citadine: 'Citadine / Compacte',
