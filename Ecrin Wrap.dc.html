@@ -630,6 +630,63 @@ html,body{background:#050505;overflow:hidden}
   </div>
   </sc-if>
 
+  <!-- ═══ EXCELLENCE APPLICATION MODAL ═══ -->
+  <sc-if value="{{ excellenceOpen }}" hint-placeholder-val="{{ false }}">
+  <div class="ec-devis-overlay" onClick="{{ closeExcellence }}" style="position:fixed;inset:0;z-index:120;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(3,3,3,.72);backdrop-filter:blur(10px);animation:ecUp .4s ease both;">
+    <div class="ec-devis-card" onClick="{{ stop }}" style="position:relative;width:min(640px,94vw);max-height:92vh;overflow-y:auto;border:1px solid rgba(228,35,43,.28);border-radius:6px;background:linear-gradient(165deg,rgba(24,25,27,.98),rgba(10,11,12,.99));box-shadow:0 40px 100px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.06);padding:44px 42px 40px;">
+      <button onClick="{{ closeExcellence }}" style="position:absolute;top:18px;right:18px;width:34px;height:34px;border-radius:50%;border:1px solid rgba(228,35,43,.26);background:none;color:#9aa0a4;font-size:16px;cursor:pointer;line-height:1;transition:border-color .3s,color .3s;" style-hover="border-color:rgba(228,35,43,.6);color:#F7F7F7">&times;</button>
+
+      <sc-if value="{{ excellenceNotSent }}" hint-placeholder-val="{{ true }}">
+      <div>
+        <div style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:var(--accent);font-weight:600;">{{ t.excTag }}</div>
+        <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:30px;margin-top:12px;letter-spacing:.02em;color:#F7F7F7;">{{ t.excTitle }}</div>
+        <div style="margin-top:8px;font-size:13px;color:#9aa0a4;font-weight:300;">{{ t.excSub }}</div>
+
+        <label style="display:block;margin-top:26px;">
+          <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8c9095;">{{ t.excVehiclesL }}</span>
+          <input ref="{{ excVehicles }}" placeholder="{{ t.excVehiclesPh }}" style="width:100%;margin-top:8px;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:12px 14px;color:#F7F7F7;font-family:inherit;font-size:14px;outline:none;" />
+        </label>
+
+        <label style="display:block;margin-top:14px;">
+          <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8c9095;">{{ t.excBudgetL }}</span>
+          <input ref="{{ excBudget }}" placeholder="{{ t.excBudgetPh }}" style="width:100%;margin-top:8px;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:12px 14px;color:#F7F7F7;font-family:inherit;font-size:14px;outline:none;" />
+        </label>
+
+        <label style="display:block;margin-top:14px;">
+          <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8c9095;">{{ t.excMotivationL }}</span>
+          <textarea ref="{{ excMotivation }}" rows="3" placeholder="{{ t.excMotivationPh }}" style="width:100%;margin-top:8px;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:12px 14px;color:#F7F7F7;font-family:inherit;font-size:14px;outline:none;resize:vertical;"></textarea>
+        </label>
+
+        <div class="ec-devis-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;">
+          <label style="display:block;">
+            <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8c9095;">{{ t.excNameL }}</span>
+            <input ref="{{ excName }}" placeholder="{{ t.excNamePh }}" style="width:100%;margin-top:8px;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:12px 14px;color:#F7F7F7;font-family:inherit;font-size:14px;outline:none;" />
+          </label>
+          <label style="display:block;">
+            <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8c9095;">{{ t.excContactL }}</span>
+            <input ref="{{ excContact }}" placeholder="{{ t.excContactPh }}" style="width:100%;margin-top:8px;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:12px 14px;color:#F7F7F7;font-family:inherit;font-size:14px;outline:none;" />
+          </label>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-top:26px;flex-wrap:wrap;">
+          <button onClick="{{ sendExcellenceMail }}" style="flex:1;min-width:180px;font-family:inherit;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#ffffff;font-weight:600;padding:15px;border:none;border-radius:3px;cursor:pointer;background:linear-gradient(180deg,#ff6a70,#ee3038 46%,#e4232b 54%,#ff5a60);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 10px 26px rgba(0,0,0,.4);transition:transform .3s;" style-hover="transform:translateY(-2px)">{{ t.excSendMail }}</button>
+          <button onClick="{{ sendExcellenceWhats }}" style="flex:1;min-width:180px;font-family:inherit;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#D9D9D9;font-weight:400;padding:15px;border:1px solid rgba(228,35,43,.4);border-radius:3px;cursor:pointer;background:none;transition:border-color .3s,transform .3s;" style-hover="border-color:rgba(228,35,43,.75);transform:translateY(-2px)">{{ t.excSendWa }}</button>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ excellenceSent }}" hint-placeholder-val="{{ false }}">
+      <div style="text-align:center;padding:30px 0 14px;">
+        <div style="width:64px;height:64px;margin:0 auto;border-radius:50%;border:1px solid rgba(228,35,43,.5);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:28px;">✓</div>
+        <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:26px;margin-top:22px;color:#F7F7F7;">{{ t.excThanks }}</div>
+        <div style="margin-top:12px;font-size:14px;color:#9aa0a4;font-weight:300;line-height:1.7;max-width:400px;margin-left:auto;margin-right:auto;">{{ t.excThanksSub }}</div>
+        <button onClick="{{ closeExcellence }}" style="margin-top:28px;font-family:inherit;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#ffffff;font-weight:600;padding:14px 34px;border:none;border-radius:3px;cursor:pointer;background:linear-gradient(180deg,#ff6a70,#ee3038 46%,#e4232b 54%,#ff5a60);">{{ t.excClose }}</button>
+      </div>
+      </sc-if>
+    </div>
+  </div>
+  </sc-if>
+
   <!-- ═══ ACCOUNT MODAL ═══ -->
   <sc-if value="{{ accountOpen }}" hint-placeholder-val="{{ false }}">
   <div class="ec-devis-overlay" onClick="{{ closeAccount }}" style="position:fixed;inset:0;z-index:120;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(3,3,3,.72);backdrop-filter:blur(10px);animation:ecUp .4s ease both;">
@@ -860,6 +917,9 @@ class Component extends DCLogic {
     // devis modal (quote request form)
     devisOpen: false, devisService: 'Covering', devisSent: false,
 
+    // Excellence membership application (dedicated form, not the devis one)
+    excellenceOpen: false, excellenceSent: false,
+
     // client account: auth modal + session
     accountOpen: false, authMode: 'signin', authError: '', authBusy: false, authSignupSent: false, user: null,
 
@@ -881,6 +941,11 @@ class Component extends DCLogic {
     this.dvSpecs = React.createRef();
     this.dvName = React.createRef();
     this.dvContact = React.createRef();
+    this.excVehicles = React.createRef();
+    this.excBudget = React.createRef();
+    this.excMotivation = React.createRef();
+    this.excName = React.createRef();
+    this.excContact = React.createRef();
     this.authEmailRef = React.createRef();
     this.authPasswordRef = React.createRef();
     this.authFirstNameRef = React.createRef();
@@ -934,6 +999,13 @@ class Component extends DCLogic {
         dvService:'Prestation', dvBrandL:'Marque', dvModelL:'Mod\u00e8le', dvSpecsL:'Sp\u00e9cifications', dvNameL:'Nom', dvContactL:'E-mail ou t\u00e9l\u00e9phone',
         dvSendMail:'Envoyer par e-mail', dvSendWa:'Envoyer via WhatsApp', dvThanks:'Merci', dvThanksSub:'Votre demande est pr\u00eate dans votre messagerie. Envoyez-la et nous vous r\u00e9pondons sous 24 h.', dvClose:'Fermer',
         dvBrandPh:'Tesla, BMW, Porsche...', dvModelPh:'Model 3, 911...', dvSpecsPh:'Teinte souhait\u00e9e, finition, zones \u00e0 couvrir, d\u00e9lai...', dvNamePh:'Votre nom', dvContactPh:'Pour vous recontacter',
+        excTag:'Candidature Excellence', excTitle:'Rejoindre Excellence', excSub:'Un programme r\u00e9serv\u00e9 \u00e0 un nombre limit\u00e9 de v\u00e9hicules \u2014 parlez-nous du v\u00f4tre.',
+        excVehiclesL:'V\u00e9hicule(s) actuel(s)', excVehiclesPh:'Marques et mod\u00e8les de votre collection',
+        excBudgetL:'Budget entretien annuel estim\u00e9', excBudgetPh:'ex. 3 000 \u2013 5 000 \u20ac',
+        excMotivationL:'Pourquoi Excellence ?', excMotivationPh:'Vos attentes, fr\u00e9quence d\u2019utilisation, exigences particuli\u00e8res...',
+        excNameL:'Nom', excNamePh:'Votre nom', excContactL:'E-mail ou t\u00e9l\u00e9phone', excContactPh:'Pour vous recontacter',
+        excSendMail:'Envoyer ma candidature', excSendWa:'Envoyer via WhatsApp',
+        excThanks:'Candidature envoy\u00e9e', excThanksSub:'Nous \u00e9tudions chaque candidature avec attention et revenons vers vous sous 48 h.', excClose:'Fermer',
         nav:{accueil:'Accueil',services:'Services',configurateur:'Configurateur',processus:'Processus',formation:'Formation',portfolio:'Portfolio',temoignages:'T\u00e9moignages',faq:'FAQ',contact:'Contact'},
         averyLabel:'Nuancier Avery Dennison', hexisLabel:'Nuancier Hexis Skintac HX2000', averyPick:'Choisissez une teinte',
         averyFams:{gloss:'Gloss',matte:'Mat',satin:'Satin',metallic:'M\u00e9tallis\u00e9',satinmet:'Satin m\u00e9tal',flip:'ColorFlow'},
@@ -1044,6 +1116,13 @@ class Component extends DCLogic {
         dvService:'Service', dvBrandL:'Brand', dvModelL:'Model', dvSpecsL:'Specifications', dvNameL:'Name', dvContactL:'E-mail or phone',
         dvSendMail:'Send by e-mail', dvSendWa:'Send via WhatsApp', dvThanks:'Thank you', dvThanksSub:'Your request is ready in your mail app. Send it and we reply within 24 h.', dvClose:'Close',
         dvBrandPh:'Tesla, BMW, Porsche...', dvModelPh:'Model 3, 911...', dvSpecsPh:'Desired colour, finish, areas to cover, timing...', dvNamePh:'Your name', dvContactPh:'So we can reach you',
+        excTag:'Excellence application', excTitle:'Join Excellence', excSub:'A programme reserved for a limited number of vehicles — tell us about yours.',
+        excVehiclesL:'Current vehicle(s)', excVehiclesPh:'Makes and models in your collection',
+        excBudgetL:'Estimated yearly maintenance budget', excBudgetPh:'e.g. €3,000 – €5,000',
+        excMotivationL:'Why Excellence?', excMotivationPh:'Your expectations, usage frequency, specific requirements...',
+        excNameL:'Name', excNamePh:'Your name', excContactL:'E-mail or phone', excContactPh:'So we can reach you',
+        excSendMail:'Send my application', excSendWa:'Send via WhatsApp',
+        excThanks:'Application sent', excThanksSub:'We review every application carefully and get back to you within 48 h.', excClose:'Close',
         nav:{accueil:'Home',services:'Services',configurateur:'Configurator',processus:'Process',formation:'Training',portfolio:'Portfolio',temoignages:'Testimonials',faq:'FAQ',contact:'Contact'},
         averyLabel:'Avery Dennison colour chart', hexisLabel:'Hexis Skintac HX2000 colour chart', averyPick:'Pick a colour',
         averyFams:{gloss:'Gloss',matte:'Matte',satin:'Satin',metallic:'Metallic',satinmet:'Satin metallic',flip:'ColorFlow'},
@@ -1155,6 +1234,13 @@ class Component extends DCLogic {
         dvService:'Dienst', dvBrandL:'Merk', dvModelL:'Model', dvSpecsL:'Specificaties', dvNameL:'Naam', dvContactL:'E-mail of telefoon',
         dvSendMail:'Verzenden per e-mail', dvSendWa:'Verzenden via WhatsApp', dvThanks:'Bedankt', dvThanksSub:'Uw aanvraag staat klaar in uw mailprogramma. Verstuur ze en wij antwoorden binnen 24 u.', dvClose:'Sluiten',
         dvBrandPh:'Tesla, BMW, Porsche...', dvModelPh:'Model 3, 911...', dvSpecsPh:'Gewenste kleur, afwerking, zones, timing...', dvNamePh:'Uw naam', dvContactPh:'Om u te bereiken',
+        excTag:'Excellence-aanvraag', excTitle:'Word lid van Excellence', excSub:'Een programma voorbehouden aan een beperkt aantal voertuigen — vertel ons over het uwe.',
+        excVehiclesL:'Huidige voertuig(en)', excVehiclesPh:'Merken en modellen in uw collectie',
+        excBudgetL:'Geschat jaarlijks onderhoudsbudget', excBudgetPh:'bv. € 3.000 – € 5.000',
+        excMotivationL:'Waarom Excellence?', excMotivationPh:'Uw verwachtingen, gebruiksfrequentie, specifieke wensen...',
+        excNameL:'Naam', excNamePh:'Uw naam', excContactL:'E-mail of telefoon', excContactPh:'Om u te bereiken',
+        excSendMail:'Aanvraag versturen', excSendWa:'Verzenden via WhatsApp',
+        excThanks:'Aanvraag verzonden', excThanksSub:'Wij bekijken elke aanvraag zorgvuldig en antwoorden binnen 48 u.', excClose:'Sluiten',
         nav:{accueil:'Home',services:'Diensten',configurateur:'Configurator',processus:'Proces',formation:'Opleiding',portfolio:'Portfolio',temoignages:'Getuigenissen',faq:'FAQ',contact:'Contact'},
         averyLabel:'Avery Dennison kleurenwaaier', hexisLabel:'Hexis Skintac HX2000 kleurenwaaier', averyPick:'Kies een kleur',
         averyFams:{gloss:'Glans',matte:'Mat',satin:'Satijn',metallic:'Metallic',satinmet:'Satijn metallic',flip:'ColorFlow'},
@@ -1595,6 +1681,9 @@ class Component extends DCLogic {
   closeDevis(){ this.setState({ devisOpen: false }); }
   setDevisService(s){ this.setState({ devisService: s }); }
 
+  openExcellence(){ this.setState({ excellenceOpen: true, excellenceSent: false }); }
+  closeExcellence(){ this.setState({ excellenceOpen: false }); }
+
   openAccount(){ this.setState({ accountOpen: true, authError: '' }); }
   openAccountMobile(){ this.setState({ accountOpen: true, authError: '', mobileMenu: false }); }
   closeAccount(){ this.setState({ accountOpen: false }); }
@@ -1773,6 +1862,49 @@ class Component extends DCLogic {
     this.setState({ devisSent: true });
   }
 
+  // ── Excellence membership application (dedicated form) ───────────────
+  buildExcellenceMessage(){
+    const g = (r) => (r.current && r.current.value.trim()) || '—';
+    return [
+      'Candidature Excellence — Ecrin Wrap',
+      '',
+      'Véhicule(s) actuel(s) : ' + g(this.excVehicles),
+      'Budget entretien annuel estimé : ' + g(this.excBudget),
+      'Motivation : ' + g(this.excMotivation),
+      'Nom : ' + g(this.excName),
+      'Contact : ' + g(this.excContact)
+    ].join('\n');
+  }
+
+  persistExcellenceIfLoggedIn(){
+    if(!window.EcrinAuth || !this.state.user) return;
+    const g = (r) => (r.current && r.current.value.trim()) || null;
+    window.EcrinAuth.addQuote({
+      service: 'Excellence',
+      brand: g(this.excVehicles),
+      specs: 'Budget: ' + (g(this.excBudget) || '—') + ' — Motivation: ' + (g(this.excMotivation) || '—'),
+      contact_name: g(this.excName),
+      contact_info: g(this.excContact)
+    }).then(rows => {
+      this.setState(s => ({ quotes: (rows || []).concat(s.quotes) }));
+    }).catch(() => {});
+  }
+
+  sendExcellenceMail(){
+    const body = encodeURIComponent(this.buildExcellenceMessage());
+    const subject = encodeURIComponent('Candidature Excellence — Ecrin Wrap');
+    window.open('mailto:ecrinwrapofficel@gmail.com?subject=' + subject + '&body=' + body, '_blank');
+    this.persistExcellenceIfLoggedIn();
+    this.setState({ excellenceSent: true });
+  }
+
+  sendExcellenceWhats(){
+    const text = encodeURIComponent(this.buildExcellenceMessage());
+    window.open('https://wa.me/32474638261?text=' + text, '_blank');
+    this.persistExcellenceIfLoggedIn();
+    this.setState({ excellenceSent: true });
+  }
+
   toggleMute(){
     const next = !this.state.muted;
     this.setState({ muted: next });
@@ -1888,7 +2020,7 @@ class Component extends DCLogic {
         ctaLabel: p.onRequest ? L.dtRequestCta : (s.dtMode === 'sub' ? L.dtSubscribe : L.dtCta),
         feats: (p.feats || []).map(f => ({ f })),
         onClick: p.onRequest
-          ? () => { this.setDevisService(p.name); this.openDevis(); }
+          ? () => this.openExcellence()
           : (s.dtMode === 'sub'
             ? () => this.startSubscription({ 'Club': 'club', 'Club Sport': 'club_sport', 'Excellence': 'excellence' }[p.name])
             : () => this.startDeposit(['essentiel', 'signature', 'prestige'][i]))
@@ -1925,6 +2057,18 @@ class Component extends DCLogic {
       sendMail: () => this.sendMail(),
       sendWhats: () => this.sendWhats(),
       stop: (e) => e.stopPropagation(),
+
+      excellenceOpen: s.excellenceOpen,
+      excellenceSent: s.excellenceSent,
+      excellenceNotSent: !s.excellenceSent,
+      excVehicles: this.excVehicles,
+      excBudget: this.excBudget,
+      excMotivation: this.excMotivation,
+      excName: this.excName,
+      excContact: this.excContact,
+      closeExcellence: () => this.closeExcellence(),
+      sendExcellenceMail: () => this.sendExcellenceMail(),
+      sendExcellenceWhats: () => this.sendExcellenceWhats(),
 
       accountOpen: s.accountOpen,
       accountLoggedIn: !!s.user,
