@@ -106,46 +106,28 @@ html,body{background:#050505;overflow:hidden}
       <div style="margin-top:18px;font-family:'Montserrat',sans-serif;font-size:clamp(10px,1vw,13px);letter-spacing:.5em;text-transform:uppercase;color:var(--accent);font-weight:600;padding-left:.5em;">Covering &middot; PPF &middot; Detailing</div>
     </div>
 
-    <!-- stage -->
+    <!-- stage: a material/light study (brushed disc + travelling sheen +
+         emerging mark) instead of the 3D car, which now stays reserved
+         for the configurator so it doesn't feel repeated on arrival -->
     <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:3;">
-      <div class="ec-stage" style="position:relative;width:min(780px,84vw);height:360px;margin-top:60px;">
+      <div class="ec-stage" style="position:relative;width:min(560px,84vw);height:360px;margin-top:60px;display:flex;align-items:center;justify-content:center;">
 
-        <!-- turntable / floor -->
-        <div style="position:absolute;left:50%;bottom:44px;transform:translateX(-50%);width:126%;height:170px;border-radius:50%;background:radial-gradient(ellipse at center,#1c1e1f 0%,#0c0d0e 52%,transparent 74%);"></div>
-        <div style="position:absolute;left:50%;bottom:66px;transform:translateX(-50%);width:100%;height:120px;border-radius:50%;background:conic-gradient(from 0deg,transparent 0 58%,var(--glow) 76%,transparent 92%);-webkit-mask:radial-gradient(ellipse at center,transparent 60%,#000 62%,#000 82%,transparent 84%);mask:radial-gradient(ellipse at center,transparent 60%,#000 62%,#000 82%,transparent 84%);opacity:.6;animation:ecTurn 16s linear infinite;"></div>
-        <!-- accent floor glow -->
-        <div style="position:absolute;left:50%;bottom:78px;transform:translateX(-50%);width:60%;height:40px;border-radius:50%;background:radial-gradient(ellipse,var(--glow),transparent 70%);filter:blur(12px);opacity:.7;animation:ecPulse 6s ease-in-out infinite;"></div>
+        <!-- floor glow -->
+        <div style="position:absolute;left:50%;bottom:18px;transform:translateX(-50%);width:60%;height:40px;border-radius:50%;background:radial-gradient(ellipse,var(--glow),transparent 70%);filter:blur(14px);opacity:.7;animation:ecPulse 6s ease-in-out infinite;"></div>
 
-        <!-- real 3D model (fades in when loaded; CSS car is the fallback) -->
-        <x-import component-from-global-scope="ecrin-car-viewer" from="./car-viewer.js" mood="{{ mood }}" finish="rouge" style="position:absolute;left:50%;bottom:-40px;transform:translateX(-50%);width:min(1050px,96vw);height:520px;z-index:2;pointer-events:none;" hint-size="100%,520px"></x-import>
+        <!-- brushed / woven material disc -->
+        <div style="position:absolute;width:min(420px,78vw);height:min(420px,78vw);border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(255,255,255,.045) 0deg 1.2deg,transparent 1.2deg 3deg),radial-gradient(circle at 36% 30%,#26282a 0%,#131415 46%,#0a0b0c 78%);box-shadow:0 40px 90px rgba(0,0,0,.55),inset 0 2px 0 rgba(255,255,255,.05);"></div>
 
-        <!-- reflection (mirrored, faded) -->
-        <sc-if value="{{ cssCarVisible }}" hint-placeholder-val="{{ true }}">
-        <div style="position:absolute;left:0;bottom:12px;width:100%;height:200px;transform:scaleY(-1);opacity:.16;filter:blur(1px);-webkit-mask:linear-gradient(to bottom,#000,transparent 72%);mask:linear-gradient(to bottom,#000,transparent 72%);">
-          <div style="position:absolute;left:14%;bottom:10px;width:96px;height:96px;border-radius:50%;background:#0a0b0c;"></div>
-          <div style="position:absolute;left:70%;bottom:10px;width:96px;height:96px;border-radius:50%;background:#0a0b0c;"></div>
-          <div style="position:absolute;inset:0 0 auto 0;height:200px;clip-path:polygon(2% 78%,3% 60%,17% 55%,32% 40%,45% 20%,63% 15%,73% 22%,88% 52%,98% 60%,98% 78%);background:linear-gradient(175deg,#F7F7F7 0%,#c8ccd0 18%,#82868b 46%,#2b2d2f 62%,#5c6064 80%,#a9adb1 100%);"></div>
+        <!-- rotating conic light ring -->
+        <div style="position:absolute;width:min(466px,86vw);height:min(466px,86vw);border-radius:50%;background:conic-gradient(from 0deg,transparent 0 70%,var(--glow) 85%,transparent 97%);-webkit-mask:radial-gradient(circle,transparent 67%,#000 69%,#000 72%,transparent 74%);mask:radial-gradient(circle,transparent 67%,#000 69%,#000 72%,transparent 74%);opacity:.85;animation:ecTurn 13s linear infinite;"></div>
+
+        <!-- travelling sheen sweep across the disc -->
+        <div style="position:absolute;width:min(420px,78vw);height:min(420px,78vw);border-radius:50%;overflow:hidden;pointer-events:none;">
+          <div style="position:absolute;top:-25%;left:-10%;width:40%;height:150%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.32),transparent);transform:skewX(-16deg);filter:blur(6px);animation:ecSweep 6.5s ease-in-out infinite;"></div>
         </div>
-        </sc-if>
 
-        <!-- car (CSS fallback) -->
-        <div style="position:absolute;left:0;top:0;width:100%;height:260px;animation:ecFloatY 7.5s ease-in-out infinite;opacity:{{ cssCarOpacity }};transition:opacity 1s ease;">
-          <!-- wheels -->
-          <div style="position:absolute;left:14%;bottom:26px;width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#3a3d40,#0c0d0e 62%);box-shadow:inset 0 0 0 6px rgba(228,35,43,.2),inset 0 0 0 20px rgba(0,0,0,.4),0 10px 24px rgba(0,0,0,.6);z-index:1;"></div>
-          <div style="position:absolute;left:70%;bottom:26px;width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#3a3d40,#0c0d0e 62%);box-shadow:inset 0 0 0 6px rgba(228,35,43,.2),inset 0 0 0 20px rgba(0,0,0,.4),0 10px 24px rgba(0,0,0,.6);z-index:1;"></div>
-          <!-- body -->
-          <div style="position:absolute;left:0;top:40px;width:100%;height:200px;z-index:2;clip-path:polygon(2% 78%,3% 60%,17% 55%,32% 40%,45% 20%,63% 15%,73% 22%,88% 52%,98% 60%,98% 78%);background:linear-gradient(172deg,#F7F7F7 0%,#d2d6da 16%,#9aa0a4 40%,#33363a 60%,#63676b 78%,#b6babe 100%);box-shadow:inset 0 3px 0 rgba(255,255,255,.55);"></div>
-          <!-- greenhouse / glass -->
-          <div style="position:absolute;left:0;top:40px;width:100%;height:200px;z-index:3;clip-path:polygon(34% 40%,45% 22%,62% 19%,71% 24%,80% 45%);background:linear-gradient(180deg,#050607,#2a2d30);box-shadow:inset 0 2px 6px rgba(255,255,255,.14);"></div>
-          <!-- chrome beltline highlight -->
-          <div style="position:absolute;left:0;top:40px;width:100%;height:200px;z-index:4;clip-path:polygon(3% 58%,98% 58%,98% 62%,3% 62%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.85),transparent);opacity:.5;"></div>
-          <!-- mouse-reactive specular -->
-          <div style="position:absolute;left:0;top:40px;width:100%;height:200px;z-index:5;clip-path:polygon(2% 78%,3% 60%,17% 55%,32% 40%,45% 20%,63% 15%,73% 22%,88% 52%,98% 60%,98% 78%);background:radial-gradient(58% 130% at calc(50% + var(--mx) * 34%) calc(4% + var(--my) * 22%),rgba(255,255,255,.8),rgba(255,255,255,.12) 34%,transparent 58%);mix-blend-mode:screen;pointer-events:none;"></div>
-          <!-- travelling studio streak -->
-          <div style="position:absolute;left:0;top:40px;width:100%;height:200px;z-index:6;clip-path:polygon(2% 78%,3% 60%,17% 55%,32% 40%,45% 20%,63% 15%,73% 22%,88% 52%,98% 60%,98% 78%);overflow:hidden;pointer-events:none;">
-            <div style="position:absolute;top:0;left:0;width:34%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-16deg);filter:blur(3px);animation:ecSweep 9s ease-in-out infinite;"></div>
-          </div>
-        </div>
+        <!-- EW mark emerging -->
+        <img src="assets/ecrin-logo.png" alt="Ecrin Wrap" style="position:relative;width:min(210px,39vw);height:min(210px,39vw);object-fit:contain;mix-blend-mode:screen;animation:ecFloatY 7.5s ease-in-out infinite;" />
       </div>
     </div>
 
@@ -903,7 +885,7 @@ class Component extends DCLogic {
     phase: 'loading', progress: 0, ready: false, revealOut: false,
 
     // hero ambiance (mood swatches, background audio, 3D car fallback)
-    mood: 'or', muted: false, soundPreset: 'lounge', soundMenu: false, carReady: false,
+    mood: 'or', muted: false, soundPreset: 'lounge', soundMenu: false,
 
     // nav / layout
     navMax: 10, mobileMenu: false, isMobile: false, lang: 'fr',
@@ -1408,8 +1390,6 @@ class Component extends DCLogic {
     };
     this._onNavResize();
     window.addEventListener('resize', this._onNavResize);
-    this._onCarReady = () => this.setState({ carReady: true });
-    window.addEventListener('ecrin-car-ready', this._onCarReady);
     this._onCarZoom = (e) => { const el = this.wrapper.current; if(el) el.style.setProperty('--zoom', (e.detail||0).toFixed(3)); };
     window.addEventListener('ecrin-car-zoom', this._onCarZoom);
     this.startLoading();
@@ -1484,7 +1464,6 @@ class Component extends DCLogic {
   componentWillUnmount(){
     window.removeEventListener('mousemove', this._onMove);
     if(this._onNavResize) window.removeEventListener('resize', this._onNavResize);
-    if(this._onCarReady) window.removeEventListener('ecrin-car-ready', this._onCarReady);
     if(this._onCarZoom) window.removeEventListener('ecrin-car-zoom', this._onCarZoom);
     if(this._resize) window.removeEventListener('resize', this._resize);
     clearInterval(this._loop);
@@ -2150,8 +2129,6 @@ class Component extends DCLogic {
       revealOpacity: s.revealOut ? 0 : 1,
       isHero: s.phase==='hero',
       mood: s.mood,
-      cssCarVisible: !s.carReady,
-      cssCarOpacity: s.carReady ? 0 : 1,
       showHeroBase: true,
       muted: s.muted,
       audioLabel: s.muted ? 'Son coup\u00e9' : 'Son actif',
