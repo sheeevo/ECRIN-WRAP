@@ -45,7 +45,6 @@ html,body{background:#050505;overflow:hidden}
   /* hero */
   #accueil{height:100vh !important;height:100dvh !important}
   .ec-hero-word{font-size:clamp(32px,13vw,120px) !important;gap:.16em !important}
-  .ec-stage{height:300px !important;margin-top:34px !important}
   .ec-moodbar{padding:0 20px !important;bottom:18px !important}
   .ec-location-tag{display:none !important}
 
@@ -90,12 +89,14 @@ html,body{background:#050505;overflow:hidden}
   <sc-if value="{{ showHeroBase }}" hint-placeholder-val="{{ true }}">
   <div id="accueil" data-screen-label="Accueil" style="position:relative;width:100%;height:100vh;overflow:hidden;z-index:1;">
 
-    <!-- ambient fog -->
-    <div style="position:absolute;top:14%;left:-12%;width:820px;height:820px;border-radius:50%;background:radial-gradient(circle,var(--ambient),transparent 62%);filter:blur(46px);opacity:.7;animation:ecDrift 21s ease-in-out infinite;"></div>
-    <div style="position:absolute;bottom:2%;right:-14%;width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,var(--ambient),transparent 64%);filter:blur(52px);opacity:.55;animation:ecDrift 27s ease-in-out infinite reverse;"></div>
-    <!-- volumetric rays -->
-    <div style="position:absolute;top:-20%;left:22%;width:180px;height:130%;background:linear-gradient(180deg,rgba(230,238,245,.16),transparent 70%);filter:blur(14px);transform:skewX(-9deg);animation:ecRay 14s ease-in-out infinite;"></div>
-    <div style="position:absolute;top:-20%;right:26%;width:230px;height:130%;background:linear-gradient(180deg,rgba(230,238,245,.12),transparent 72%);filter:blur(18px);transform:skewX(-9deg);animation:ecRay 18s ease-in-out infinite 2s;"></div>
+    <!-- hero photo: real client car (BMW M2), not the 3D model, so the
+         entrance doesn't repeat the configurator -->
+    <img src="assets/hero-m2.jpg" alt="BMW M2 — Ecrin Wrap" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 60%;" />
+    <!-- dark scrim so the wordmark/caption stay legible over the photo -->
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,5,5,.6) 0%,rgba(5,5,5,.15) 30%,rgba(5,5,5,.35) 60%,rgba(5,5,5,.82) 100%);"></div>
+    <!-- ambient brand-colour glow, kept subtle over the photo -->
+    <div style="position:absolute;top:14%;left:-12%;width:820px;height:820px;border-radius:50%;background:radial-gradient(circle,var(--ambient),transparent 62%);filter:blur(46px);opacity:.4;animation:ecDrift 21s ease-in-out infinite;mix-blend-mode:multiply;"></div>
+    <div style="position:absolute;bottom:2%;right:-14%;width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,var(--ambient),transparent 64%);filter:blur(52px);opacity:.35;animation:ecDrift 27s ease-in-out infinite reverse;mix-blend-mode:multiply;"></div>
 
     <!-- hero wordmark (logo style) -->
     <div style="position:absolute;top:11%;left:0;right:0;text-align:center;z-index:2;pointer-events:none;">
@@ -104,31 +105,6 @@ html,body{background:#050505;overflow:hidden}
         <span style="background:linear-gradient(180deg,#FF6067 0%,#EE3038 40%,#E4232B 62%,#A80D14 100%);-webkit-background-clip:text;background-clip:text;color:transparent;">WRAP</span>
       </div>
       <div style="margin-top:18px;font-family:'Montserrat',sans-serif;font-size:clamp(10px,1vw,13px);letter-spacing:.5em;text-transform:uppercase;color:var(--accent);font-weight:600;padding-left:.5em;">Covering &middot; PPF &middot; Detailing</div>
-    </div>
-
-    <!-- stage: a material/light study (brushed disc + travelling sheen +
-         emerging mark) instead of the 3D car, which now stays reserved
-         for the configurator so it doesn't feel repeated on arrival -->
-    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:3;">
-      <div class="ec-stage" style="position:relative;width:min(560px,84vw);height:360px;margin-top:60px;display:flex;align-items:center;justify-content:center;">
-
-        <!-- floor glow -->
-        <div style="position:absolute;left:50%;bottom:18px;transform:translateX(-50%);width:60%;height:40px;border-radius:50%;background:radial-gradient(ellipse,var(--glow),transparent 70%);filter:blur(14px);opacity:.7;animation:ecPulse 6s ease-in-out infinite;"></div>
-
-        <!-- brushed / woven material disc -->
-        <div style="position:absolute;width:min(420px,78vw);height:min(420px,78vw);border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(255,255,255,.045) 0deg 1.2deg,transparent 1.2deg 3deg),radial-gradient(circle at 36% 30%,#26282a 0%,#131415 46%,#0a0b0c 78%);box-shadow:0 40px 90px rgba(0,0,0,.55),inset 0 2px 0 rgba(255,255,255,.05);"></div>
-
-        <!-- rotating conic light ring -->
-        <div style="position:absolute;width:min(466px,86vw);height:min(466px,86vw);border-radius:50%;background:conic-gradient(from 0deg,transparent 0 70%,var(--glow) 85%,transparent 97%);-webkit-mask:radial-gradient(circle,transparent 67%,#000 69%,#000 72%,transparent 74%);mask:radial-gradient(circle,transparent 67%,#000 69%,#000 72%,transparent 74%);opacity:.85;animation:ecTurn 13s linear infinite;"></div>
-
-        <!-- travelling sheen sweep across the disc -->
-        <div style="position:absolute;width:min(420px,78vw);height:min(420px,78vw);border-radius:50%;overflow:hidden;pointer-events:none;">
-          <div style="position:absolute;top:-25%;left:-10%;width:40%;height:150%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.32),transparent);transform:skewX(-16deg);filter:blur(6px);animation:ecSweep 6.5s ease-in-out infinite;"></div>
-        </div>
-
-        <!-- EW mark emerging -->
-        <img src="assets/ecrin-logo.png" alt="Ecrin Wrap" style="position:relative;width:min(210px,39vw);height:min(210px,39vw);object-fit:contain;mix-blend-mode:screen;animation:ecFloatY 7.5s ease-in-out infinite;" />
-      </div>
     </div>
 
     <!-- caption -->
