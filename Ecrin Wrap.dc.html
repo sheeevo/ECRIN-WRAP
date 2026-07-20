@@ -131,21 +131,6 @@ html,body{background:#050505;overflow:hidden}
             <button onClick="{{ lg.onClick }}" style="background:none;border:none;font-family:inherit;font-size:10px;letter-spacing:.12em;color:{{ lg.color }};padding:6px 7px;cursor:pointer;border-bottom:1px solid {{ lg.border }};transition:color .3s;" style-hover="color:#F7F7F7">{{ lg.label }}</button>
           </sc-for>
         </div>
-        <div style="position:relative;">
-          <button onClick="{{ toggleSoundMenu }}" title="{{ audioLabel }}" style="display:flex;align-items:center;justify-content:center;width:34px;height:34px;flex:none;background:none;border:1px solid rgba(228,35,43,.3);border-radius:50%;cursor:pointer;transition:border-color .3s;" style-hover="border-color:rgba(228,35,43,.65)">
-            <span style="width:7px;height:7px;border-radius:50%;background:var(--accent);opacity:{{ audioDot }};box-shadow:0 0 8px var(--glow);"></span>
-          </button>
-          <sc-if value="{{ soundMenu }}" hint-placeholder-val="{{ false }}">
-          <div style="position:absolute;top:44px;right:0;z-index:60;min-width:190px;border:1px solid rgba(228,35,43,.3);border-radius:4px;background:linear-gradient(165deg,rgba(22,23,25,.98),rgba(9,10,11,.99));box-shadow:0 24px 60px rgba(0,0,0,.6);padding:8px;animation:ecUp .25s ease both;">
-            <div style="padding:8px 12px 10px;font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);font-weight:600;">{{ t.soundTitle }}</div>
-            <sc-for list="{{ soundOptions }}" as="so" hint-placeholder-count="5">
-              <button onClick="{{ so.onClick }}" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;font-family:inherit;font-size:12px;letter-spacing:.08em;color:{{ so.color }};background:{{ so.bg }};border:none;border-radius:3px;padding:10px 12px;cursor:pointer;transition:background .25s,color .25s;" style-hover="background:rgba(228,35,43,.1);color:#F7F7F7">
-                <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:{{ so.dot }};"></span>{{ so.label }}
-              </button>
-            </sc-for>
-          </div>
-          </sc-if>
-        </div>
         <button onClick="{{ openAccount }}" title="{{ accountLabel }}" style="display:flex;align-items:center;justify-content:center;width:34px;height:34px;flex:none;background:none;border:1px solid rgba(228,35,43,.3);border-radius:50%;cursor:pointer;transition:border-color .3s;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:#c8ccd0;" style-hover="border-color:rgba(228,35,43,.65)">
           <sc-if value="{{ accountLoggedIn }}" hint-placeholder-val="{{ false }}">{{ accountInitial }}</sc-if>
           <sc-if value="{{ accountLoggedOut }}" hint-placeholder-val="{{ true }}">
@@ -888,8 +873,8 @@ class Component extends DCLogic {
     // boot sequence (loading screen -> door reveal -> hero)
     phase: 'loading', progress: 0, ready: false, revealOut: false,
 
-    // hero ambiance (mood swatches, background audio, 3D car fallback)
-    mood: 'or', muted: false, soundPreset: 'lounge', soundMenu: false,
+    // hero ambiance (mood swatches, 3D car fallback)
+    mood: 'or',
 
     // nav / layout
     navMax: 10, mobileMenu: false, isMobile: false, lang: 'fr',
@@ -968,7 +953,7 @@ class Component extends DCLogic {
         temOver:'Confiance', temTitle:'Ils nous ont confi\u00e9 leur v\u00e9hicule',
         faqOver:'Questions', faqTitle:'Questions fr\u00e9quentes',
         contactOver:'Rendez-vous', contactTitle:'\u00c9crivez-nous', contactSub:'Chaque projet commence par une conversation. Sur rendez-vous uniquement.',
-        heroSub:'Studio de finition automobile d\u2019exception', ambiance:'Ambiance', soundTitle:'Ambiance sonore',
+        heroSub:'Studio de finition automobile d\u2019exception', ambiance:'Ambiance',
         finitionLabel:'Finition', teinteLabel:'Teinte', devis:'Devis', askQuote:'Demander un devis',
         login:'Connexion', myAccount:'Mon compte', accTag:'Espace client',
         accSigninTitle:'Connexion', accSignupTitle:'Créer un compte',
@@ -992,7 +977,7 @@ class Component extends DCLogic {
         accEmailChangeSent:'Vérifie ta nouvelle boîte mail pour confirmer le changement.',
         accNewPasswordPh:'Nouveau mot de passe', accChangePasswordBtn:'Mettre à jour',
         accPasswordMissing:'Indique un nouveau mot de passe.', accPasswordChanged:'Mot de passe mis à jour.',
-        rights:'Tous droits r\u00e9serv\u00e9s', loadingBaseline:'Maison de covering \u00b7 PPF \u00b7 Detailing', enterBtn:'Entrer \u2014 avec le son',
+        rights:'Tous droits r\u00e9serv\u00e9s', loadingBaseline:'Maison de covering \u00b7 PPF \u00b7 Detailing', enterBtn:'Entrer',
         legalPrivacy:'Politique de confidentialit\u00e9', legalTerms:'Conditions g\u00e9n\u00e9rales', legalClose:'Fermer',
         brandsTitle:'Ils roulent avec nous',
         dvTag:'Devis personnalis\u00e9', dvTitle:'Votre projet', dvSub:'Quelques d\u00e9tails et nous revenons vers vous rapidement.',
@@ -1046,7 +1031,6 @@ class Component extends DCLogic {
           {name:'Prestige',priceByCat:{citadine:'d\u00e8s 890\u00a0\u20ac',berline:'d\u00e8s 940\u00a0\u20ac',sportive:'d\u00e8s 1040\u00a0\u20ac',suv:'d\u00e8s 1190\u00a0\u20ac',supercar:'d\u00e8s 1390\u00a0\u20ac'},period:'programme annuel',feats:['Correction multi-\u00e9tapes finition concours','C\u00e9ramique haute densit\u00e9 3\u20135 ans','Jantes, vitres et \u00e9chappements trait\u00e9s','4 entretiens annuels inclus \u00e0 l\u2019atelier']}
         ],
         moods:{or:'Rouge',platine:'Platine',nuit:'Nuit'},
-        sounds:{off:'Silence',lounge:'Lounge \u2014 nappes chill',deep:'Deep \u2014 basses feutr\u00e9es',nuit:'Nuit \u2014 halo a\u00e9rien',atelier:'Atelier \u2014 ambiance studio'},
         services:[
           {num:'01',title:'Covering int\u00e9gral',desc:'Transformation compl\u00e8te de la teinte et de la texture du v\u00e9hicule. Films premium pos\u00e9s panneau par panneau, ar\u00eates invisibles, d\u00e9pose sans trace.',note:'Films 3M \u00b7 Avery Dennison'},
           {num:'02',title:'Film de protection PPF',desc:'Protection polyur\u00e9thane auto-cicatrisante contre les impacts, rayures et UV. Invisible \u00e0 l\u2019\u0153il, votre peinture reste intacte pour des ann\u00e9es.',note:'Garantie 10 ans'},
@@ -1093,7 +1077,7 @@ class Component extends DCLogic {
         temOver:'Trust', temTitle:'They trusted us with their cars',
         faqOver:'Questions', faqTitle:'Frequently asked questions',
         contactOver:'Appointment', contactTitle:'Get in touch', contactSub:'Every project starts with a conversation. By appointment only.',
-        heroSub:'An exceptional automotive finishing studio', ambiance:'Mood', soundTitle:'Soundscape',
+        heroSub:'An exceptional automotive finishing studio', ambiance:'Mood',
         finitionLabel:'Finish', teinteLabel:'Colour', devis:'Quote', askQuote:'Request a quote',
         login:'Log in', myAccount:'My account', accTag:'Client area',
         accSigninTitle:'Sign in', accSignupTitle:'Create an account',
@@ -1117,7 +1101,7 @@ class Component extends DCLogic {
         accEmailChangeSent:'Check your new inbox to confirm the change.',
         accNewPasswordPh:'New password', accChangePasswordBtn:'Update',
         accPasswordMissing:'Enter a new password.', accPasswordChanged:'Password updated.',
-        rights:'All rights reserved', loadingBaseline:'House of wrapping \u00b7 PPF \u00b7 Detailing', enterBtn:'Enter \u2014 with sound',
+        rights:'All rights reserved', loadingBaseline:'House of wrapping \u00b7 PPF \u00b7 Detailing', enterBtn:'Enter',
         legalPrivacy:'Privacy Policy', legalTerms:'Terms of Service', legalClose:'Close',
         brandsTitle:'They ride with us',
         dvTag:'Personalised quote', dvTitle:'Your project', dvSub:'A few details and we will get back to you quickly.',
@@ -1172,7 +1156,6 @@ class Component extends DCLogic {
           {name:'Prestige',priceByCat:{citadine:'from \u20ac890',berline:'from \u20ac940',sportive:'from \u20ac1040',suv:'from \u20ac1190',supercar:'from \u20ac1390'},period:'yearly programme',feats:['Multi-stage concours correction','High-density ceramic, 3\u20135 years','Wheels, glass and exhausts coated','4 yearly maintenance visits included']}
         ],
         moods:{or:'Red',platine:'Platinum',nuit:'Night'},
-        sounds:{off:'Silence',lounge:'Lounge \u2014 chill pads',deep:'Deep \u2014 soft bass',nuit:'Night \u2014 airy halo',atelier:'Workshop \u2014 studio ambience'},
         services:[
           {num:'01',title:'Full wrap',desc:'A complete transformation of your vehicle\u2019s colour and texture. Premium films fitted panel by panel, invisible edges, trace-free removal.',note:'3M \u00b7 Avery Dennison films'},
           {num:'02',title:'PPF paint protection',desc:'Self-healing polyurethane protection against chips, scratches and UV. Invisible to the eye \u2014 your paint stays pristine for years.',note:'10-year warranty'},
@@ -1219,7 +1202,7 @@ class Component extends DCLogic {
         temOver:'Vertrouwen', temTitle:'Zij vertrouwden ons hun wagen toe',
         faqOver:'Vragen', faqTitle:'Veelgestelde vragen',
         contactOver:'Afspraak', contactTitle:'Schrijf ons', contactSub:'Elk project begint met een gesprek. Enkel op afspraak.',
-        heroSub:'Een uitzonderlijke autofinishing-studio', ambiance:'Sfeer', soundTitle:'Geluidssfeer',
+        heroSub:'Een uitzonderlijke autofinishing-studio', ambiance:'Sfeer',
         finitionLabel:'Afwerking', teinteLabel:'Kleur', devis:'Offerte', askQuote:'Offerte aanvragen',
         login:'Inloggen', myAccount:'Mijn account', accTag:'Klantenzone',
         accSigninTitle:'Inloggen', accSignupTitle:'Account aanmaken',
@@ -1243,7 +1226,7 @@ class Component extends DCLogic {
         accEmailChangeSent:'Check je nieuwe inbox om de wijziging te bevestigen.',
         accNewPasswordPh:'Nieuw wachtwoord', accChangePasswordBtn:'Bijwerken',
         accPasswordMissing:'Vul een nieuw wachtwoord in.', accPasswordChanged:'Wachtwoord bijgewerkt.',
-        rights:'Alle rechten voorbehouden', loadingBaseline:'Huis van wrapping \u00b7 PPF \u00b7 Detailing', enterBtn:'Binnenkomen \u2014 met geluid',
+        rights:'Alle rechten voorbehouden', loadingBaseline:'Huis van wrapping \u00b7 PPF \u00b7 Detailing', enterBtn:'Binnenkomen',
         legalPrivacy:'Privacybeleid', legalTerms:'Algemene voorwaarden', legalClose:'Sluiten',
         brandsTitle:'Zij rijden met ons',
         dvTag:'Offerte op maat', dvTitle:'Uw project', dvSub:'Enkele details en wij nemen snel contact met u op.',
@@ -1298,7 +1281,6 @@ class Component extends DCLogic {
           {name:'Prestige',priceByCat:{citadine:'vanaf \u20ac\u00a0890',berline:'vanaf \u20ac\u00a0940',sportive:'vanaf \u20ac\u00a01040',suv:'vanaf \u20ac\u00a01190',supercar:'vanaf \u20ac\u00a01390'},period:'jaarprogramma',feats:['Meerfasige concours-correctie','Keramische coating 3\u20135 jaar','Velgen, ruiten en uitlaten behandeld','4 jaarlijkse onderhoudsbeurten inbegrepen']}
         ],
         moods:{or:'Rood',platine:'Platina',nuit:'Nacht'},
-        sounds:{off:'Stilte',lounge:'Lounge \u2014 chill klanken',deep:'Deep \u2014 zachte bas',nuit:'Nacht \u2014 luchtige gloed',atelier:'Atelier \u2014 studiosfeer'},
         services:[
           {num:'01',title:'Volledige wrap',desc:'Complete transformatie van kleur en textuur. Premium folies paneel per paneel geplaatst, onzichtbare randen, verwijdering zonder sporen.',note:'3M \u00b7 Avery Dennison folies'},
           {num:'02',title:'PPF lakbescherming',desc:'Zelfherstellende polyurethaanbescherming tegen steenslag, krassen en UV. Onzichtbaar \u2014 uw lak blijft jarenlang intact.',note:'10 jaar garantie'},
@@ -1502,7 +1484,6 @@ class Component extends DCLogic {
     if(this._resize) window.removeEventListener('resize', this._resize);
     clearInterval(this._loop);
     cancelAnimationFrame(this._raf);
-    if(this.ac) try{ this.ac.close(); }catch(e){}
   }
 
   // ── ambiance: mood palette, loading sequence, dust particles, audio ──
@@ -1526,7 +1507,6 @@ class Component extends DCLogic {
   }
 
   enter(){
-    if(!this.state.muted) this.createAudio();
     this.setState({ phase:'reveal' });
     setTimeout(() => this.setState({ revealOut:true }), 2950);
     setTimeout(() => this.setState({ phase:'hero' }), 3400);
@@ -1557,136 +1537,6 @@ class Component extends DCLogic {
       this._raf = requestAnimationFrame(loop);
     };
     this._raf = requestAnimationFrame(loop);
-  }
-
-  ensureCtx(){
-    if(!this.ac){
-      const AC = window.AudioContext || window.webkitAudioContext;
-      this.ac = new AC();
-      this.master = this.ac.createGain();
-      this.master.gain.value = 0.0001;
-      this.master.connect(this.ac.destination);
-    }
-    if(this.ac.state === 'suspended') this.ac.resume();
-  }
-
-  stopPreset(){
-    if(this._chordTimer){ clearInterval(this._chordTimer); this._chordTimer = null; }
-    (this._nodes || []).forEach(n => { try{ if(n.stop) n.stop(); }catch(e){} try{ n.disconnect(); }catch(e){} });
-    this._nodes = [];
-  }
-
-  makeNoise(ac){
-    const buf = ac.createBuffer(1, ac.sampleRate*2, ac.sampleRate);
-    const d = buf.getChannelData(0);
-    for(let i=0;i<d.length;i++) d[i] = (Math.random()*2-1)*0.5;
-    const src = ac.createBufferSource(); src.buffer = buf; src.loop = true;
-    return src;
-  }
-
-  createAudio(preset){
-    try {
-      this.ensureCtx();
-      this.stopPreset();
-      const ac = this.ac;
-      const N = this._nodes;
-      const reg = (n) => { N.push(n); return n; };
-      const bus = reg(ac.createGain()); bus.gain.value = 1; bus.connect(this.master);
-      const p = preset || this.state.soundPreset;
-
-      if(p === 'atelier'){
-        const lp = reg(ac.createBiquadFilter()); lp.type='lowpass'; lp.frequency.value=240; lp.connect(bus);
-        [55, 55.4, 82.5].forEach((f,i) => {
-          const o = reg(ac.createOscillator()); o.type='sine'; o.frequency.value=f;
-          const g = reg(ac.createGain()); g.gain.value = i===2 ? 0.12 : 0.4;
-          o.connect(g); g.connect(lp); o.start();
-        });
-        const noise = reg(this.makeNoise(ac));
-        const bp = reg(ac.createBiquadFilter()); bp.type='bandpass'; bp.frequency.value=1400; bp.Q.value=0.6;
-        const ng = reg(ac.createGain()); ng.gain.value=0.05;
-        noise.connect(bp); bp.connect(ng); ng.connect(bus); noise.start();
-        const lfo = reg(ac.createOscillator()); lfo.frequency.value=0.08;
-        const lg = reg(ac.createGain()); lg.gain.value=0.035;
-        lfo.connect(lg); lg.connect(ng.gain); lfo.start();
-      }
-      else if(p === 'lounge'){
-        // generative chill pad: slow chords through a warm lowpass + echo
-        const lp = reg(ac.createBiquadFilter()); lp.type='lowpass'; lp.frequency.value=750; lp.Q.value=0.4;
-        const dl = reg(ac.createDelay(1.2)); dl.delayTime.value=0.55;
-        const fb = reg(ac.createGain()); fb.gain.value=0.32;
-        lp.connect(bus); lp.connect(dl); dl.connect(fb); fb.connect(dl); dl.connect(bus);
-        const chords = [
-          [110.0, 164.81, 196.0, 261.63],
-          [87.31, 130.81, 174.61, 220.0],
-          [98.0, 146.83, 196.0, 246.94],
-          [110.0, 155.56, 185.0, 233.08]
-        ];
-        let ci = 0;
-        const playChord = () => {
-          const t = ac.currentTime;
-          chords[ci % chords.length].forEach((f, i) => {
-            const o = ac.createOscillator(); o.type = i===0 ? 'sine' : 'triangle'; o.frequency.value=f;
-            o.detune.value = (Math.random()*10-5);
-            const g = ac.createGain(); g.gain.value=0.0001;
-            g.gain.setTargetAtTime(i===0 ? 0.11 : 0.05, t, 1.8);
-            g.gain.setTargetAtTime(0.0001, t+5.4, 1.6);
-            o.connect(g); g.connect(lp); o.start(t); o.stop(t+10);
-          });
-          ci++;
-        };
-        playChord();
-        this._chordTimer = setInterval(playChord, 7200);
-        const noise = reg(this.makeNoise(ac));
-        const nlp = reg(ac.createBiquadFilter()); nlp.type='lowpass'; nlp.frequency.value=480;
-        const ng = reg(ac.createGain()); ng.gain.value=0.018;
-        noise.connect(nlp); nlp.connect(ng); ng.connect(bus); noise.start();
-      }
-      else if(p === 'nuit'){
-        // airy nocturne: sub + shimmering high cluster
-        const sub = reg(ac.createOscillator()); sub.type='sine'; sub.frequency.value=55;
-        const sg = reg(ac.createGain()); sg.gain.value=0.16;
-        sub.connect(sg); sg.connect(bus); sub.start();
-        [523.25, 659.25, 783.99].forEach((f, i) => {
-          const o = reg(ac.createOscillator()); o.type='sine'; o.frequency.value=f;
-          const g = reg(ac.createGain()); g.gain.value=0.016;
-          const lfo = reg(ac.createOscillator()); lfo.frequency.value=0.05+i*0.023;
-          const lg = reg(ac.createGain()); lg.gain.value=0.013;
-          lfo.connect(lg); lg.connect(g.gain);
-          o.connect(g); g.connect(bus); o.start(); lfo.start();
-        });
-        const noise = reg(this.makeNoise(ac));
-        const hp = reg(ac.createBiquadFilter()); hp.type='highpass'; hp.frequency.value=3000;
-        const ng = reg(ac.createGain()); ng.gain.value=0.008;
-        noise.connect(hp); hp.connect(ng); ng.connect(bus); noise.start();
-      }
-      else if(p === 'deep'){
-        // deep chill: soft sub pulse + fifth pad
-        const sub = reg(ac.createOscillator()); sub.type='sine'; sub.frequency.value=41.2;
-        const sg = reg(ac.createGain()); sg.gain.value=0.22;
-        const plfo = reg(ac.createOscillator()); plfo.frequency.value=0.11;
-        const plg = reg(ac.createGain()); plg.gain.value=0.1;
-        plfo.connect(plg); plg.connect(sg.gain);
-        sub.connect(sg); sg.connect(bus); sub.start(); plfo.start();
-        [82.4, 123.47].forEach(f => {
-          const o = reg(ac.createOscillator()); o.type='triangle'; o.frequency.value=f;
-          const g = reg(ac.createGain()); g.gain.value=0.05;
-          const lp2 = reg(ac.createBiquadFilter()); lp2.type='lowpass'; lp2.frequency.value=300;
-          o.connect(g); g.connect(lp2); lp2.connect(bus); o.start();
-        });
-      }
-
-      this.master.gain.setTargetAtTime(0.055, ac.currentTime, 2);
-    } catch(e){}
-  }
-
-  setSoundPreset(key){
-    if(key === 'off'){
-      this.setState({ muted: true, soundMenu: false });
-      if(this.master && this.ac) this.master.gain.setTargetAtTime(0.0001, this.ac.currentTime, 0.4);
-      return;
-    }
-    this.setState({ muted: false, soundPreset: key, soundMenu: false });
-    this.createAudio(key);
   }
 
   // ── devis modal open/close, account modal open/close ─────────────────
@@ -1976,13 +1826,6 @@ class Component extends DCLogic {
     this.setState({ excellenceSent: true });
   }
 
-  toggleMute(){
-    const next = !this.state.muted;
-    this.setState({ muted: next });
-    if(!next && !this.ac){ this.createAudio(); return; }
-    if(this.master && this.ac) this.master.gain.setTargetAtTime(next?0.0001:0.06, this.ac.currentTime, 0.4);
-  }
-
   // ── template bindings ──────────────────────────────────────────────
   // Builds every value/handler the markup above reads via {{ }}. One big
   // object by necessity (the template can only bind flat names), but
@@ -2237,26 +2080,10 @@ class Component extends DCLogic {
       isHero: s.phase==='hero',
       mood: s.mood,
       showHeroBase: true,
-      muted: s.muted,
-      audioLabel: s.muted ? 'Son coup\u00e9' : 'Son actif',
-      audioDot: s.muted ? 0.15 : 1,
       fillRef: this.fill,
       wrapperRef: this.wrapper,
       canvasRef: this.canvas,
       enter: () => this.enter(),
-      toggleMute: () => this.toggleMute(),
-      toggleSoundMenu: () => this.setState(st => ({ soundMenu: !st.soundMenu })),
-      soundMenu: s.soundMenu,
-      soundOptions: ['off','lounge','deep','nuit','atelier'].map(k => ({ key:k, label:L.sounds[k] })).map(o => {
-        const active = o.key==='off' ? s.muted : (!s.muted && s.soundPreset===o.key);
-        return {
-          ...o,
-          onClick: () => this.setSoundPreset(o.key),
-          color: active ? '#F7F7F7' : '#9aa0a4',
-          bg: active ? 'rgba(228,35,43,.12)' : 'transparent',
-          dot: active ? 1 : 0.15
-        };
-      }),
 
       legalPrivacyLabel: L.legalPrivacy,
       legalTermsLabel: L.legalTerms,
