@@ -704,6 +704,17 @@ html,body{background:#050505;overflow:hidden}
             <input ref="{{ authPasswordRef }}" type="password" placeholder="••••••••" style="width:100%;margin-top:8px;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:12px 14px;color:#F7F7F7;font-family:inherit;font-size:14px;outline:none;" />
           </label>
 
+          <sc-if value="{{ authIsSignin }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;justify-content:space-between;gap:14px;margin-top:10px;flex-wrap:wrap;">
+            <button onClick="{{ forgotPassword }}" style="background:none;border:none;font-family:inherit;font-size:11px;color:#9aa0a4;cursor:pointer;text-decoration:underline;padding:0;">{{ t.accForgotLink }}</button>
+            <button onClick="{{ sendMagicLink }}" style="background:none;border:none;font-family:inherit;font-size:11px;color:#9aa0a4;cursor:pointer;text-decoration:underline;padding:0;">{{ t.accMagicLinkBtn }}</button>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ authHasInfo }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:14px;font-size:12px;color:#8fd19e;">{{ authInfo }}</div>
+          </sc-if>
+
           <sc-if value="{{ authHasError }}" hint-placeholder-val="{{ false }}">
             <div style="margin-top:14px;font-size:12px;color:#ff8a8f;">{{ authError }}</div>
           </sc-if>
@@ -761,6 +772,23 @@ html,body{background:#050505;overflow:hidden}
             <div style="font-size:12px;color:#7c8085;">{{ t.accNoQuotes }}</div>
           </sc-if>
         </div>
+
+        <div style="margin-top:34px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8c9095;">{{ t.accSecurityTitle }}</div>
+        <div class="ec-devis-grid" style="display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:14px;align-items:start;">
+          <input ref="{{ newEmailRef }}" type="email" placeholder="{{ t.accNewEmailPh }}" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:11px 13px;color:#F7F7F7;font-family:inherit;font-size:13px;outline:none;" />
+          <button onClick="{{ submitChangeEmail }}" style="font-family:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#D9D9D9;font-weight:400;padding:11px 18px;border:1px solid rgba(228,35,43,.35);border-radius:3px;cursor:pointer;background:none;white-space:nowrap;transition:border-color .3s;" style-hover="border-color:rgba(228,35,43,.65)">{{ t.accChangeEmailBtn }}</button>
+        </div>
+        <sc-if value="{{ hasAccountEmailMsg }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:8px;font-size:11px;color:#9aa0a4;">{{ accountEmailMsg }}</div>
+        </sc-if>
+
+        <div class="ec-devis-grid" style="display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:14px;align-items:start;">
+          <input ref="{{ newPasswordRef }}" type="password" placeholder="{{ t.accNewPasswordPh }}" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:11px 13px;color:#F7F7F7;font-family:inherit;font-size:13px;outline:none;" />
+          <button onClick="{{ submitChangePassword }}" style="font-family:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#D9D9D9;font-weight:400;padding:11px 18px;border:1px solid rgba(228,35,43,.35);border-radius:3px;cursor:pointer;background:none;white-space:nowrap;transition:border-color .3s;" style-hover="border-color:rgba(228,35,43,.65)">{{ t.accChangePasswordBtn }}</button>
+        </div>
+        <sc-if value="{{ hasAccountPasswordMsg }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:8px;font-size:11px;color:#9aa0a4;">{{ accountPasswordMsg }}</div>
+        </sc-if>
 
         <button onClick="{{ signOutAccount }}" style="margin-top:30px;width:100%;font-family:inherit;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#D9D9D9;font-weight:400;padding:14px;border:1px solid rgba(228,35,43,.4);border-radius:3px;cursor:pointer;background:none;transition:border-color .3s;" style-hover="border-color:rgba(228,35,43,.75)">{{ t.accSignout }}</button>
       </div>
@@ -879,10 +907,14 @@ class Component extends DCLogic {
     excellenceOpen: false, excellenceSent: false,
 
     // client account: auth modal + session
-    accountOpen: false, authMode: 'signin', authError: '', authBusy: false, authSignupSent: false, user: null,
+    accountOpen: false, authMode: 'signin', authError: '', authInfo: '', authBusy: false, authSignupSent: false, user: null,
 
     // client account: data loaded once signed in (see loadAccountData)
     vehicles: [], quotes: [], subscription: null,
+
+    // client account: change e-mail / change password (logged-in dashboard)
+    accountEmailMsg: '', accountEmailBusy: false,
+    accountPasswordMsg: '', accountPasswordBusy: false,
 
     // Stripe checkout continuation (set when a signed-out visitor clicks
     // subscribe/reserve; resumed once they finish signing up/in)
@@ -914,6 +946,8 @@ class Component extends DCLogic {
     this.authVehicleModelRef = React.createRef();
     this.vehicleBrandRef = React.createRef();
     this.vehicleModelRef = React.createRef();
+    this.newEmailRef = React.createRef();
+    this.newPasswordRef = React.createRef();
 
     // fr / en / nl — same key set in every block, in the same order, so a
     // diff between languages is meaningful (missing/extra keys stand out).
@@ -950,6 +984,14 @@ class Component extends DCLogic {
         accAddressL:'Adresse', accAddressPh:'Rue, numéro, ville', accAgeL:'Âge', accAgePh:'Âge',
         accVehicleTitle:'Votre véhicule', accVehicleBrandL:'Marque', accVehicleModelL:'Modèle', accVehicleNote:'Utilisé pour préremplir tes réservations — modifiable ensuite dans ton compte.',
         accVehicleRequired:'Merci de renseigner la marque et le modèle de ton véhicule.',
+        accForgotLink:'Mot de passe oublié ?', accMagicLinkBtn:'Se connecter par lien magique',
+        accForgotNeedsEmail:'Indique ton e-mail ci-dessus d’abord.',
+        accForgotSent:'E-mail de réinitialisation envoyé — vérifie ta boîte mail.',
+        accMagicLinkSent:'Lien de connexion envoyé — vérifie ta boîte mail.',
+        accSecurityTitle:'Sécurité du compte', accNewEmailPh:'nouvelle.adresse@exemple.com', accChangeEmailBtn:'Mettre à jour',
+        accEmailChangeSent:'Vérifie ta nouvelle boîte mail pour confirmer le changement.',
+        accNewPasswordPh:'Nouveau mot de passe', accChangePasswordBtn:'Mettre à jour',
+        accPasswordMissing:'Indique un nouveau mot de passe.', accPasswordChanged:'Mot de passe mis à jour.',
         rights:'Tous droits r\u00e9serv\u00e9s', loadingBaseline:'Maison de covering \u00b7 PPF \u00b7 Detailing', enterBtn:'Entrer \u2014 avec le son',
         legalPrivacy:'Politique de confidentialit\u00e9', legalTerms:'Conditions g\u00e9n\u00e9rales', legalClose:'Fermer',
         brandsTitle:'Ils roulent avec nous',
@@ -1067,6 +1109,14 @@ class Component extends DCLogic {
         accAddressL:'Address', accAddressPh:'Street, number, city', accAgeL:'Age', accAgePh:'Age',
         accVehicleTitle:'Your vehicle', accVehicleBrandL:'Brand', accVehicleModelL:'Model', accVehicleNote:'Used to pre-fill your bookings — editable later in your account.',
         accVehicleRequired:'Please enter your vehicle’s brand and model.',
+        accForgotLink:'Forgot password?', accMagicLinkBtn:'Sign in with a magic link',
+        accForgotNeedsEmail:'Enter your e-mail above first.',
+        accForgotSent:'Reset e-mail sent — check your inbox.',
+        accMagicLinkSent:'Sign-in link sent — check your inbox.',
+        accSecurityTitle:'Account security', accNewEmailPh:'new.address@example.com', accChangeEmailBtn:'Update',
+        accEmailChangeSent:'Check your new inbox to confirm the change.',
+        accNewPasswordPh:'New password', accChangePasswordBtn:'Update',
+        accPasswordMissing:'Enter a new password.', accPasswordChanged:'Password updated.',
         rights:'All rights reserved', loadingBaseline:'House of wrapping \u00b7 PPF \u00b7 Detailing', enterBtn:'Enter \u2014 with sound',
         legalPrivacy:'Privacy Policy', legalTerms:'Terms of Service', legalClose:'Close',
         brandsTitle:'They ride with us',
@@ -1185,6 +1235,14 @@ class Component extends DCLogic {
         accAddressL:'Adres', accAddressPh:'Straat, nummer, stad', accAgeL:'Leeftijd', accAgePh:'Leeftijd',
         accVehicleTitle:'Jouw voertuig', accVehicleBrandL:'Merk', accVehicleModelL:'Model', accVehicleNote:'Gebruikt om je reserveringen vooraf in te vullen — later aanpasbaar in je account.',
         accVehicleRequired:'Vul het merk en model van je voertuig in.',
+        accForgotLink:'Wachtwoord vergeten?', accMagicLinkBtn:'Inloggen met magische link',
+        accForgotNeedsEmail:'Vul hierboven eerst je e-mail in.',
+        accForgotSent:'Reset-e-mail verzonden — check je inbox.',
+        accMagicLinkSent:'Inloglink verzonden — check je inbox.',
+        accSecurityTitle:'Accountbeveiliging', accNewEmailPh:'nieuw.adres@voorbeeld.com', accChangeEmailBtn:'Bijwerken',
+        accEmailChangeSent:'Check je nieuwe inbox om de wijziging te bevestigen.',
+        accNewPasswordPh:'Nieuw wachtwoord', accChangePasswordBtn:'Bijwerken',
+        accPasswordMissing:'Vul een nieuw wachtwoord in.', accPasswordChanged:'Wachtwoord bijgewerkt.',
         rights:'Alle rechten voorbehouden', loadingBaseline:'Huis van wrapping \u00b7 PPF \u00b7 Detailing', enterBtn:'Binnenkomen \u2014 met geluid',
         legalPrivacy:'Privacybeleid', legalTerms:'Algemene voorwaarden', legalClose:'Sluiten',
         brandsTitle:'Zij rijden met ons',
@@ -1647,7 +1705,7 @@ class Component extends DCLogic {
   openPrivacy(){ this.setState({ legalOpen: 'privacy' }); }
   openTerms(){ this.setState({ legalOpen: 'terms' }); }
   closeLegal(){ this.setState({ legalOpen: null }); }
-  toggleAuthMode(){ this.setState(s => ({ authMode: s.authMode === 'signup' ? 'signin' : 'signup', authError: '', authSignupSent: false })); }
+  toggleAuthMode(){ this.setState(s => ({ authMode: s.authMode === 'signup' ? 'signin' : 'signup', authError: '', authInfo: '', authSignupSent: false })); }
 
   // ── auth (sign in / sign up / sign out / vehicles) ───────────────────
   submitAuth(){
@@ -1688,6 +1746,64 @@ class Component extends DCLogic {
   signOutAccount(){
     if(!window.EcrinAuth) return;
     window.EcrinAuth.signOut().then(() => this.setState({ user: null, vehicles: [], quotes: [], accountOpen: false }));
+  }
+
+  forgotPassword(){
+    const L = this.I18N[this.state.lang] || this.I18N.fr;
+    if(!window.EcrinAuth){ this.setState({ authError: L.accErrorGeneric }); return; }
+    const email = (this.authEmailRef.current && this.authEmailRef.current.value.trim()) || '';
+    if(!email){ this.setState({ authError: L.accForgotNeedsEmail, authInfo: '' }); return; }
+    this.setState({ authBusy: true, authError: '', authInfo: '' });
+    window.EcrinAuth.resetPassword(email).then(res => {
+      if(res.error) throw res.error;
+      this.setState({ authBusy: false, authInfo: L.accForgotSent });
+    }).catch(err => {
+      this.setState({ authBusy: false, authError: (err && err.message) || L.accErrorGeneric });
+    });
+  }
+
+  sendMagicLink(){
+    const L = this.I18N[this.state.lang] || this.I18N.fr;
+    if(!window.EcrinAuth){ this.setState({ authError: L.accErrorGeneric }); return; }
+    const email = (this.authEmailRef.current && this.authEmailRef.current.value.trim()) || '';
+    if(!email){ this.setState({ authError: L.accForgotNeedsEmail, authInfo: '' }); return; }
+    this.setState({ authBusy: true, authError: '', authInfo: '' });
+    window.EcrinAuth.sendMagicLink(email).then(res => {
+      if(res.error) throw res.error;
+      this.setState({ authBusy: false, authInfo: L.accMagicLinkSent });
+    }).catch(err => {
+      this.setState({ authBusy: false, authError: (err && err.message) || L.accErrorGeneric });
+    });
+  }
+
+  submitChangeEmail(){
+    const L = this.I18N[this.state.lang] || this.I18N.fr;
+    if(!window.EcrinAuth) return;
+    const newEmail = (this.newEmailRef.current && this.newEmailRef.current.value.trim()) || '';
+    if(!newEmail) return;
+    this.setState({ accountEmailBusy: true, accountEmailMsg: '' });
+    window.EcrinAuth.updateEmail(newEmail).then(res => {
+      if(res.error) throw res.error;
+      if(this.newEmailRef.current) this.newEmailRef.current.value = '';
+      this.setState({ accountEmailBusy: false, accountEmailMsg: L.accEmailChangeSent });
+    }).catch(err => {
+      this.setState({ accountEmailBusy: false, accountEmailMsg: (err && err.message) || L.accErrorGeneric });
+    });
+  }
+
+  submitChangePassword(){
+    const L = this.I18N[this.state.lang] || this.I18N.fr;
+    if(!window.EcrinAuth) return;
+    const newPassword = (this.newPasswordRef.current && this.newPasswordRef.current.value) || '';
+    if(!newPassword){ this.setState({ accountPasswordMsg: L.accPasswordMissing }); return; }
+    this.setState({ accountPasswordBusy: true, accountPasswordMsg: '' });
+    window.EcrinAuth.updatePassword(newPassword).then(res => {
+      if(res.error) throw res.error;
+      if(this.newPasswordRef.current) this.newPasswordRef.current.value = '';
+      this.setState({ accountPasswordBusy: false, accountPasswordMsg: L.accPasswordChanged });
+    }).catch(err => {
+      this.setState({ accountPasswordBusy: false, accountPasswordMsg: (err && err.message) || L.accErrorGeneric });
+    });
   }
 
   addVehicle(){
@@ -2047,7 +2163,10 @@ class Component extends DCLogic {
       authFormVisible: !s.authSignupSent,
       authHasError: !!s.authError,
       authError: s.authError,
+      authHasInfo: !!s.authInfo,
+      authInfo: s.authInfo,
       authIsSignup: s.authMode === 'signup',
+      authIsSignin: s.authMode !== 'signup',
       authEmailMarginTop: s.authMode === 'signup' ? '14px' : '0',
       authEmailRef: this.authEmailRef,
       authPasswordRef: this.authPasswordRef,
@@ -2057,9 +2176,19 @@ class Component extends DCLogic {
       authAgeRef: this.authAgeRef,
       authVehicleBrandRef: this.authVehicleBrandRef,
       authVehicleModelRef: this.authVehicleModelRef,
+      forgotPassword: () => this.forgotPassword(),
+      sendMagicLink: () => this.sendMagicLink(),
       vehicleBrandRef: this.vehicleBrandRef,
       vehicleModelRef: this.vehicleModelRef,
       addVehicle: () => this.addVehicle(),
+      newEmailRef: this.newEmailRef,
+      newPasswordRef: this.newPasswordRef,
+      submitChangeEmail: () => this.submitChangeEmail(),
+      submitChangePassword: () => this.submitChangePassword(),
+      hasAccountEmailMsg: !!s.accountEmailMsg,
+      accountEmailMsg: s.accountEmailMsg,
+      hasAccountPasswordMsg: !!s.accountPasswordMsg,
+      accountPasswordMsg: s.accountPasswordMsg,
       vehiclesEmpty: !(s.vehicles && s.vehicles.length),
       vehicleRows: (s.vehicles || []).map(v => ({
         label: v.brand + ' ' + v.model + (v.finish ? ' — ' + v.finish : ''),

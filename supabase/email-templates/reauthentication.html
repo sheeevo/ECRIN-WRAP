@@ -1,0 +1,94 @@
+<!--
+  Ecrin Wrap — "Reauthentication" email template
+  Paste this into: Supabase Dashboard -> Authentication -> Emails -> Templates -> Reauthentication
+  (paste into the HTML source view, not a rich text box — do not include this comment block)
+
+  Suggested Subject: Ton code de vérification — Ecrin Wrap
+
+  Uses {{ .Token }} (a 6-digit one-time code the user types back into the
+  site) instead of {{ .ConfirmationURL }} — this email type has no link.
+
+  Not deployed by code — this file is a reference copy only, kept here so
+  future edits are versioned like everything else in supabase/.
+-->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ton code de vérification — Ecrin Wrap</title>
+</head>
+<body style="margin:0;padding:0;background-color:#050505;font-family:Arial,Helvetica,sans-serif;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#050505;padding:40px 16px;">
+  <tr>
+    <td align="center">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;background-color:#0e0f10;border:1px solid rgba(228,35,43,0.28);border-radius:8px;overflow:hidden;">
+
+        <tr>
+          <td align="center" style="padding:40px 32px 24px;">
+            <img src="https://ecrin-wrap.vercel.app/assets/ecrin-logo.png" alt="Ecrin Wrap" width="160" style="display:block;width:160px;max-width:100%;height:auto;">
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:0 40px;">
+            <hr style="border:none;border-top:1px solid rgba(228,35,43,0.2);margin:0;">
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:36px 40px 8px;">
+            <p style="margin:0 0 8px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#E4232B;font-weight:bold;font-family:Arial,Helvetica,sans-serif;">
+              Espace client
+            </p>
+            <h1 style="margin:0;font-size:26px;line-height:1.3;color:#F7F7F7;font-family:Arial,Helvetica,sans-serif;font-weight:800;">
+              Vérification de sécurité
+            </h1>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:12px 40px 24px;">
+            <p style="margin:0;font-size:14px;line-height:1.7;color:#9aa0a4;font-family:Arial,Helvetica,sans-serif;">
+              Pour confirmer cette action sur ton compte Ecrin Wrap, saisis le code suivant :
+            </p>
+          </td>
+        </tr>
+
+        <tr>
+          <td align="center" style="padding:0 40px 32px;">
+            <table role="presentation" cellpadding="0" cellspacing="0">
+              <tr>
+                <td align="center" style="border-radius:4px;background-color:rgba(228,35,43,0.1);border:1px solid rgba(228,35,43,0.35);padding:18px 36px;">
+                  <span style="font-family:Arial,Helvetica,sans-serif;font-size:32px;font-weight:800;letter-spacing:8px;color:#F7F7F7;">{{ .Token }}</span>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:0 40px 40px;">
+            <p style="margin:0;font-size:12px;line-height:1.6;color:#5c6064;font-family:Arial,Helvetica,sans-serif;">
+              Ce code expire rapidement et ne doit être partagé avec personne, y compris avec quelqu'un se présentant comme faisant partie d'Ecrin Wrap.
+            </p>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:24px 40px;border-top:1px solid rgba(228,35,43,0.14);">
+            <p style="margin:0;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#5c6064;font-family:Arial,Helvetica,sans-serif;">
+              Covering &middot; PPF &middot; Detailing — Villers-le-Bouillet, Belgique
+            </p>
+            <p style="margin:8px 0 0;font-size:11px;color:#454749;font-family:Arial,Helvetica,sans-serif;">
+              Tu reçois cet e-mail suite à une action nécessitant une vérification sur ton compte ecrin-wrap.vercel.app. Si tu n'es pas à l'origine de cette demande, ignore simplement ce message.
+            </p>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

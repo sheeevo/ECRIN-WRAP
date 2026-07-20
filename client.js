@@ -44,6 +44,22 @@
     signIn: function (email, password) {
       return getClient().then(function (c) { return c.auth.signInWithPassword({ email: email, password: password }); });
     },
+    sendMagicLink: function (email) {
+      return getClient().then(function (c) {
+        return c.auth.signInWithOtp({ email: email, options: { emailRedirectTo: window.location.origin } });
+      });
+    },
+    resetPassword: function (email) {
+      return getClient().then(function (c) {
+        return c.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin });
+      });
+    },
+    updateEmail: function (newEmail) {
+      return getClient().then(function (c) { return c.auth.updateUser({ email: newEmail }); });
+    },
+    updatePassword: function (newPassword) {
+      return getClient().then(function (c) { return c.auth.updateUser({ password: newPassword }); });
+    },
     signOut: function () {
       return getClient().then(function (c) { return c.auth.signOut(); });
     },
