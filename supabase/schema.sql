@@ -123,6 +123,11 @@ create table if not exists public.subscriptions (
   updated_at timestamptz not null default now()
 );
 
+-- Set by the webhook from the Stripe subscription object so the account
+-- dashboard can show cancellation state without calling Stripe.
+alter table public.subscriptions add column if not exists cancel_at_period_end boolean not null default false;
+alter table public.subscriptions add column if not exists canceled_at timestamptz;
+
 alter table public.subscriptions enable row level security;
 
 drop policy if exists "subscriptions_select_own" on public.subscriptions;

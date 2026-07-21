@@ -109,6 +109,16 @@
         window.location.href = data.url;
       });
     },
+    cancelSubscription: function (subscriptionId, userId) {
+      return fetch('/api/cancel-subscription', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ subscriptionId: subscriptionId, userId: userId })
+      }).then(function (r) { return r.json(); }).then(function (data) {
+        if (data.error) throw new Error(data.error);
+        return data;
+      });
+    },
     payDeposit: function (plan, quoteId, userId, email, category) {
       return fetch('/api/create-checkout-session', {
         method: 'POST',

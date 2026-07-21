@@ -717,13 +717,31 @@ html,body{background:#050505;overflow:hidden}
         <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:26px;margin-top:12px;letter-spacing:.02em;color:#F7F7F7;">{{ accountGreeting }}</div>
         <div style="margin-top:6px;font-size:13px;color:#9aa0a4;font-weight:300;">{{ accountEmail }}</div>
 
-        <div style="margin-top:26px;padding:16px 18px;border:1px solid rgba(228,35,43,.2);border-radius:3px;background:rgba(255,255,255,.02);display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
-          <div>
-            <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#7c8085;">{{ t.subActive }}</div>
-            <div style="margin-top:4px;font-size:14px;color:#c8ccd0;">{{ subscriptionLabel }}</div>
+        <div style="margin-top:26px;padding:16px 18px;border:1px solid rgba(228,35,43,.2);border-radius:3px;background:rgba(255,255,255,.02);">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+            <div>
+              <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#7c8085;">{{ t.subActive }}</div>
+              <div style="margin-top:4px;font-size:14px;color:#c8ccd0;">{{ subscriptionLabel }}</div>
+            </div>
+            <sc-if value="{{ hasSubscription }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <button onClick="{{ manageSubscription }}" style="font-family:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#D9D9D9;font-weight:400;padding:11px 18px;border:1px solid rgba(228,35,43,.35);border-radius:3px;cursor:pointer;background:none;transition:border-color .3s;" style-hover="border-color:rgba(228,35,43,.65)">{{ t.subManage }}</button>
+                <button onClick="{{ askCancelSubscription }}" style="font-family:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#ff8a8f;font-weight:400;padding:11px 18px;border:1px solid rgba(228,35,43,.35);border-radius:3px;cursor:pointer;background:none;transition:border-color .3s;" style-hover="border-color:rgba(228,35,43,.65)">{{ t.subCancel }}</button>
+              </div>
+            </sc-if>
           </div>
-          <sc-if value="{{ hasSubscription }}" hint-placeholder-val="{{ false }}">
-            <button onClick="{{ manageSubscription }}" style="font-family:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#D9D9D9;font-weight:400;padding:11px 18px;border:1px solid rgba(228,35,43,.35);border-radius:3px;cursor:pointer;background:none;transition:border-color .3s;" style-hover="border-color:rgba(228,35,43,.65)">{{ t.subManage }}</button>
+
+          <sc-if value="{{ cancelConfirming }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(228,35,43,.16);">
+              <div style="font-size:12px;color:#ff8a8f;line-height:1.6;">{{ t.subCancelWarning }}</div>
+              <sc-if value="{{ hasCancelError }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:8px;font-size:12px;color:#ff8a8f;">{{ cancelError }}</div>
+              </sc-if>
+              <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
+                <button onClick="{{ confirmCancelSubscription }}" style="font-family:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#ffffff;font-weight:600;padding:11px 20px;border:none;border-radius:3px;cursor:pointer;background:linear-gradient(180deg,#ff6a70,#ee3038 46%,#e4232b 54%,#ff5a60);">{{ t.subCancelConfirm }}</button>
+                <button onClick="{{ dismissCancelConfirm }}" style="font-family:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#9aa0a4;font-weight:400;padding:11px 20px;border:1px solid rgba(228,35,43,.25);border-radius:3px;cursor:pointer;background:none;">{{ t.subCancelBack }}</button>
+              </div>
+            </div>
           </sc-if>
         </div>
 
@@ -903,7 +921,10 @@ class Component extends DCLogic {
 
     // Stripe checkout continuation (set when a signed-out visitor clicks
     // subscribe/reserve; resumed once they finish signing up/in)
-    pendingPlan: null, pendingDeposit: null, subscribeBusy: false, subscribeError: ''
+    pendingPlan: null, pendingDeposit: null, subscribeBusy: false, subscribeError: '',
+
+    // subscription cancellation (immediate, with an explicit confirm step)
+    cancelConfirming: false, cancelBusy: false, cancelError: ''
   };
 
   constructor(props){
@@ -1016,6 +1037,9 @@ class Component extends DCLogic {
         dtPopular:'Le plus choisi', dtCta:'R\u00e9server cette formule', dtSubscribe:'S\u2019abonner', dtNote:'Tarifs indicatifs selon l\u2019\u00e9tat et la taille du v\u00e9hicule \u2014 devis pr\u00e9cis apr\u00e8s inspection \u00e0 l\u2019atelier.',
         dtOnRequest:'Sur demande', dtLimited:'Acc\u00e8s limit\u00e9', dtRequestCta:'Faire une demande',
         subManage:'G\u00e9rer mon abonnement', subActive:'Abonnement actif', subNone:'Aucun abonnement actif', subLoginFirst:'Connecte-toi pour t\u2019abonner.', subError:'Impossible de lancer le paiement. R\u00e9essaie.',
+        subCancel:'Annuler mon abonnement', subStatusActive:'active', subStatusCanceled:'annul\u00e9',
+        subCancelWarning:'Ton abonnement sera annul\u00e9 imm\u00e9diatement, m\u00eame si tu n\u2019as pas encore utilis\u00e9 toute la p\u00e9riode d\u00e9j\u00e0 pay\u00e9e. Cette action est irr\u00e9versible.',
+        subCancelConfirm:'Oui, annuler maintenant', subCancelBack:'Retour',
         accDepositPaid:'acompte pay\u00e9', accDepositPending:'acompte en attente',
         dtModes:{once:'\u00c0 la carte',sub:'Abonnement'},
         dtCatLabel:'Votre v\u00e9hicule',
@@ -1140,6 +1164,9 @@ class Component extends DCLogic {
         dtPopular:'Most popular', dtCta:'Book this plan', dtSubscribe:'Subscribe', dtNote:'Indicative prices depending on vehicle size and condition \u2014 exact quote after workshop inspection.',
         dtOnRequest:'On request', dtLimited:'Limited access', dtRequestCta:'Apply now',
         subManage:'Manage my subscription', subActive:'Active subscription', subNone:'No active subscription', subLoginFirst:'Sign in to subscribe.', subError:'Could not start checkout. Try again.',
+        subCancel:'Cancel my subscription', subStatusActive:'active', subStatusCanceled:'canceled',
+        subCancelWarning:'Your subscription will be canceled immediately, even if you haven’t used the full period you already paid for. This can’t be undone.',
+        subCancelConfirm:'Yes, cancel now', subCancelBack:'Back',
         
         accDepositPaid:'deposit paid', accDepositPending:'deposit pending',
         dtModes:{once:'\u00c0 la carte',sub:'Membership'},
@@ -1265,6 +1292,9 @@ class Component extends DCLogic {
         dtPopular:'Meest gekozen', dtCta:'Deze formule boeken', dtSubscribe:'Abonneren', dtNote:'Richtprijzen volgens staat en grootte van het voertuig \u2014 exacte offerte na inspectie in het atelier.',
         dtOnRequest:'Op aanvraag', dtLimited:'Beperkte toegang', dtRequestCta:'Aanvraag indienen',
         subManage:'Mijn abonnement beheren', subActive:'Actief abonnement', subNone:'Geen actief abonnement', subLoginFirst:'Log in om te abonneren.', subError:'Kon de betaling niet starten. Probeer opnieuw.',
+        subCancel:'Mijn abonnement opzeggen', subStatusActive:'actief', subStatusCanceled:'opgezegd',
+        subCancelWarning:'Je abonnement wordt onmiddellijk stopgezet, ook als je nog niet de volledige, al betaalde periode hebt gebruikt. Dit kan niet ongedaan worden gemaakt.',
+        subCancelConfirm:'Ja, nu opzeggen', subCancelBack:'Terug',
         
         accDepositPaid:'voorschot betaald', accDepositPending:'voorschot in behandeling',
         dtModes:{once:'\u00c0 la carte',sub:'Abonnement'},
@@ -1697,6 +1727,23 @@ class Component extends DCLogic {
     });
   }
 
+  askCancelSubscription(){ this.setState({ cancelConfirming: true, cancelError: '' }); }
+  dismissCancelConfirm(){ this.setState({ cancelConfirming: false, cancelError: '' }); }
+
+  confirmCancelSubscription(){
+    const L = this.I18N[this.state.lang] || this.I18N.fr;
+    if(!window.EcrinAuth || !this.state.subscription || !this.state.user) return;
+    this.setState({ cancelBusy: true, cancelError: '' });
+    window.EcrinAuth.cancelSubscription(this.state.subscription.stripe_subscription_id, this.state.user.id)
+      .then(() => {
+        this.setState({ cancelBusy: false, cancelConfirming: false });
+        this.loadAccountData();
+      })
+      .catch(err => {
+        this.setState({ cancelBusy: false, cancelError: (err && err.message) || L.subError });
+      });
+  }
+
   // ── devis modal (general quote request: PPF / Covering / Detailing) ─
   buildDevisMessage(){
     const g = (r) => (r.current && r.current.value.trim()) || '\u2014';
@@ -1944,8 +1991,14 @@ class Component extends DCLogic {
       hasSubscription: !!(s.subscription && s.subscription.status === 'active'),
       subscriptionLabel: s.subscription ? (
         { club: 'Club', club_sport: 'Club Sport', excellence: 'Excellence' }[s.subscription.plan] || s.subscription.plan
-      ) + ' — ' + s.subscription.status : L.subNone,
+      ) + ' — ' + (s.subscription.status === 'active' ? L.subStatusActive : L.subStatusCanceled) : L.subNone,
       manageSubscription: () => this.manageSubscription(),
+      askCancelSubscription: () => this.askCancelSubscription(),
+      dismissCancelConfirm: () => this.dismissCancelConfirm(),
+      confirmCancelSubscription: () => this.confirmCancelSubscription(),
+      cancelConfirming: s.cancelConfirming,
+      cancelError: s.cancelError,
+      hasCancelError: !!s.cancelError,
       services: L.services,
       steps: L.steps,
       formBadges: L.formBadges.map(label => ({ label })),

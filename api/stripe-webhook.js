@@ -52,6 +52,8 @@ module.exports = async (req, res) => {
           plan: (sub.metadata && sub.metadata.plan) || (sub.items.data[0] && sub.items.data[0].price.id) || 'unknown',
           status: sub.status,
           current_period_end: sub.current_period_end ? new Date(sub.current_period_end * 1000).toISOString() : null,
+          cancel_at_period_end: !!sub.cancel_at_period_end,
+          canceled_at: sub.canceled_at ? new Date(sub.canceled_at * 1000).toISOString() : null,
           updated_at: new Date().toISOString()
         };
         const { error } = await supabase.from('subscriptions').upsert(row, { onConflict: 'stripe_subscription_id' });
