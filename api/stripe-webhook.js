@@ -6,6 +6,7 @@
 // this endpoint is the only writer for those rows.
 const stripe = require('./_stripe');
 const { createClient } = require('@supabase/supabase-js');
+const { generateInvoicePdf } = require('./_invoice-pdf');
 
 module.exports.config = { api: { bodyParser: false } };
 
@@ -116,9 +117,7 @@ async function sendInvoiceEmail(invoice) {
   const amountLabel = (invoice.amount_paid / 100).toFixed(2).replace('.', ',') + ' €';
   const dateLabel = new Date(invoice.created * 1000).toLocaleDateString('fr-BE');
 
-  const pdfRes = await fetch(invoice.invoice_pdf);
-  if (!pdfRes.ok) throw new Error('Failed to download invoice PDF: ' + pdfRes.status);
-  const pdfBuffer = Buffer.from(await pdfRes.arrayBuffer());
+  const pdfBuffer = await generateInvoicePdf(invoice);
 
   const emailRes = await fetch('https://api.resend.com/emails', {
     method: 'POST',

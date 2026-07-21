@@ -5,6 +5,7 @@
   "description": "Ecrin Wrap site + Vercel serverless functions (Stripe billing, Supabase webhook sync). The front-end itself has no build step.",
   "dependencies": {
     "stripe": "^17.4.0",
-    "@supabase/supabase-js": "^2.45.4"
+    "@supabase/supabase-js": "^2.45.4",
+    "pdfkit": "^0.15.1"
   }
 }
