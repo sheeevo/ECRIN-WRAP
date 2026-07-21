@@ -72,13 +72,19 @@ async function generateInvoicePdf(invoice) {
 
     // header: logo + "FACTURE" title
     let y = 50;
+    let logoHeight = 0;
     if (logoBuffer) {
-      try { doc.image(logoBuffer, marginX, y, { width: 110 }); } catch (e) { /* skip if unreadable */ }
+      try {
+        const logoWidth = 90;
+        const img = doc.openImage(logoBuffer);
+        logoHeight = (img.height / img.width) * logoWidth;
+        doc.image(logoBuffer, marginX, y, { width: logoWidth });
+      } catch (e) { /* skip if unreadable */ }
     }
     doc.fillColor(BRAND.heading).font('Helvetica-Bold').fontSize(26)
       .text('Facture', marginX, y + 6, { width: contentWidth, align: 'right' });
 
-    y += 70;
+    y += Math.max(logoHeight, 30) + 20;
     doc.moveTo(marginX, y).lineTo(pageWidth - marginX, y).lineWidth(1).strokeColor(BRAND.accent).stroke();
     y += 28;
 
