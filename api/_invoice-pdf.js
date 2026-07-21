@@ -37,6 +37,16 @@ function money(cents) {
   return (cents / 100).toFixed(2).replace('.', ',') + ' €';
 }
 
+// Stripe auto-generates line descriptions like "1 × Plan (at €19.00/month)" —
+// strip the redundant qty/price parenthetical since we already show those
+// in their own table columns.
+function cleanDescription(desc, qty) {
+  if (!desc) return '';
+  let d = desc.replace(/\s*\((?:à|at)\s.+?\)\s*$/i, '');
+  if (qty === 1) d = d.replace(/^1\s*[×x]\s*/i, '');
+  return d.trim();
+}
+
 function formatDate(unixSeconds) {
   if (!unixSeconds) return '';
   return new Date(unixSeconds * 1000).toLocaleDateString('fr-BE', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -46,7 +56,7 @@ async function generateInvoicePdf(invoice) {
   const logoBuffer = await fetchLogo();
 
   return new Promise((resolve, reject) => {
-    const doc = new PDFDocument({ size: 'A4', margin: 50 });
+    const doc = new PDFDocument({ size: 'A4', margins: { top: 50, bottom: 20, left: 50, right: 50 } });
     const buffers = [];
     doc.on('data', (chunk) => buffers.push(chunk));
     doc.on('end', () => resolve(Buffer.concat(buffers)));
@@ -119,7 +129,7 @@ async function generateInvoicePdf(invoice) {
       const qty = line.quantity || 1;
       const unitAmount = qty ? Math.round(line.amount / qty) : line.amount;
       doc.font('Helvetica').fontSize(10).fillColor(BRAND.body);
-      doc.text(line.description || '', cols.desc, y, { width: cols.qty - cols.desc - 10 });
+      doc.text(cleanDescription(line.description, qty), cols.desc, y, { width: cols.qty - cols.desc - 10 });
       doc.text(String(qty), cols.qty, y);
       doc.text(money(unitAmount), cols.unit, y);
       doc.text(money(line.amount), cols.amount, y, { width: pageWidth - marginX - cols.amount, align: 'right' });
