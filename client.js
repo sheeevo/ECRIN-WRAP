@@ -68,9 +68,15 @@
         return c.from('vehicles').select('*').order('created_at', { ascending: false });
       }).then(unwrap);
     },
-    addVehicle: function (brand, model, finish) {
+    addVehicle: function (brand, model, plate, label, finish) {
       return getClient().then(function (c) {
-        return c.from('vehicles').insert({ brand: brand, model: model, finish: finish || null }).select();
+        return c.from('vehicles').insert({
+          brand: brand,
+          model: model,
+          plate: plate || null,
+          label: label || null,
+          finish: finish || null
+        }).select();
       }).then(unwrap);
     },
     deleteVehicle: function (id) {

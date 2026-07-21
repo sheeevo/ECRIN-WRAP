@@ -648,6 +648,22 @@ html,body{background:#050505;overflow:hidden}
         <sc-if value="{{ authFormVisible }}" hint-placeholder-val="{{ true }}">
         <div style="margin-top:22px;">
           <sc-if value="{{ authIsSignup }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;gap:10px;margin-bottom:14px;">
+            <button onClick="{{ setAuthAccountTypeIndividual }}" style="flex:1;font-family:inherit;font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:11px;border-radius:3px;cursor:pointer;transition:border-color .3s,color .3s;color:{{ accountTypeIndividualColor }};background:{{ accountTypeIndividualBg }};border:1px solid {{ accountTypeIndividualBorder }};">{{ t.accTypeIndividual }}</button>
+            <button onClick="{{ setAuthAccountTypeCompany }}" style="flex:1;font-family:inherit;font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:11px;border-radius:3px;cursor:pointer;transition:border-color .3s,color .3s;color:{{ accountTypeCompanyColor }};background:{{ accountTypeCompanyBg }};border:1px solid {{ accountTypeCompanyBorder }};">{{ t.accTypeCompany }}</button>
+          </div>
+          <sc-if value="{{ authIsCompany }}" hint-placeholder-val="{{ false }}">
+          <div class="ec-devis-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+            <label style="display:block;">
+              <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8c9095;">{{ t.accCompanyNameL }}</span>
+              <input ref="{{ authAccountTypeCompanyNameRef }}" placeholder="{{ t.accCompanyNamePh }}" style="width:100%;margin-top:8px;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:12px 14px;color:#F7F7F7;font-family:inherit;font-size:14px;outline:none;" />
+            </label>
+            <label style="display:block;">
+              <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8c9095;">{{ t.accVatNumberL }}</span>
+              <input ref="{{ authAccountTypeVatNumberRef }}" placeholder="{{ t.accVatNumberPh }}" style="width:100%;margin-top:8px;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:12px 14px;color:#F7F7F7;font-family:inherit;font-size:14px;outline:none;" />
+            </label>
+          </div>
+          </sc-if>
           <div class="ec-devis-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
             <label style="display:block;">
               <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8c9095;">{{ t.accFirstNameL }}</span>
@@ -675,6 +691,16 @@ html,body{background:#050505;overflow:hidden}
             <label style="display:block;">
               <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8c9095;">{{ t.accVehicleModelL }}</span>
               <input ref="{{ authVehicleModelRef }}" placeholder="{{ t.accVehicleModelPh }}" style="width:100%;margin-top:8px;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:12px 14px;color:#F7F7F7;font-family:inherit;font-size:14px;outline:none;" />
+            </label>
+          </div>
+          <div class="ec-devis-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px;">
+            <label style="display:block;">
+              <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8c9095;">{{ t.accVehiclePlateL }}</span>
+              <input ref="{{ authVehiclePlateRef }}" placeholder="{{ t.accVehiclePlatePh }}" style="width:100%;margin-top:8px;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:12px 14px;color:#F7F7F7;font-family:inherit;font-size:14px;outline:none;" />
+            </label>
+            <label style="display:block;">
+              <span style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8c9095;">{{ t.accVehicleLabelL }}</span>
+              <input ref="{{ authVehicleLabelRef }}" placeholder="{{ t.accVehicleLabelPh }}" style="width:100%;margin-top:8px;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:12px 14px;color:#F7F7F7;font-family:inherit;font-size:14px;outline:none;" />
             </label>
           </div>
           <div style="margin-top:8px;font-size:11px;color:#7c8085;">{{ t.accVehicleNote }}</div>
@@ -760,6 +786,10 @@ html,body{background:#050505;overflow:hidden}
         <div class="ec-devis-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;">
           <input ref="{{ vehicleBrandRef }}" placeholder="{{ t.accVehicleBrandPh }}" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:11px 13px;color:#F7F7F7;font-family:inherit;font-size:13px;outline:none;" />
           <input ref="{{ vehicleModelRef }}" placeholder="{{ t.accVehicleModelPh }}" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:11px 13px;color:#F7F7F7;font-family:inherit;font-size:13px;outline:none;" />
+        </div>
+        <div class="ec-devis-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+          <input ref="{{ vehiclePlateRef }}" placeholder="{{ t.accVehiclePlatePh }}" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:11px 13px;color:#F7F7F7;font-family:inherit;font-size:13px;outline:none;" />
+          <input ref="{{ vehicleLabelRef }}" placeholder="{{ t.accVehicleLabelPh }}" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(228,35,43,.22);border-radius:3px;padding:11px 13px;color:#F7F7F7;font-family:inherit;font-size:13px;outline:none;" />
         </div>
         <button onClick="{{ addVehicle }}" style="margin-top:10px;font-family:inherit;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#D9D9D9;font-weight:400;padding:11px 20px;border:1px solid rgba(228,35,43,.35);border-radius:3px;cursor:pointer;background:none;transition:border-color .3s;" style-hover="border-color:rgba(228,35,43,.65)">{{ t.accAddVehicle }}</button>
 
@@ -910,7 +940,7 @@ class Component extends DCLogic {
     excellenceOpen: false, excellenceSent: false,
 
     // client account: auth modal + session
-    accountOpen: false, authMode: 'signin', authError: '', authInfo: '', authBusy: false, authSignupSent: false, user: null,
+    accountOpen: false, authMode: 'signin', authAccountType: 'individual', authError: '', authInfo: '', authBusy: false, authSignupSent: false, user: null,
 
     // client account: data loaded once signed in (see loadAccountData)
     vehicles: [], quotes: [], subscription: null,
@@ -948,10 +978,16 @@ class Component extends DCLogic {
     this.authLastNameRef = React.createRef();
     this.authAddressRef = React.createRef();
     this.authAgeRef = React.createRef();
+    this.authAccountTypeCompanyNameRef = React.createRef();
+    this.authAccountTypeVatNumberRef = React.createRef();
     this.authVehicleBrandRef = React.createRef();
     this.authVehicleModelRef = React.createRef();
+    this.authVehiclePlateRef = React.createRef();
+    this.authVehicleLabelRef = React.createRef();
     this.vehicleBrandRef = React.createRef();
     this.vehicleModelRef = React.createRef();
+    this.vehiclePlateRef = React.createRef();
+    this.vehicleLabelRef = React.createRef();
     this.newEmailRef = React.createRef();
     this.newPasswordRef = React.createRef();
 
@@ -990,6 +1026,10 @@ class Component extends DCLogic {
         accAddressL:'Adresse', accAddressPh:'Rue, numéro, ville', accAgeL:'Âge', accAgePh:'Âge',
         accVehicleTitle:'Votre véhicule', accVehicleBrandL:'Marque', accVehicleModelL:'Modèle', accVehicleNote:'Utilisé pour préremplir tes réservations — modifiable ensuite dans ton compte.',
         accVehicleRequired:'Merci de renseigner la marque et le modèle de ton véhicule.',
+        accVehiclePlateL:'Plaque d’immatriculation', accVehiclePlatePh:'AB-123-CD', accVehicleLabelL:'Nom du véhicule', accVehicleLabelPh:'Ex : Camionnette 1',
+        accTypeIndividual:'Particulier', accTypeCompany:'Entreprise',
+        accCompanyNameL:'Nom de l’entreprise', accCompanyNamePh:'Raison sociale', accVatNumberL:'Numéro de TVA', accVatNumberPh:'BE0123456789',
+        accCompanyRequired:'Merci de renseigner le nom de l’entreprise et le numéro de TVA.',
         accForgotLink:'Mot de passe oublié ?', accMagicLinkBtn:'Se connecter par lien magique',
         accForgotNeedsEmail:'Indique ton e-mail ci-dessus d’abord.',
         accForgotSent:'E-mail de réinitialisation envoyé — vérifie ta boîte mail.',
@@ -1117,6 +1157,10 @@ class Component extends DCLogic {
         accAddressL:'Address', accAddressPh:'Street, number, city', accAgeL:'Age', accAgePh:'Age',
         accVehicleTitle:'Your vehicle', accVehicleBrandL:'Brand', accVehicleModelL:'Model', accVehicleNote:'Used to pre-fill your bookings — editable later in your account.',
         accVehicleRequired:'Please enter your vehicle’s brand and model.',
+        accVehiclePlateL:'Licence plate', accVehiclePlatePh:'AB-123-CD', accVehicleLabelL:'Vehicle name', accVehicleLabelPh:'E.g. Van 1',
+        accTypeIndividual:'Individual', accTypeCompany:'Company',
+        accCompanyNameL:'Company name', accCompanyNamePh:'Legal name', accVatNumberL:'VAT number', accVatNumberPh:'BE0123456789',
+        accCompanyRequired:'Please enter the company name and VAT number.',
         accForgotLink:'Forgot password?', accMagicLinkBtn:'Sign in with a magic link',
         accForgotNeedsEmail:'Enter your e-mail above first.',
         accForgotSent:'Reset e-mail sent — check your inbox.',
@@ -1245,6 +1289,10 @@ class Component extends DCLogic {
         accAddressL:'Adres', accAddressPh:'Straat, nummer, stad', accAgeL:'Leeftijd', accAgePh:'Leeftijd',
         accVehicleTitle:'Jouw voertuig', accVehicleBrandL:'Merk', accVehicleModelL:'Model', accVehicleNote:'Gebruikt om je reserveringen vooraf in te vullen — later aanpasbaar in je account.',
         accVehicleRequired:'Vul het merk en model van je voertuig in.',
+        accVehiclePlateL:'Nummerplaat', accVehiclePlatePh:'AB-123-CD', accVehicleLabelL:'Naam van het voertuig', accVehicleLabelPh:'Bv. Bestelwagen 1',
+        accTypeIndividual:'Particulier', accTypeCompany:'Bedrijf',
+        accCompanyNameL:'Bedrijfsnaam', accCompanyNamePh:'Officiële naam', accVatNumberL:'BTW-nummer', accVatNumberPh:'BE0123456789',
+        accCompanyRequired:'Vul de bedrijfsnaam en het BTW-nummer in.',
         accForgotLink:'Wachtwoord vergeten?', accMagicLinkBtn:'Inloggen met magische link',
         accForgotNeedsEmail:'Vul hierboven eerst je e-mail in.',
         accForgotSent:'Reset-e-mail verzonden — check je inbox.',
@@ -1585,7 +1633,8 @@ class Component extends DCLogic {
   openPrivacy(){ this.setState({ legalOpen: 'privacy' }); }
   openTerms(){ this.setState({ legalOpen: 'terms' }); }
   closeLegal(){ this.setState({ legalOpen: null }); }
-  toggleAuthMode(){ this.setState(s => ({ authMode: s.authMode === 'signup' ? 'signin' : 'signup', authError: '', authInfo: '', authSignupSent: false })); }
+  toggleAuthMode(){ this.setState(s => ({ authMode: s.authMode === 'signup' ? 'signin' : 'signup', authAccountType: 'individual', authError: '', authInfo: '', authSignupSent: false })); }
+  setAuthAccountType(type){ this.setState({ authAccountType: type, authError: '' }); }
 
   // ── auth (sign in / sign up / sign out / vehicles) ───────────────────
   submitAuth(){
@@ -1599,6 +1648,10 @@ class Component extends DCLogic {
     const vehicleBrand = g(this.authVehicleBrandRef);
     const vehicleModel = g(this.authVehicleModelRef);
     if(isSignup && (!vehicleBrand || !vehicleModel)){ this.setState({ authError: L.accVehicleRequired }); return; }
+    const isCompany = isSignup && this.state.authAccountType === 'company';
+    const companyName = g(this.authAccountTypeCompanyNameRef);
+    const vatNumber = g(this.authAccountTypeVatNumberRef);
+    if(isCompany && (!companyName || !vatNumber)){ this.setState({ authError: L.accCompanyRequired }); return; }
     this.setState({ authBusy: true, authError: '' });
     const promise = isSignup
       ? window.EcrinAuth.signUp(email, password, {
@@ -1606,8 +1659,13 @@ class Component extends DCLogic {
           last_name: g(this.authLastNameRef),
           address: g(this.authAddressRef),
           age: g(this.authAgeRef),
+          account_type: this.state.authAccountType,
+          company_name: isCompany ? companyName : '',
+          vat_number: isCompany ? vatNumber : '',
           vehicle_brand: vehicleBrand,
-          vehicle_model: vehicleModel
+          vehicle_model: vehicleModel,
+          vehicle_plate: g(this.authVehiclePlateRef),
+          vehicle_label: g(this.authVehicleLabelRef)
         })
       : window.EcrinAuth.signIn(email, password);
     promise.then(res => {
@@ -1690,11 +1748,15 @@ class Component extends DCLogic {
     if(!window.EcrinAuth) return;
     const brand = (this.vehicleBrandRef.current && this.vehicleBrandRef.current.value.trim()) || '';
     const model = (this.vehicleModelRef.current && this.vehicleModelRef.current.value.trim()) || '';
+    const plate = (this.vehiclePlateRef.current && this.vehiclePlateRef.current.value.trim()) || '';
+    const label = (this.vehicleLabelRef.current && this.vehicleLabelRef.current.value.trim()) || '';
     if(!brand || !model) return;
-    window.EcrinAuth.addVehicle(brand, model, this.state.finish).then(rows => {
+    window.EcrinAuth.addVehicle(brand, model, plate, label, this.state.finish).then(rows => {
       this.setState(s => ({ vehicles: (rows || []).concat(s.vehicles) }));
       if(this.vehicleBrandRef.current) this.vehicleBrandRef.current.value = '';
       if(this.vehicleModelRef.current) this.vehicleModelRef.current.value = '';
+      if(this.vehiclePlateRef.current) this.vehiclePlateRef.current.value = '';
+      if(this.vehicleLabelRef.current) this.vehicleLabelRef.current.value = '';
     }).catch(() => {});
   }
 
@@ -2070,12 +2132,27 @@ class Component extends DCLogic {
       authLastNameRef: this.authLastNameRef,
       authAddressRef: this.authAddressRef,
       authAgeRef: this.authAgeRef,
+      authIsCompany: s.authAccountType === 'company',
+      setAuthAccountTypeIndividual: () => this.setAuthAccountType('individual'),
+      setAuthAccountTypeCompany: () => this.setAuthAccountType('company'),
+      accountTypeIndividualColor: s.authAccountType === 'individual' ? '#F7F7F7' : '#9aa0a4',
+      accountTypeIndividualBg: s.authAccountType === 'individual' ? 'rgba(228,35,43,.12)' : 'transparent',
+      accountTypeIndividualBorder: s.authAccountType === 'individual' ? 'rgba(228,35,43,.6)' : 'rgba(228,35,43,.22)',
+      accountTypeCompanyColor: s.authAccountType === 'company' ? '#F7F7F7' : '#9aa0a4',
+      accountTypeCompanyBg: s.authAccountType === 'company' ? 'rgba(228,35,43,.12)' : 'transparent',
+      accountTypeCompanyBorder: s.authAccountType === 'company' ? 'rgba(228,35,43,.6)' : 'rgba(228,35,43,.22)',
+      authAccountTypeCompanyNameRef: this.authAccountTypeCompanyNameRef,
+      authAccountTypeVatNumberRef: this.authAccountTypeVatNumberRef,
       authVehicleBrandRef: this.authVehicleBrandRef,
       authVehicleModelRef: this.authVehicleModelRef,
+      authVehiclePlateRef: this.authVehiclePlateRef,
+      authVehicleLabelRef: this.authVehicleLabelRef,
       forgotPassword: () => this.forgotPassword(),
       sendMagicLink: () => this.sendMagicLink(),
       vehicleBrandRef: this.vehicleBrandRef,
       vehicleModelRef: this.vehicleModelRef,
+      vehiclePlateRef: this.vehiclePlateRef,
+      vehicleLabelRef: this.vehicleLabelRef,
       addVehicle: () => this.addVehicle(),
       newEmailRef: this.newEmailRef,
       newPasswordRef: this.newPasswordRef,
@@ -2087,7 +2164,7 @@ class Component extends DCLogic {
       accountPasswordMsg: s.accountPasswordMsg,
       vehiclesEmpty: !(s.vehicles && s.vehicles.length),
       vehicleRows: (s.vehicles || []).map(v => ({
-        label: v.brand + ' ' + v.model + (v.finish ? ' — ' + v.finish : ''),
+        label: (v.label ? v.label + ' — ' : '') + v.brand + ' ' + v.model + (v.plate ? ' · ' + v.plate : '') + (v.finish ? ' — ' + v.finish : ''),
         onDelete: () => this.removeVehicle(v.id)
       })),
       quotesEmpty: !(s.quotes && s.quotes.length),

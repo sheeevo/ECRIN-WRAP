@@ -13,6 +13,12 @@ create table if not exists public.vehicles (
   created_at timestamptz not null default now()
 );
 
+-- Fleet identification for accounts with several vehicles (companies and
+-- individuals alike): an optional nickname/label and licence plate per
+-- vehicle, on top of brand/model.
+alter table public.vehicles add column if not exists plate text;
+alter table public.vehicles add column if not exists label text;
+
 create table if not exists public.quotes (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null default auth.uid() references auth.users(id) on delete cascade,
@@ -65,6 +71,11 @@ create table if not exists public.profiles (
   created_at timestamptz not null default now()
 );
 
+-- Company accounts (vs. individual): billed to a business, with a VAT number.
+alter table public.profiles add column if not exists account_type text not null default 'individual';
+alter table public.profiles add column if not exists company_name text;
+alter table public.profiles add column if not exists vat_number text;
+
 alter table public.profiles enable row level security;
 
 drop policy if exists "profiles_select_own" on public.profiles;
@@ -79,23 +90,28 @@ language plpgsql
 security definer set search_path = public
 as $$
 begin
-  insert into public.profiles (id, first_name, last_name, address, age)
+  insert into public.profiles (id, first_name, last_name, address, age, account_type, company_name, vat_number)
   values (
     new.id,
     new.raw_user_meta_data ->> 'first_name',
     new.raw_user_meta_data ->> 'last_name',
     new.raw_user_meta_data ->> 'address',
-    nullif(new.raw_user_meta_data ->> 'age', '')::integer
+    nullif(new.raw_user_meta_data ->> 'age', '')::integer,
+    coalesce(nullif(new.raw_user_meta_data ->> 'account_type', ''), 'individual'),
+    new.raw_user_meta_data ->> 'company_name',
+    new.raw_user_meta_data ->> 'vat_number'
   )
   on conflict (id) do nothing;
 
   if coalesce(new.raw_user_meta_data ->> 'vehicle_brand', '') <> ''
      and coalesce(new.raw_user_meta_data ->> 'vehicle_model', '') <> '' then
-    insert into public.vehicles (user_id, brand, model)
+    insert into public.vehicles (user_id, brand, model, plate, label)
     values (
       new.id,
       new.raw_user_meta_data ->> 'vehicle_brand',
-      new.raw_user_meta_data ->> 'vehicle_model'
+      new.raw_user_meta_data ->> 'vehicle_model',
+      nullif(new.raw_user_meta_data ->> 'vehicle_plate', ''),
+      nullif(new.raw_user_meta_data ->> 'vehicle_label', '')
     );
   end if;
 
