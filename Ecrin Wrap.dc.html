@@ -122,7 +122,7 @@ html,body{background:#050505;overflow:hidden}
       <img class="ec-nav-logo" src="assets/ecrin-logo.png" alt="Ecrin Wrap" style="height:46px;width:auto;object-fit:contain;mix-blend-mode:screen;flex:none;" />
       <div style="display:{{ navDisplay }};align-items:center;gap:18px;flex-wrap:nowrap;justify-content:center;overflow:hidden;min-width:0;">
         <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="6">
-          <a href="{{ item.href }}" style="font-family:'Montserrat',sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#c8ccd0;text-decoration:none;font-weight:700;white-space:nowrap;transition:color .3s,transform .3s;" style-hover="color:#F7F7F7;transform:translateY(-1px)">{{ item.label }}</a>
+          <a href="{{ item.href }}" style="font-family:'Montserrat',sans-serif;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#F7F7F7;text-decoration:none;font-weight:800;white-space:nowrap;transition:color .3s,transform .3s;" style-hover="color:var(--accent);transform:translateY(-1px)">{{ item.label }}</a>
         </sc-for>
       </div>
       <div style="display:flex;align-items:center;gap:14px;">
