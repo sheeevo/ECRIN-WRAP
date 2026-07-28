@@ -120,9 +120,9 @@ html,body{background:#050505;overflow:hidden}
     <sc-if value="{{ isHero }}" hint-placeholder-val="{{ true }}">
     <div class="ec-nav" style="position:absolute;top:20px;left:20px;right:20px;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:12px 28px;background:linear-gradient(165deg,rgba(22,23,25,.9),rgba(9,10,11,.94));border:1px solid rgba(228,35,43,.22);border-radius:6px;backdrop-filter:blur(14px);box-shadow:0 20px 50px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.05);">
       <img class="ec-nav-logo" src="assets/ecrin-logo.png" alt="Ecrin Wrap" style="height:46px;width:auto;object-fit:contain;mix-blend-mode:screen;flex:none;" />
-      <div style="display:{{ navDisplay }};align-items:center;gap:18px;flex-wrap:nowrap;justify-content:center;overflow:hidden;min-width:0;">
+      <div style="display:{{ navDisplay }};align-items:center;gap:32px;flex-wrap:nowrap;justify-content:center;overflow:hidden;min-width:0;">
         <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="6">
-          <a href="{{ item.href }}" style="font-family:'Montserrat',sans-serif;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#F7F7F7;text-decoration:none;font-weight:800;white-space:nowrap;transition:color .3s,transform .3s;" style-hover="color:var(--accent);transform:translateY(-1px)">{{ item.label }}</a>
+          <a href="{{ item.href }}" style="font-family:'Montserrat',sans-serif;font-size:14px;letter-spacing:.04em;text-transform:uppercase;color:#F7F7F7;text-decoration:none;font-weight:800;white-space:nowrap;transition:color .3s,transform .3s;" style-hover="color:var(--accent);transform:translateY(-1px)">{{ item.label }}</a>
         </sc-for>
       </div>
       <div style="display:flex;align-items:center;gap:14px;">
@@ -1478,7 +1478,7 @@ class Component extends DCLogic {
     };
     window.addEventListener('mousemove', this._onMove);
     this._onNavResize = () => {
-      const n = Math.max(3, Math.min(10, Math.floor((window.innerWidth - 440) / 82)));
+      const n = Math.max(3, Math.min(10, Math.floor((window.innerWidth - 440) / 135)));
       const mob = window.innerWidth < 760;
       if(n !== this.state.navMax || mob !== this.state.isMobile) this.setState({ navMax: n, isMobile: mob });
     };
