@@ -1656,7 +1656,7 @@ class Component extends DCLogic {
         const bar = this.EW_BARS[band];
         for(let x = EX0; x <= EX1; x++){
           const li = ((y - EY0) * ebw + (x - EX0)) * 4;
-          const b = eLogo[li], g = eLogo[li + 1], r = eLogo[li + 2];
+          const r = eLogo[li], g = eLogo[li + 1], b = eLogo[li + 2]; // ImageData is RGBA
           if(!(r > 40 && r > g + 20 && r > b + 20)) continue;
           const t = Math.max(0, Math.min(1, (x - bar.xLeft) / (bar.xRight - bar.xLeft)));
           const oi = (y - EY0) * ebw + (x - EX0);
