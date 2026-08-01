@@ -49,12 +49,14 @@ for ($y = $Y0; $y -le $Y1; $y++) {
   for ($x = $X0; $x -le $X1; $x++) {
     $off = $y * $stride + $x * 4
     # source PNG has no real alpha (it's composited via mix-blend-mode:screen
-    # against a solid black background), so treat pixel brightness as the
-    # glyph mask instead of the (always-255) alpha channel.
+    # against a solid black background), so pixel colour is the glyph mask
+    # instead of the (always-255) alpha channel. Only near-white pixels count:
+    # the W's bounding box also clips the red tail of the E's top bar, and
+    # including it would make part of the E animate along with the W.
     $b0 = $bytes[$off]; $g0 = $bytes[$off+1]; $r0 = $bytes[$off+2]
-    $bright = [Math]::Max($r0, [Math]::Max($g0, $b0))
-    if ($bright -lt 10) { continue }
-    $a = $bright
+    $minc = [Math]::Min($r0, [Math]::Min($g0, $b0))
+    if ($minc -lt 60) { continue }
+    $a = $minc
 
     $bestDist2 = [double]::MaxValue
     $bestT = 0.0
