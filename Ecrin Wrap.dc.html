@@ -863,17 +863,17 @@ html,body{background:#050505;overflow:hidden}
   </div>
   </sc-if>
 
-  <!-- REVEAL: the E and W are handwritten (ink stroke reveal on the
-       Pinyon Script mark), then we fade into the site -->
+  <!-- REVEAL: the real EW mark (red E bars + white W stroke) is
+       hand-drawn via a left-to-right ink reveal, then fades into the site -->
   <sc-if value="{{ showReveal }}" hint-placeholder-val="{{ false }}">
   <div style="position:fixed;inset:0;z-index:80;opacity:{{ revealOpacity }};transition:opacity .5s ease;pointer-events:none;background:#050505;">
     <!-- ambient glow behind the mark -->
     <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:520px;height:320px;border-radius:50%;background:radial-gradient(circle,var(--glow),transparent 68%);filter:blur(30px);opacity:.5;"></div>
     <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
       <div style="position:relative;display:inline-block;">
-        <span style="font-family:'Pinyon Script',cursive;font-size:clamp(96px,17vw,200px);line-height:1;white-space:nowrap;background:linear-gradient(100deg,#F7F7F7 0%,var(--laser) 45%,var(--accent) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-mask-image:linear-gradient(#000,#000);mask-image:linear-gradient(#000,#000);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:0% 100%;mask-size:0% 100%;animation:ecInkReveal 1.7s cubic-bezier(.65,0,.35,1) .35s both;">EW</span>
+        <img src="assets/ew-icon.png" alt="Ecrin Wrap" style="display:block;width:min(680px,72vw);height:auto;mix-blend-mode:screen;-webkit-mask-image:linear-gradient(#000,#000);mask-image:linear-gradient(#000,#000);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:0% 100%;mask-size:0% 100%;animation:ecInkReveal 1.7s cubic-bezier(.65,0,.35,1) .35s both;" />
         <!-- travelling pen tip -->
-        <div style="position:absolute;top:6%;left:0;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle,#fff,var(--laser) 55%,transparent 76%);box-shadow:0 0 18px 6px var(--glow);animation:ecPenMove 1.7s cubic-bezier(.65,0,.35,1) .35s both,ecPenFade .4s ease 2.05s both;"></div>
+        <div style="position:absolute;top:8%;left:0;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle,#fff,var(--laser) 55%,transparent 76%);box-shadow:0 0 18px 6px var(--glow);animation:ecPenMove 1.7s cubic-bezier(.65,0,.35,1) .35s both,ecPenFade .4s ease 2.05s both;"></div>
       </div>
     </div>
   </div>
