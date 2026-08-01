@@ -26,12 +26,10 @@ html,body{background:#050505;overflow:hidden}
 @keyframes ecLaser{0%{transform:translateY(-3vh);opacity:0}8%{opacity:1}92%{opacity:1}100%{transform:translateY(103vh);opacity:0}}
 @keyframes ecWipe{0%{clip-path:inset(0 0 0 0)}18%{clip-path:inset(0 0 0 0)}100%{clip-path:inset(100% 0 0 0)}}
 @keyframes ecLogoP{0%{opacity:0;letter-spacing:.14em}22%{opacity:1}62%{opacity:1;letter-spacing:.02em}100%{opacity:0}}
-@keyframes ecSweep{0%{transform:translateX(-120%)}100%{transform:translateX(220%)}}
 @keyframes ecPulse{0%,100%{opacity:.5}50%{opacity:.9}}
-@keyframes ecDoorL{0%,62%{transform:translateX(0)}100%{transform:translateX(-101%)}}
-@keyframes ecDoorR{0%,62%{transform:translateX(0)}100%{transform:translateX(101%)}}
-@keyframes ecSeam{0%{opacity:0;transform:scaleY(0)}30%{opacity:1;transform:scaleY(1)}58%{opacity:1}75%{opacity:0}100%{opacity:0}}
-@keyframes ecLogoRev{0%{opacity:0;transform:scale(.92)}22%{opacity:1;transform:scale(1)}52%{opacity:1;transform:scale(1.01)}68%{opacity:0;transform:scale(1.06)}100%{opacity:0}}
+@keyframes ecInkReveal{to{-webkit-mask-size:100% 100%;mask-size:100% 100%;}}
+@keyframes ecPenMove{to{left:100%;}}
+@keyframes ecPenFade{0%,80%{opacity:1}100%{opacity:0}}
 @keyframes ecMarquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 [data-ec-reveal]{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.8,.2,1)}
 [data-ec-reveal].ec-in{opacity:1;transform:none}
@@ -865,24 +863,17 @@ html,body{background:#050505;overflow:hidden}
   </div>
   </sc-if>
 
-  <!-- REVEAL -->
+  <!-- REVEAL: the E and W are handwritten (ink stroke reveal on the
+       Pinyon Script mark), then we fade into the site -->
   <sc-if value="{{ showReveal }}" hint-placeholder-val="{{ false }}">
-  <div style="position:fixed;inset:0;z-index:80;opacity:{{ revealOpacity }};transition:opacity .5s ease;pointer-events:none;">
-    <!-- left door -->
-    <div style="position:absolute;top:0;bottom:0;left:0;width:50.2%;background:linear-gradient(105deg,#0a0a0b,#050505 70%);box-shadow:inset -40px 0 80px rgba(0,0,0,.6);animation:ecDoorL 3s cubic-bezier(.75,0,.2,1) both;overflow:hidden;">
-      <div style="position:absolute;top:0;bottom:0;right:0;width:1px;background:rgba(228,35,43,.35);"></div>
-    </div>
-    <!-- right door -->
-    <div style="position:absolute;top:0;bottom:0;right:0;width:50.2%;background:linear-gradient(255deg,#0a0a0b,#050505 70%);box-shadow:inset 40px 0 80px rgba(0,0,0,.6);animation:ecDoorR 3s cubic-bezier(.75,0,.2,1) both;overflow:hidden;">
-      <div style="position:absolute;top:0;bottom:0;left:0;width:1px;background:rgba(228,35,43,.35);"></div>
-    </div>
-    <!-- gold seam -->
-    <div style="position:absolute;top:0;bottom:0;left:50%;width:2px;transform-origin:center;background:linear-gradient(180deg,transparent,var(--laser) 18%,#fff8e6 50%,var(--laser) 82%,transparent);box-shadow:0 0 26px 5px var(--glow);animation:ecSeam 3s cubic-bezier(.6,0,.3,1) both;"></div>
-    <!-- logo with gold sweep -->
-    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;animation:ecLogoRev 3s ease both;">
-      <div style="position:relative;width:min(380px,60vw);overflow:hidden;">
-        <img src="assets/ecrin-logo.png" alt="Ecrin Wrap" style="width:100%;height:auto;display:block;mix-blend-mode:screen;" />
-        <div style="position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(246,227,178,.35) 50%,transparent 70%);transform:skewX(-12deg);animation:ecSweep 1.6s ease-in-out .2s both;mix-blend-mode:screen;"></div>
+  <div style="position:fixed;inset:0;z-index:80;opacity:{{ revealOpacity }};transition:opacity .5s ease;pointer-events:none;background:#050505;">
+    <!-- ambient glow behind the mark -->
+    <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:520px;height:320px;border-radius:50%;background:radial-gradient(circle,var(--glow),transparent 68%);filter:blur(30px);opacity:.5;"></div>
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+      <div style="position:relative;display:inline-block;">
+        <span style="font-family:'Pinyon Script',cursive;font-size:clamp(96px,17vw,200px);line-height:1;white-space:nowrap;background:linear-gradient(100deg,#F7F7F7 0%,var(--laser) 45%,var(--accent) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-mask-image:linear-gradient(#000,#000);mask-image:linear-gradient(#000,#000);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:0% 100%;mask-size:0% 100%;animation:ecInkReveal 1.7s cubic-bezier(.65,0,.35,1) .35s both;">EW</span>
+        <!-- travelling pen tip -->
+        <div style="position:absolute;top:6%;left:0;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle,#fff,var(--laser) 55%,transparent 76%);box-shadow:0 0 18px 6px var(--glow);animation:ecPenMove 1.7s cubic-bezier(.65,0,.35,1) .35s both,ecPenFade .4s ease 2.05s both;"></div>
       </div>
     </div>
   </div>
