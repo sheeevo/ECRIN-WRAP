@@ -33,9 +33,12 @@ html,body{background:#050505;overflow:hidden}
 @media (max-width:760px){
   #portfolio .ec-pf-grid{grid-auto-rows:220px !important}
 
-  /* nav */
+  /* nav: tighten the right-side cluster (account + Devis CTA + burger) so
+     logo + all three still fit inside the pill on narrow (~360px) phones */
   .ec-nav{padding:18px 20px !important;gap:12px !important}
   .ec-nav-logo{height:38px !important}
+  .ec-nav-actions{gap:8px !important}
+  .ec-nav-cta{padding:10px 14px !important;font-size:10px !important}
 
   /* hero */
   #accueil{height:100vh !important;height:100dvh !important}
@@ -45,7 +48,7 @@ html,body{background:#050505;overflow:hidden}
 
   /* section rhythm: desktop's 150px/130px vertical padding is built for a
      scroll-through single page, not a thumb-scrolled phone */
-  #services,#comparatif,#detailing,#processus,#portfolio,#temoignages,#faq{
+  #services,#comparatif,#detailing,#processus,#formation,#portfolio,#temoignages,#faq{
     padding:90px 6vw 64px !important;
   }
   #configurateur{padding:76px 6vw 54px !important}
@@ -120,7 +123,7 @@ html,body{background:#050505;overflow:hidden}
           <a href="{{ item.href }}" style="font-family:'Montserrat',sans-serif;font-size:14px;letter-spacing:.04em;text-transform:uppercase;color:#F7F7F7;text-decoration:none;font-weight:800;white-space:nowrap;transition:color .3s,transform .3s;" style-hover="color:var(--accent);transform:translateY(-1px)">{{ item.label }}</a>
         </sc-for>
       </div>
-      <div style="display:flex;align-items:center;gap:14px;">
+      <div class="ec-nav-actions" style="display:flex;align-items:center;gap:14px;">
         <div style="display:{{ navDisplay }};align-items:center;gap:2px;">
           <sc-for list="{{ langs }}" as="lg" hint-placeholder-count="3">
             <button onClick="{{ lg.onClick }}" style="background:none;border:none;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;color:{{ lg.color }};padding:6px 7px;cursor:pointer;border-bottom:1px solid {{ lg.border }};transition:color .3s;" style-hover="color:#F7F7F7">{{ lg.label }}</button>
@@ -135,7 +138,7 @@ html,body{background:#050505;overflow:hidden}
             </span>
           </sc-if>
         </button>
-        <button onClick="{{ openDevis }}" style="font-family:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#ffffff;font-weight:500;padding:11px 20px;border:none;border-radius:2px;cursor:pointer;background:linear-gradient(180deg,#ff6a70,#ee3038 46%,#e4232b 54%,#ff5a60);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 -1px 0 rgba(0,0,0,.25),0 8px 20px rgba(0,0,0,.4);transition:transform .3s,box-shadow .3s;white-space:nowrap;" style-hover="transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 14px 30px rgba(0,0,0,.5)">{{ t.devis }}</button>
+        <button class="ec-nav-cta" onClick="{{ openDevis }}" style="font-family:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#ffffff;font-weight:500;padding:11px 20px;border:none;border-radius:2px;cursor:pointer;background:linear-gradient(180deg,#ff6a70,#ee3038 46%,#e4232b 54%,#ff5a60);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 -1px 0 rgba(0,0,0,.25),0 8px 20px rgba(0,0,0,.4);transition:transform .3s,box-shadow .3s;white-space:nowrap;" style-hover="transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 14px 30px rgba(0,0,0,.5)">{{ t.devis }}</button>
         <button onClick="{{ toggleMobileMenu }}" style="display:{{ burgerDisplay }};flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;background:none;border:1px solid rgba(228,35,43,.3);border-radius:3px;cursor:pointer;padding:9px;">
           <span style="display:block;height:1px;background:#D9D9D9;"></span>
           <span style="display:block;height:1px;background:#D9D9D9;"></span>
@@ -877,7 +880,7 @@ html,body{background:#050505;overflow:hidden}
   <!-- LOADING -->
   <sc-if value="{{ showLoading }}" hint-placeholder-val="{{ true }}">
   <div style="position:fixed;inset:0;z-index:100;background:#050505;display:flex;flex-direction:column;align-items:center;justify-content:center;">
-    <div style="position:relative;display:flex;align-items:center;justify-content:center;width:420px;height:200px;">
+    <div style="position:relative;display:flex;align-items:center;justify-content:center;width:min(420px,92vw);height:200px;">
       <div style="position:absolute;width:340px;height:340px;border-radius:50%;background:conic-gradient(from 0deg,transparent 0 68%,var(--glow) 84%,transparent 96%);-webkit-mask:radial-gradient(circle,transparent 46%,#000 47%,#000 49%,transparent 50%);mask:radial-gradient(circle,transparent 46%,#000 47%,#000 49%,transparent 50%);opacity:.85;animation:ecTurn 3.4s linear infinite;"></div>
       <img src="assets/ecrin-logo.png" alt="Ecrin Wrap" style="width:230px;height:230px;object-fit:contain;mix-blend-mode:screen;" />
     </div>
