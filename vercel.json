@@ -1,5 +1,6 @@
 {
   "rewrites": [
-    { "source": "/", "destination": "/Ecrin%20Wrap.dc.html" }
+    { "source": "/", "destination": "/Ecrin%20Wrap.dc.html" },
+    { "source": "/preview", "destination": "/preview.dc.html" }
   ]
 }
