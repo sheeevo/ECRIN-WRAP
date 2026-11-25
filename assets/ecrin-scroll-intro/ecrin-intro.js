@@ -26,6 +26,32 @@
     { cls: 'ew-center', html: '<p class="ew-sub">Covering · PPF · Detailing</p><div class="ew-cta"><a class="ew-btn" href="#contact" data-ew-devis>Demander un devis</a><a class="ew-btn ew-ghost" href="#portfolio">Nos réalisations</a></div>' }
   ];
 
+  // traductions : mêmes arrêts, dans le même ordre que STEPS (français)
+  STEPS.nl = [
+    { cls: '', html: '<div class="ew-tag"><i style="--sw:#c8101a"></i>Originele lak</div><h1>Uw wagen.<br>Ons atelier.</h1><p>Hoogwaardige wrapping, PPF en detailing, met de hand uitgevoerd in ons atelier in de regio Luik. Scroll om de transformatie te volgen.</p>' },
+    { cls: '', html: '<div class="ew-tag"><i style="--sw:#1d1e21"></i>Stap 1 · Matzwarte wrap</div><h2>Met de hand geplaatst,<br>paneel per paneel.</h2><ul><li>Gegoten vinylfolie, verwarmd en gerekt om elke ronding te volgen</li><li>Aangebracht met een vilten rakel, zonder bellen of plooien</li><li>Randen omgeplooid, geen enkele snede in uw koetswerk</li></ul>' },
+    { cls: '', html: '<div class="ew-tag"><i style="--sw:#1d1e21"></i>Wrap voltooid</div><h2>Het rood is weg.<br>De lak niet.</h2><p>De originele lak blijft intact onder de folie. Zin in iets anders over enkele jaren? De wrap laat zich netjes verwijderen.</p>' },
+    { cls: '', html: '<div class="ew-tag"><i style="--sw:linear-gradient(135deg,#ffffff55,#9fe7ff33)"></i>Stap 2 · PPF</div><h2>Een transparant schild<br>eroverheen.</h2><p>PPF is een dikke, transparante polyurethaanfolie die met plaatsingsvloeistof wordt aangebracht, op de hele wagen of enkel op de blootgestelde zones. Ze beschermt de wrap of de lak tegen steenslag, krassen en vogeluitwerpselen — zonder de kleur te veranderen.</p>' },
+    { cls: '', html: '<div class="ew-tag"><i style="--sw:#ff6a00"></i>De test</div><h2>Een snee met een cutter?</h2><p>Een kras die op elke lak sporen zou nalaten. Op de beschermde zone blijft ze in de folie — het oppervlak eronder wordt niet geraakt.</p>' },
+    { cls: '', html: '<div class="ew-tag"><i style="--sw:#e3131b"></i>Zelfherstellend</div><h2>Een beetje warmte.<br>Verdwenen.</h2><p>De bovenste laag van de PPF sluit zich onder invloed van warmte — zon, warm water of een heteluchtpistool. Microkrassen vervagen en het oppervlak wordt weer glad.</p>' },
+    { cls: 'ew-center', html: '<p class="ew-sub">Wrapping · PPF · Detailing</p><div class="ew-cta"><a class="ew-btn" href="#contact" data-ew-devis>Offerte aanvragen</a><a class="ew-btn ew-ghost" href="#portfolio">Onze realisaties</a></div>' }
+  ];
+  STEPS.en = [
+    { cls: '', html: '<div class="ew-tag"><i style="--sw:#c8101a"></i>Original paint</div><h1>Your car.<br>Our craft.</h1><p>High-end wrapping, PPF and detailing, done by hand in our workshop near Liège. Scroll to follow the transformation.</p>' },
+    { cls: '', html: '<div class="ew-tag"><i style="--sw:#1d1e21"></i>Step 1 · Matte black wrap</div><h2>Fitted by hand,<br>panel by panel.</h2><ul><li>Cast vinyl film, heated and stretched to follow every curve</li><li>Applied with a felt squeegee, no bubbles, no creases</li><li>Edges folded over, no cutting on your bodywork</li></ul>' },
+    { cls: '', html: '<div class="ew-tag"><i style="--sw:#1d1e21"></i>Wrap complete</div><h2>The red is gone.<br>The paint is not.</h2><p>The original paint stays intact under the film. Fancy a change in a few years? The wrap comes off cleanly.</p>' },
+    { cls: '', html: '<div class="ew-tag"><i style="--sw:linear-gradient(135deg,#ffffff55,#9fe7ff33)"></i>Step 2 · PPF</div><h2>A transparent shield<br>on top.</h2><p>PPF is a thick, transparent polyurethane film, applied with a fitting solution over the whole car or only on exposed areas. It protects the wrap or the paint from stone chips, scratches and bird droppings — without changing the colour.</p>' },
+    { cls: '', html: '<div class="ew-tag"><i style="--sw:#ff6a00"></i>The test</div><h2>A knife cut?</h2><p>A scratch that would mark any paint. On the protected area it stays in the film — the surface underneath is untouched.</p>' },
+    { cls: '', html: '<div class="ew-tag"><i style="--sw:#e3131b"></i>Self-healing</div><h2>A little heat.<br>Gone.</h2><p>The top layer of the PPF closes up under heat — sunshine, hot water or a heat gun. Micro-scratches fade and the surface turns smooth again.</p>' },
+    { cls: 'ew-center', html: '<p class="ew-sub">Wrapping · PPF · Detailing</p><div class="ew-cta"><a class="ew-btn" href="#contact" data-ew-devis>Request a quote</a><a class="ew-btn ew-ghost" href="#portfolio">Our work</a></div>' }
+  ];
+
+  var UI = {
+    fr: { load: 'Chargement de l’atelier…', hint: 'Scrollez', skip: 'Passer l’intro' },
+    nl: { load: 'Atelier wordt geladen…', hint: 'Scroll', skip: 'Intro overslaan' },
+    en: { load: 'Loading the workshop…', hint: 'Scroll', skip: 'Skip intro' }
+  };
+
   function init(root) {
     if (root._ewInit) return; root._ewInit = true;
     var base = (root.getAttribute('data-base') || 'assets').replace(/\/$/, '');
@@ -46,16 +72,17 @@
     root.innerHTML =
       '<div class="ew-stage">' +
         '<canvas class="ew-cv" aria-hidden="true"></canvas>' +
-        '<div class="ew-loader"><span>Chargement de l’atelier… 0%</span><i></i></div>' +
+        '<div class="ew-loader"><span></span><i></i></div>' +
         '<div class="ew-steps">' + STEPS.map(function (s) { return '<div class="ew-step ' + s.cls + '">' + s.html + '</div>'; }).join('') + '</div>' +
         '<div class="ew-progress" aria-hidden="true">' + STEPS.map(function () { return '<span></span>'; }).join('') + '</div>' +
-        '<div class="ew-hint">Scrollez</div>' +
-        '<button type="button" class="ew-skip">Passer l’intro</button>' +
+        '<div class="ew-hint"></div>' +
+        '<button type="button" class="ew-skip"></button>' +
       '</div>';
 
     var stage = root.querySelector('.ew-stage');
     // « Demander un devis » : le site ouvre son propre formulaire
-    root.querySelector('[data-ew-devis]').addEventListener('click', function (e) {
+    root.addEventListener('click', function (e) {
+      if (!e.target.closest('[data-ew-devis]')) return;
       if (!root.dispatchEvent(new CustomEvent('ew-devis', { cancelable: true }))) e.preventDefault();
     });
 
@@ -76,6 +103,17 @@
     var imgs = new Array(N), loaded = 0, view = null, curKey = '';
     var ok = function (im) { return im && im.complete && im.naturalWidth; };
 
+    // langue : data-lang au départ, puis root._ewLang('nl') à chaque changement
+    var ui = UI.fr;
+    function setLoad() { lt.textContent = ui.load + ' ' + Math.round(loaded / N * 100) + '%'; }
+    root._ewLang = function (lang) {
+      ui = UI[lang] || UI.fr;
+      var list = STEPS[lang] || STEPS;
+      stepEls.forEach(function (el, i) { el.innerHTML = list[i].html; });
+      hint.textContent = ui.hint; skip.textContent = ui.skip; setLoad();
+    };
+    root._ewLang(root.getAttribute('data-lang') || 'fr');
+
     // Images d'arrêt en haute définition
     var stills = STEPS.map(function (_, k) {
       var im = new Image();
@@ -90,9 +128,8 @@
       var im = new Image(); im.decoding = 'async';
       im.onload = function () {
         loaded++;
-        var pc = Math.round(loaded / N * 100);
-        lt.textContent = 'Chargement de l’atelier… ' + pc + '%';
-        lb.style.setProperty('--p', pc + '%');
+        setLoad();
+        lb.style.setProperty('--p', Math.round(loaded / N * 100) + '%');
         if (loaded >= 60) loader.classList.add('ew-done');
         curKey = ''; draw();
       };
@@ -181,6 +218,6 @@
     var nodes = document.querySelectorAll('#ecrin-intro, [data-ecrin-intro]');
     for (var i = 0; i < nodes.length; i++) init(nodes[i]);
   }
-  window.EcrinIntro = { init: init };
+  window.EcrinIntro = { init: init, setLang: function (root, lang) { if (root && root._ewLang) root._ewLang(lang); } };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();

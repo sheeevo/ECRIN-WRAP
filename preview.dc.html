@@ -1445,6 +1445,7 @@ class Component extends DCLogic {
       const el = document.getElementById('ecrin-intro'); if(!el) return;
       el.addEventListener('ew-devis', (e) => { e.preventDefault(); this.openDevis(); });
       window.EcrinIntro.init(el);
+      window.EcrinIntro.setLang(el, this.state.lang);
     };
     document.head.appendChild(intro);
     this._revealIO = ('IntersectionObserver' in window) ? new IntersectionObserver((ents) => {
@@ -1510,6 +1511,10 @@ class Component extends DCLogic {
   }
 
   componentDidUpdate(){
+    if(this._introLang !== this.state.lang && window.EcrinIntro){
+      this._introLang = this.state.lang;
+      window.EcrinIntro.setLang(document.getElementById('ecrin-intro'), this._introLang);
+    }
     if(this._scanReveals) this._scanReveals();
   }
 
