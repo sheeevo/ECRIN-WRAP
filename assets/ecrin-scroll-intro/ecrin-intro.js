@@ -50,12 +50,21 @@
         '<div class="ew-steps">' + STEPS.map(function (s) { return '<div class="ew-step ' + s.cls + '">' + s.html + '</div>'; }).join('') + '</div>' +
         '<div class="ew-progress" aria-hidden="true">' + STEPS.map(function () { return '<span></span>'; }).join('') + '</div>' +
         '<div class="ew-hint">Scrollez</div>' +
+        '<button type="button" class="ew-skip">Passer l’intro</button>' +
       '</div>';
 
     var stage = root.querySelector('.ew-stage');
     // « Demander un devis » : le site ouvre son propre formulaire
     root.querySelector('[data-ew-devis]').addEventListener('click', function (e) {
       if (!root.dispatchEvent(new CustomEvent('ew-devis', { cancelable: true }))) e.preventDefault();
+    });
+
+    // « Passer l'intro » : saut direct à la section qui suit, sans faire défiler les clips
+    var skip = root.querySelector('.ew-skip');
+    skip.addEventListener('click', function () {
+      var sc = root.parentElement;
+      while (sc && !/(auto|scroll)/.test(getComputedStyle(sc).overflowY)) sc = sc.parentElement;
+      (sc || window).scrollBy({ top: root.getBoundingClientRect().bottom, behavior: 'instant' });
     });
 
     var cv = root.querySelector('.ew-cv'), cx = cv.getContext('2d');
@@ -159,6 +168,7 @@
         stepEls.forEach(function (el, j) { el.classList.toggle('ew-on', j === act); });
         bars.forEach(function (b, j) { b.classList.toggle('ew-on', j === sg.k); });
         hint.style.opacity = y < 0.05 ? 1 : 0;
+        skip.hidden = act === STEPS.length - 1;
       });
     }
     // capture : le site défile dans un conteneur interne, pas dans la fenêtre

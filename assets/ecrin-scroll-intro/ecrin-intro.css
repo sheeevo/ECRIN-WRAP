@@ -31,6 +31,9 @@
 .ew-loader i{display:block;width:180px;height:2px;margin:10px auto 0;background:linear-gradient(90deg,var(--ew-red) var(--p,0%),#ffffff22 0)}
 .ew-loader.ew-done{opacity:0;pointer-events:none}
 .ew-hint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);z-index:2;font-size:12px;color:#fff9;letter-spacing:.08em;transition:opacity .4s}
+.ew-skip{position:absolute;right:max(2vw,16px);bottom:14px;z-index:3;min-height:44px;padding:0 18px;border:1px solid rgba(255,255,255,.2);border-radius:999px;background:rgba(12,13,16,.72);backdrop-filter:blur(8px);color:#fff;font:600 13px 'Montserrat',sans-serif;cursor:pointer;transition:border-color .3s}
+.ew-skip:hover,.ew-skip:focus-visible{border-color:var(--ew-red)}
+.ew-skip[hidden]{display:none}
 @media(max-width:600px){
   .ew-step{left:16px;right:16px;bottom:9vh}
   .ew-step.ew-center{left:16px;right:16px;transform:translateY(30px)}
